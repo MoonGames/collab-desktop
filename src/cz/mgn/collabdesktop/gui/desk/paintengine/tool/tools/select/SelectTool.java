@@ -4,18 +4,20 @@
  */
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.select;
 
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.ForToolInterface;
-import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.selection.SelectionUpdate;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
+import cz.mgn.collabcanvas.interfaces.selectionable.SelectionUpdate;
+import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.SimpleMouseCursor;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 /**
  *
- *            @author indy
+ * @author indy
  */
 public class SelectTool extends Tool implements SelectPaneInterface {
 
@@ -28,25 +30,15 @@ public class SelectTool extends Tool implements SelectPaneInterface {
 
     public SelectTool() {
         super();
-        init(ImageUtil.loadImageFromResources("/resources/tools/select-cursor.gif"),
+        init(new SimpleMouseCursor(ImageUtil.loadImageFromResources("/resources/tools/select-cursor.gif")),
                 ImageUtil.loadImageFromResources("/resources/tools/select-icon.png"), "Select", "Press CTRL and click to select all.");
         toolPanel = new SelectPanel(this);
     }
 
-    @Override
-    public void paintSeted() {
-        paint.setCursor(null);
-    }
-
-    @Override
-    public void mouseMoved(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mousePressed(int x, int y, boolean shift, boolean control) {
+    public void mousePressed(int x, int y, boolean control) {
         if (control) {
             reset();
-            forToolInterface.select(null);
+            canvasInterface.getSelectionable().selectAll();
         } else {
             x1 = x;
             y1 = y;
@@ -54,13 +46,11 @@ public class SelectTool extends Tool implements SelectPaneInterface {
         }
     }
 
-    @Override
-    public void mouseDragged(int x, int y, boolean shift, boolean control) {
+    public void mouseDragged(int x, int y) {
         set(x, y);
     }
 
-    @Override
-    public void mouseReleased(int x, int y, boolean shift, boolean control) {
+    public void mouseReleased(int x, int y) {
         if (x1 >= 0) {
             Rectangle r = countRect();
             BufferedImage selection = new BufferedImage(r.width, r.height, BufferedImage.TYPE_4BYTE_ABGR);
@@ -71,19 +61,19 @@ public class SelectTool extends Tool implements SelectPaneInterface {
             } else {
                 g.fillRect(0, 0, selection.getWidth(), selection.getHeight());
             }
-            forToolInterface.select(new SelectionUpdate(r.x, r.y, selection, toolPanel.getSelectionType()));
+            canvasInterface.getSelectionable().select(new ToolSelectionUpdate(toolPanel.getSelectionType(), new Point(r.x, r.y), 1f, selection));
         }
         reset();
     }
 
     protected Rectangle countRect() {
         int xx1 = Math.max(0, Math.min(x1, x2));
-        int xx2 = Math.min(Math.max(x1, x2), forToolInterface.getPaintingWidth());
+        int xx2 = Math.min(Math.max(x1, x2), canvasInterface.getPaintable().getWidth());
         if (xx1 == xx2) {
             xx2++;
         }
         int yy1 = Math.max(0, Math.min(y1, y2));
-        int yy2 = Math.min(Math.max(y1, y2), forToolInterface.getPaintingHeight());
+        int yy2 = Math.min(Math.max(y1, y2), canvasInterface.getPaintable().getHeight());
         if (yy1 == yy2) {
             yy2++;
         }
@@ -100,21 +90,6 @@ public class SelectTool extends Tool implements SelectPaneInterface {
         x2 = -1;
         y1 = -1;
         y2 = -1;
-    }
-
-    @Override
-    public void mouseWheeled(int amount, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void keyPressed(int keyCode) {
-        if (keyCode == KeyEvent.VK_A) {
-            forToolInterface.select(null);
-        }
-    }
-
-    @Override
-    public void keyReleased(int keyCode) {
     }
 
     @Override
@@ -138,7 +113,8 @@ public class SelectTool extends Tool implements SelectPaneInterface {
                 g.drawRect(0, 0, ti.getWidth() - 1, ti.getHeight() - 1);
             }
             g.dispose();
-            return new ToolImage(r.x, r.y, ti);
+            //TODO:
+            //return new ToolImage(r.x, r.y, ti);
         }
         return null;
     }
@@ -149,15 +125,30 @@ public class SelectTool extends Tool implements SelectPaneInterface {
     }
 
     @Override
-    public void paintUnset() {
-    }
-
-    @Override
     public void invertSelection() {
-        BufferedImage selection = new BufferedImage(forToolInterface.getPaintingWidth(), forToolInterface.getPaintingHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage selection = new BufferedImage(canvasInterface.getPaintable().getWidth(),
+                canvasInterface.getPaintable().getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
         Graphics g = selection.getGraphics();
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, selection.getWidth(), selection.getHeight());
-        forToolInterface.select(new SelectionUpdate(0, 0, selection, SelectionUpdate.MODE_XOR));
+        canvasInterface.getSelectionable().select(new ToolSelectionUpdate(SelectionUpdate.MODE_XOR,
+                1f, selection));
+    }
+
+    @Override
+    public void canvasInterfaceSeted() {
+        canvasInterface.getVisible().setToolCursor(null);
+    }
+
+    @Override
+    public void canvasInterfaceUnset() {
+    }
+
+    @Override
+    public void mouseEvent(CollabPanelMouseEvent e) {
+    }
+
+    @Override
+    public void keyEvent(CollabPanelKeyEvent e) {
     }
 }

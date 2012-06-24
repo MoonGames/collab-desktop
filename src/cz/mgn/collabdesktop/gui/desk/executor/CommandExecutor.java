@@ -4,24 +4,30 @@
  */
 package cz.mgn.collabdesktop.gui.desk.executor;
 
+import cz.mgn.collabdesktop.gui.desk.executor.interfaces.Layers;
+import cz.mgn.collabdesktop.gui.desk.executor.interfaces.System;
+import cz.mgn.collabdesktop.gui.desk.executor.interfaces.Users;
+import cz.mgn.collabcanvas.canvas.CollabCanvas;
+import cz.mgn.collabcanvas.interfaces.networkable.NetworkListener;
+import cz.mgn.collabcanvas.interfaces.networkable.NetworkUpdate;
 import cz.mgn.collabdesktop.network.Client;
 import cz.mgn.collabdesktop.network.DataInterface;
 import cz.mgn.collabdesktop.network.commands.CommandGenerator;
 import cz.mgn.collabdesktop.network.commands.CommandReader;
 import cz.mgn.collabdesktop.network.commands.ImageData;
 import cz.mgn.collabdesktop.network.commands.InCommands;
-import java.util.ArrayList;
+import java.awt.Point;
 
 /**
  *
  * @author indy
  */
-public class CommandExecutor implements DataInterface {
+public class CommandExecutor implements DataInterface, NetworkListener {
 
     protected Client client = null;
     protected int id = 0;
     protected int idGenerator = 0;
-    protected Paintable paintable = null;
+    protected CollabCanvas canvas = null;
     protected Layers layers = null;
     protected System system = null;
     protected Users users = null;
@@ -38,8 +44,8 @@ public class CommandExecutor implements DataInterface {
         return idGenerator;
     }
 
-    public void setPaintable(Paintable paintable) {
-        this.paintable = paintable;
+    public void setCanvas(CollabCanvas canvas) {
+        this.canvas = canvas;
     }
 
     public void setLayers(Layers layers) {
@@ -60,18 +66,6 @@ public class CommandExecutor implements DataInterface {
 
     public Client getClient() {
         return client;
-    }
-
-    public void sendPaintChanges(ArrayList<Edit> edits, int layerID) {
-        for (Edit edit : edits) {
-            byte[] data = null;
-            if (edit.isRemove()) {
-                data = CommandGenerator.generateRemoveCommand(new ImageData(edit.getIdentification(), layerID, edit.getX(), edit.getY(), edit.getImage()));
-            } else {
-                data = CommandGenerator.generatePaintCommand(new ImageData(edit.getIdentification(), layerID, edit.getX(), edit.getY(), edit.getImage()));
-            }
-            client.send(data);
-        }
     }
 
     public void sendAddLayer(int layerLocation, int commandIdentificator, String layerName) {
@@ -143,16 +137,18 @@ public class CommandExecutor implements DataInterface {
     }
 
     protected void commandPaint(byte[] data) {
-        if (paintable != null) {
+        if (canvas != null) {
             ImageData im = CommandReader.readPaintCommand(data);
-            paintable.paint(im.getImage(), im.getIdentificator(), im.getLayerID(), im.getX(), im.getY());
+            canvas.getNetworkable().updateReceived(new ExecutorNetworkUpdate(im.getIdentificator(), im.getLayerID(),
+                    true, new Point(im.getX(), im.getY()), im.getImage()));
         }
     }
 
     protected void commandRemove(byte[] data) {
-        if (paintable != null) {
+        if (canvas != null) {
             ImageData im = CommandReader.readRemoveCommand(data);
-            paintable.remove(im.getImage(), im.getIdentificator(), im.getLayerID(), im.getX(), im.getY());
+            canvas.getNetworkable().updateReceived(new ExecutorNetworkUpdate(im.getIdentificator(), im.getLayerID(),
+                    false, new Point(im.getX(), im.getY()), im.getImage()));
         }
     }
 
@@ -171,8 +167,8 @@ public class CommandExecutor implements DataInterface {
     protected void commandLayersOrder(byte[] data) {
         int[] order = CommandReader.readLayersOrderCommand(data);
         if (order != null) {
-            if (paintable != null) {
-                paintable.setLayersOrder(order);
+            if (canvas != null) {
+                canvas.getPaintable().setLayersOrder(order, true);
             }
             if (layers != null) {
                 layers.setLayersOrder(order);
@@ -183,8 +179,8 @@ public class CommandExecutor implements DataInterface {
     protected void commandSetResolution(byte[] data) {
         int[] resolution = CommandReader.readSetResolutionCommand(data);
         if (resolution != null) {
-            if (paintable != null) {
-                paintable.setResolution(resolution[0], resolution[1]);
+            if (canvas != null) {
+                canvas.getPaintable().setResolution(resolution[0], resolution[1]);
             }
         }
     }
@@ -222,5 +218,22 @@ public class CommandExecutor implements DataInterface {
         if (system != null) {
             system.disconnectFromRoom();
         }
+    }
+
+    @Override
+    public void sendUpdate(NetworkUpdate update) {
+        byte[] data = null;
+        if (update.isAdd()) {
+            data = CommandGenerator.generatePaintCommand(new ImageData(update.getUpdateID(), update.getUpdateLayerID(),
+                    update.getUpdateCoordinates().x, update.getUpdateCoordinates().y, update.getUpdateImage()));
+        } else {
+            data = CommandGenerator.generateRemoveCommand(new ImageData(update.getUpdateID(), update.getUpdateLayerID(),
+                    update.getUpdateCoordinates().x, update.getUpdateCoordinates().y, update.getUpdateImage()));
+        }
+        client.send(data);
+    }
+
+    @Override
+    public void unreachedUpdateRemoved(NetworkUpdate update) {
     }
 }

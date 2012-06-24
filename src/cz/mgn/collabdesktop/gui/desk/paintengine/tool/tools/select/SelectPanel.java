@@ -4,8 +4,8 @@
  */
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.select;
 
+import cz.mgn.collabcanvas.interfaces.selectionable.SelectionUpdate;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.layerspanel.LayersPanel;
-import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.selection.SelectionUpdate;
 import cz.mgn.collabdesktop.utils.gui.iconComponent.IconCheckBox;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -88,13 +88,13 @@ public class SelectPanel extends JPanel implements ItemListener, ActionListener 
 
     public int getSelectionType() {
         if (add.isSelected()) {
-            return SelectionUpdate.MODE_ADD;
+            return SelectionUpdate.MODE_UNIOIN;
         } else if (substract.isSelected()) {
             return SelectionUpdate.MODE_REMOVE;
         } else if (intersection.isSelected()) {
             return SelectionUpdate.MODE_INTERSECTION;
         }
-        return SelectionUpdate.MODE_NEW;
+        return SelectionUpdate.MODE_REPLACE;
     }
 
     public int getSelectionShape() {

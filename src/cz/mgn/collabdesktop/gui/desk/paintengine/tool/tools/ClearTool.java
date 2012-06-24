@@ -4,8 +4,12 @@
  */
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools;
 
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.SimpleMouseCursor;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.paintdata.SingleImagePaintData;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -16,7 +20,7 @@ import javax.swing.JPanel;
 
 /**
  *
- *    @author indy
+ * @author indy
  */
 public class ClearTool extends Tool {
 
@@ -24,56 +28,28 @@ public class ClearTool extends Tool {
 
     public ClearTool() {
         super();
-        init(ImageUtil.loadImageFromResources("/resources/tools/clear-cursor.gif"),
+        init(new SimpleMouseCursor(ImageUtil.loadImageFromResources("/resources/tools/clear-cursor.gif")),
                 ImageUtil.loadImageFromResources("/resources/tools/clear-icon.png"), "Clear", "Click to fill, with CTRL earse.");
     }
 
-    @Override
-    public void mouseMoved(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void paintSeted() {
-        paint.setCursor(null);
-    }
-
-    @Override
-    public void mousePressed(int x, int y, boolean shift, boolean control) {
+    public void mousePressed(int x, int y, boolean control) {
+        int w = canvasInterface.getPaintable().getWidth();
+        int h = canvasInterface.getPaintable().getHeight();
         if (control) {
-            BufferedImage clear = new BufferedImage(forToolInterface.getPaintingWidth(), forToolInterface.getPaintingHeight(), BufferedImage.TYPE_BYTE_GRAY);
+            BufferedImage clear = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
             Graphics g = clear.getGraphics();
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, clear.getWidth(), clear.getHeight());
             g.dispose();
-            paint.paint(new Paint.PaintData(new Paint.PaintImage(false, clear, new Point(0, 0))));
+            canvasInterface.getPaintable().paint(new SingleImagePaintData(new Point(0, 0), clear, false));
         } else {
-            BufferedImage fill = new BufferedImage(forToolInterface.getPaintingWidth(), forToolInterface.getPaintingHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+            BufferedImage fill = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
             Graphics g = fill.getGraphics();
             g.setColor(new Color(color));
             g.fillRect(0, 0, fill.getWidth(), fill.getHeight());
             g.dispose();
-            paint.paint(new Paint.PaintData(new Paint.PaintImage(true, fill, new Point(0, 0))));
+            canvasInterface.getPaintable().paint(new SingleImagePaintData(new Point(0, 0), fill, true));
         }
-    }
-
-    @Override
-    public void mouseDragged(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseReleased(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseWheeled(int amount, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void keyPressed(int keyCode) {
-    }
-
-    @Override
-    public void keyReleased(int keyCode) {
     }
 
     @Override
@@ -92,6 +68,22 @@ public class ClearTool extends Tool {
     }
 
     @Override
-    public void paintUnset() {
+    public void canvasInterfaceSeted() {
+        canvasInterface.getVisible().setToolCursor(null);
+    }
+
+    @Override
+    public void canvasInterfaceUnset() {
+    }
+
+    @Override
+    public void mouseEvent(CollabPanelMouseEvent e) {
+        if (e.getEventType() == CollabPanelMouseEvent.TYPE_PRESS) {
+            mousePressed(e.getEventCoordinates().x, e.getEventCoordinates().y, e.isControlDown());
+        }
+    }
+
+    @Override
+    public void keyEvent(CollabPanelKeyEvent e) {
     }
 }

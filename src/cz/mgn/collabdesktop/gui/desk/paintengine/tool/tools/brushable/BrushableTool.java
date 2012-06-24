@@ -4,7 +4,7 @@
  */
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable;
 
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.ForToolInterface;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs.BrushPanel;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs.BrushSelectionListener;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 /**
  *
- *   @author indy
+ * @author indy
  */
 public abstract class BrushableTool extends Tool implements BrushSelectionListener, BrushListener {
 
@@ -41,11 +41,11 @@ public abstract class BrushableTool extends Tool implements BrushSelectionListen
     public abstract JPanel getAditionalPanel();
 
     @Override
-    public void mouseWheeled(int amount, boolean shift, boolean control) {
-        if (paintable != null) {
-            if (shift) {
+    public void mouseEvent(CollabPanelMouseEvent e) {
+        if (canvasInterface != null && e.getEventType() == CollabPanelMouseEvent.TYPE_WHEEL) {
+            if (e.isShiftDown()) {
                 float scale = brush.getScale();
-                float factor = (float) Math.pow(1.1, amount);
+                float factor = (float) Math.pow(1.1, e.getWheelAmount());
                 scale *= factor;
                 scale = (float) Math.min(10, Math.max(0.1, scale));
                 brush.setScale(scale);
@@ -63,18 +63,23 @@ public abstract class BrushableTool extends Tool implements BrushSelectionListen
 
     public void setBrush(Brush brush) {
         this.brush = brush;
-        if (paint != null) {
-            p.setColor(color);
-                paint.setCursor(brush.getCuror());
+        if (canvasInterface != null) {
+            brush.setColor(color);
+            //TODO:
+            //canvasInterface.getVisible().setToolCursor(toolCursor);
         }
     }
 
     @Override
-    public void paintSeted() {
+    public void canvasInterfaceSeted() {
         if (brush != null) {
-            brush.setColor(color);
-            paint.setCursor(brush.getCuror());
+            //TODO:
+            //canvasInterface.getVisible().setToolCursor(toolCursor);
         }
+    }
+
+    @Override
+    public void canvasInterfaceUnset() {
     }
 
     @Override
@@ -90,9 +95,7 @@ public abstract class BrushableTool extends Tool implements BrushSelectionListen
 
     @Override
     public void brushScaled(float scale) {
-        if (paint != null) {
-            paint.setCursor(brush.getCuror());
-        }
+        //FIXME: 
     }
 
     @Override

@@ -4,13 +4,15 @@
  */
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.paintbucket;
 
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.ForToolInterface;
-import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.interfaces.Paint;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
+import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.SimpleMouseCursor;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.paintdata.SingleImagePaintData;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
@@ -27,27 +29,17 @@ public class PaintBucketTool extends Tool implements PaintBucketOptions {
     public PaintBucketTool() {
         super();
         //FIXME: write brush description
-        init(ImageUtil.loadImageFromResources("/resources/tools/paintbucket-cursor.gif"),
+        init(new SimpleMouseCursor(ImageUtil.loadImageFromResources("/resources/tools/paintbucket-cursor.gif")),
                 ImageUtil.loadImageFromResources("/resources/tools/paintbucket-icon.png"), "Paint bucket", "Press CTRL for erasing.");
         createToolpanel();
-    }
-
-    @Override
-    public void mouseMoved(int x, int y, boolean shift, boolean control) {
     }
 
     protected void createToolpanel() {
         toolPanel = new PaintBucketPanel(this);
     }
 
-    @Override
-    public void paintSeted() {
-        paint.setCursor(null);
-    }
-
-    @Override
-    public void mousePressed(int x, int y, boolean shift, boolean control) {
-        BufferedImage over = forToolInterface.getPaintingImage();
+    public void mousePressed(int x, int y, boolean control) {
+        BufferedImage over = canvasInterface.getPaintable().getSelectedLayerImage(null);
         if (x >= 0 && y >= 0 && x < over.getWidth() && y < over.getHeight()) {
             BufferedImage generate = null;
             int localColor = color;
@@ -66,28 +58,8 @@ public class PaintBucketTool extends Tool implements PaintBucketOptions {
             Graphics g = generate.getGraphics();
             g.drawImage(gen, 0, 0, null);
             g.dispose();
-            paint.paint(new Paint.PaintData(new Paint.PaintImage(!control, generate, new Point(0, 0))));
+            canvasInterface.getPaintable().paint(new SingleImagePaintData(generate, !control));
         }
-    }
-
-    @Override
-    public void mouseDragged(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseReleased(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseWheeled(int amount, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void keyPressed(int keyCode) {
-    }
-
-    @Override
-    public void keyReleased(int keyCode) {
     }
 
     @Override
@@ -96,21 +68,38 @@ public class PaintBucketTool extends Tool implements PaintBucketOptions {
     }
 
     @Override
-    public ToolImage getToolImage() {
-        return null;
-    }
-
-    @Override
     public JPanel getToolOptionsPanel() {
         return toolPanel;
     }
 
     @Override
-    public void paintUnset() {
+    public void setTolerance(float tolerance) {
+        this.tolerance = tolerance;
     }
 
     @Override
-    public void setTolerance(float tolerance) {
-        this.tolerance = tolerance;
+    public void canvasInterfaceSeted() {
+        canvasInterface.getVisible().setToolCursor(null);
+    }
+
+    @Override
+    public void canvasInterfaceUnset() {
+    }
+
+    @Override
+    public void mouseEvent(CollabPanelMouseEvent e) {
+        if(e.getEventType() == CollabPanelMouseEvent.TYPE_PRESS) {
+            mousePressed(e.getEventCoordinates().x,
+                    e.getEventCoordinates().y, e.isControlDown());
+        }
+    }
+
+    @Override
+    public void keyEvent(CollabPanelKeyEvent e) {
+    }
+
+    @Override
+    public ToolImage getToolImage() {
+        return null;
     }
 }

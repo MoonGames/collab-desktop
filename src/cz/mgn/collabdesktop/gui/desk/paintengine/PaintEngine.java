@@ -8,13 +8,15 @@ import cz.mgn.collabcanvas.canvas.CollabCanvas;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.CanvasInterface;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  *
  * @author indy
  */
-public class PaintEngine {
+public class PaintEngine implements PaintEngineInterface {
 
+    protected ArrayList<PaintEngineListener> paintEngineListeners = new ArrayList<PaintEngineListener>();
     protected Color color = Color.BLACK;
     protected Tool tool;
     protected CollabCanvas canvas;
@@ -23,29 +25,40 @@ public class PaintEngine {
         this.canvas = canvas;
     }
 
+    public void addPaintEngineListener(PaintEngineListener paintEngineListener) {
+        paintEngineListeners.add(paintEngineListener);
+    }
+
+    public void removePaintEngineListener(PaintEngineListener paintEngineListener) {
+        paintEngineListeners.remove(paintEngineListener);
+    }
+
     public void setColor(Color color) {
         this.color = color;
     }
 
+    @Override
     public void setColor(int color) {
         this.color = new Color(color);
     }
 
     public void setTool(Tool tool) {
         if (this.tool != null) {
-            this.tool.setPaint(null);
+            this.tool.setCanvsaInterface(null);
+            this.tool.setPaintEngineInterface(null);
         }
         this.tool = tool;
         if (tool != null) {
-            tool.setPaint(new CanvasInterface(canvas.getVisible(), canvas.getPaintable(), canvas.getSelectionable()));
+            tool.setCanvsaInterface(new CanvasInterface(canvas.getVisible(), canvas.getPaintable(), canvas.getSelectionable()));
             tool.setColor(color.getRGB());
+            tool.setPaintEngineInterface(this);
         }
     }
 
     public void setCanvas(CollabCanvas canvas) {
         this.canvas = canvas;
         if (tool != null) {
-            tool.setPaint(new CanvasInterface(canvas.getVisible(), canvas.getPaintable(), canvas.getSelectionable()));
+            tool.setCanvsaInterface(new CanvasInterface(canvas.getVisible(), canvas.getPaintable(), canvas.getSelectionable()));
         }
     }
 

@@ -4,6 +4,7 @@
  */
 package cz.mgn.collabdesktop.gui.desk.panels.middlepanel.infopanel;
 
+import cz.mgn.collabcanvas.interfaces.informing.InfoListener;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -12,9 +13,9 @@ import javax.swing.JPanel;
 
 /**
  *
- *  @author indy
+ * @author indy
  */
-public class InfoPanel extends JPanel implements InfoInterface {
+public class InfoPanel extends JPanel implements InfoListener {
 
     protected JLabel coordLabel;
     protected JLabel zoomLabel;
@@ -44,25 +45,24 @@ public class InfoPanel extends JPanel implements InfoInterface {
         add(infoString);
     }
 
-    @Override
-    public void setMouseCoord(float x, float y) {
-        if (x < 0 || y < 0) {
-            coordLabel.setText("-");
-        } else {
-            x = (float) (Math.floor(x * 10f) / 10);
-            y = (float) (Math.floor(y * 10f) / 10);
-            coordLabel.setText("[" + x + ", " + y + "]");
-        }
+    public void showInfoString(String string) {
+        infoString.setText(string);
     }
 
     @Override
-    public void setZoom(float zoom) {
+    public void zoomChanged(float zoom) {
         zoom = (float) (Math.floor(zoom * 1000f) / 10);
         zoomLabel.setText("zoom: " + zoom + "%");
     }
 
     @Override
-    public void showInfoString(String string) {
-        infoString.setText(string);
+    public void mouseMoved(float mouseX, float mouseY) {
+        if (mouseX < 0 || mouseY < 0) {
+            coordLabel.setText("-");
+        } else {
+            mouseX = (float) (Math.floor(mouseX * 10f) / 10);
+            mouseY = (float) (Math.floor(mouseY * 10f) / 10);
+            coordLabel.setText("[" + mouseX + ", " + mouseY + "]");
+        }
     }
 }

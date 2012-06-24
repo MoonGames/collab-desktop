@@ -6,10 +6,9 @@ package cz.mgn.collabdesktop.gui.desk.paintengine.tool;
 
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
-import cz.mgn.collabcanvas.interfaces.paintable.Paintable;
-import cz.mgn.collabcanvas.interfaces.selectionable.Selectionable;
-import cz.mgn.collabcanvas.interfaces.visible.ToolCursor;
+import cz.mgn.collabcanvas.interfaces.visible.MouseCursor;
 import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
+import cz.mgn.collabdesktop.gui.desk.paintengine.PaintEngineInterface;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
@@ -20,8 +19,9 @@ import javax.swing.JPanel;
 public abstract class Tool {
 
     protected CanvasInterface canvasInterface;
+    protected PaintEngineInterface paintEngineInterface;
     //
-    protected ToolCursor toolCursor;
+    protected MouseCursor toolCursor;
     protected BufferedImage toolIcon;
     protected String toolName = "tool";
     protected String toolDescription = "";
@@ -29,14 +29,14 @@ public abstract class Tool {
     public Tool() {
     }
 
-    public void init(ToolCursor toolCursor, BufferedImage toolIcon, String toolName, String toolDescription) {
+    public void init(MouseCursor toolCursor, BufferedImage toolIcon, String toolName, String toolDescription) {
         this.toolCursor = toolCursor;
         this.toolIcon = toolIcon;
         this.toolName = toolName;
         this.toolDescription = toolDescription;
     }
 
-    public void setPaint(CanvasInterface canvasInterface) {
+    public void setCanvsaInterface(CanvasInterface canvasInterface) {
         this.canvasInterface = canvasInterface;
         if (canvasInterface != null) {
             canvasInterfaceSeted();
@@ -44,12 +44,16 @@ public abstract class Tool {
             canvasInterfaceUnset();
         }
     }
+    
+    public void setPaintEngineInterface(PaintEngineInterface paintEngineInterface) {
+        this.paintEngineInterface = paintEngineInterface;
+    }
 
     public abstract void canvasInterfaceSeted();
 
     public abstract void canvasInterfaceUnset();
 
-    public ToolCursor getToolCursor() {
+    public MouseCursor getToolCursor() {
         return toolCursor;
     }
 

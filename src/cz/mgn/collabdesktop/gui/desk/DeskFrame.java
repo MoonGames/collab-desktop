@@ -6,6 +6,7 @@ package cz.mgn.collabdesktop.gui.desk;
 
 import cz.mgn.collabdesktop.gui.desk.eframes.EFrame;
 import cz.mgn.collabdesktop.gui.desk.executor.CommandExecutor;
+import cz.mgn.collabdesktop.gui.desk.paintengine.PaintEngine;
 import cz.mgn.collabdesktop.gui.desk.panels.downpanel.DownPanel;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.LeftPanel;
 import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.MiddlePanel;
@@ -15,7 +16,6 @@ import cz.mgn.collabdesktop.gui.menu.frames.about.About;
 import cz.mgn.collabdesktop.gui.menu.frames.settings.SettingsFrame;
 import cz.mgn.collabdesktop.utils.CConstans;
 import cz.mgn.collabdesktop.utils.Utils;
-import cz.mgn.collabdesktop.utils.settings.Settings;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -24,7 +24,7 @@ import java.awt.Toolkit;
  *
  * @author indy
  */
-public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdesktop.gui.desk.executor.System, DeskInterface {
+public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdesktop.gui.desk.executor.interfaces.System, DeskInterface {
 
     protected String roomName = "";
     protected CommandExecutor executor = null;
@@ -49,12 +49,13 @@ public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdeskto
     protected void localInit() {
         executor.setSystem(this);
         middlePanel = new MiddlePanel(executor, this);
+        PaintEngine paintEngine = new PaintEngine(middlePanel.getCanvas());
         paintPlace.add(middlePanel);
 
-        leftPanel = new LeftPanel(executor, middlePanel.getPaintingInterface(), this);
+        leftPanel = new LeftPanel(paintEngine, executor, this);
         leftSidePanel.add(leftPanel);
 
-        downPanel = new DownPanel(executor, this, middlePanel.getPaintingSavableInterface(), roomName);
+        downPanel = new DownPanel(executor, this, middlePanel.getCanvas(), roomName);
         downSidePanel.add(downPanel);
     }
 

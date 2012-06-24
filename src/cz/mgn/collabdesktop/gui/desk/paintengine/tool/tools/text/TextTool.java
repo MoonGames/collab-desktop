@@ -5,9 +5,12 @@
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.text;
 
 import cz.mgn.collabcanvas.canvas.utils.graphics.OutlineUtil;
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.ForToolInterface;
-import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.interfaces.Paint;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
+import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.SimpleMouseCursor;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.paintdata.SingleImagePaintData;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.Color;
 import java.awt.Point;
@@ -16,7 +19,7 @@ import javax.swing.JPanel;
 
 /**
  *
- *       @author indy
+ * @author indy
  */
 public class TextTool extends Tool implements TextImageListener {
 
@@ -28,48 +31,21 @@ public class TextTool extends Tool implements TextImageListener {
 
     public TextTool() {
         super();
-        init(ImageUtil.loadImageFromResources("/resources/tools/text-cursor.gif"),
+        init(new SimpleMouseCursor(ImageUtil.loadImageFromResources("/resources/tools/text-cursor.gif")),
                 ImageUtil.loadImageFromResources("/resources/tools/text-icon.png"), "Text", "Press to draw text.");
-        
+
         toolPanel = new TextPanel(this);
     }
 
-    @Override
-    public void paintSeted() {
-        paint.setCursor(null);
-    }
-
-    @Override
-    public void mouseMoved(int x, int y, boolean shift, boolean control) {
+    public void mouseMoved(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    @Override
-    public void mousePressed(int x, int y, boolean shift, boolean control) {
+    public void mousePressed(int x, int y) {
         if (textImage != null) {
-            paint.paint(new Paint.PaintData(new Paint.PaintImage(true, textImage, new Point(x - (textImage.getWidth() / 2), y - (textImage.getHeight() / 2)))));
+            canvasInterface.getPaintable().paint(new SingleImagePaintData(new Point(x - (textImage.getWidth() / 2), y - (textImage.getHeight() / 2)), textImage, true));
         }
-    }
-
-    @Override
-    public void mouseDragged(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseReleased(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseWheeled(int amount, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void keyPressed(int keyCode) {
-    }
-
-    @Override
-    public void keyReleased(int keyCode) {
     }
 
     @Override
@@ -78,25 +54,44 @@ public class TextTool extends Tool implements TextImageListener {
     }
 
     @Override
-    public ToolImage getToolImage() {
-        if (toolImage != null) {
-            return new ToolImage(x - (toolImage.getWidth() / 2), y - (toolImage.getHeight() / 2), toolImage);
-        }
-        return null;
-    }
-
-    @Override
     public JPanel getToolOptionsPanel() {
         return toolPanel;
-    }
-
-    @Override
-    public void paintUnset() {
     }
 
     @Override
     public void textRendered(BufferedImage textImage) {
         this.textImage = textImage;
         toolImage = OutlineUtil.generateOutline(textImage, Color.GRAY, true);
+    }
+
+    @Override
+    public void canvasInterfaceSeted() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void canvasInterfaceUnset() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void mouseEvent(CollabPanelMouseEvent e) {
+        switch (e.getEventType()) {
+            case CollabPanelMouseEvent.TYPE_MOVE:
+                mouseMoved(e.getEventCoordinates().x, e.getEventCoordinates().y);
+                break;
+            case CollabPanelMouseEvent.TYPE_PRESS:
+                mousePressed(e.getEventCoordinates().x, e.getEventCoordinates().y);
+                break;
+        }
+    }
+
+    @Override
+    public void keyEvent(CollabPanelKeyEvent e) {
+    }
+
+    @Override
+    public ToolImage getToolImage() {
+        return null;
     }
 }

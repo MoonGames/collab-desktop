@@ -5,10 +5,12 @@
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.latex;
 
 import cz.mgn.collabcanvas.canvas.utils.graphics.OutlineUtil;
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.ForToolInterface;
-import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.interfaces.Paint;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
+import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.SimpleMouseCursor;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.filters.filters.GaussianFilter;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.paintdata.SingleImagePaintData;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.Color;
 import java.awt.Point;
@@ -29,48 +31,20 @@ public class LatexTool extends Tool implements LatexImageListener {
 
     public LatexTool() {
         super();
-        init(ImageUtil.loadImageFromResources("/resources/tools/latex-cursor.gif"),
+        init(new SimpleMouseCursor(ImageUtil.loadImageFromResources("/resources/tools/latex-cursor.gif")),
                 ImageUtil.loadImageFromResources("/resources/tools/latex-icon.png"), "LaTeX", "Render, than press to draw.");
-
         toolPanel = new LatexPanel(this);
     }
 
-    @Override
-    public void paintSeted() {
-        paint.setCursor(null);
-    }
-
-    @Override
-    public void mousePressed(int x, int y, boolean shift, boolean control) {
+    public void mousePressed(int x, int y) {
         if (latexImage != null) {
-            paint.paint(new Paint.PaintData(new Paint.PaintImage(true, latexImage, new Point(x - (latexImage.getWidth() / 2), y - (latexImage.getHeight() / 2)))));
+            canvasInterface.getPaintable().paint(new SingleImagePaintData(new Point(x - (latexImage.getWidth() / 2), y - (latexImage.getHeight() / 2)), latexImage, true));
         }
     }
 
-    @Override
-    public void mouseDragged(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseMoved(int x, int y, boolean shift, boolean control) {
+    public void mouseMoved(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    @Override
-    public void mouseReleased(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseWheeled(int amount, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void keyPressed(int keyCode) {
-    }
-
-    @Override
-    public void keyReleased(int keyCode) {
     }
 
     @Override
@@ -81,7 +55,8 @@ public class LatexTool extends Tool implements LatexImageListener {
     @Override
     public ToolImage getToolImage() {
         if (toolImage != null) {
-            return new ToolImage(x - (toolImage.getWidth() / 2), y - (toolImage.getHeight() / 2), toolImage);
+            //TODO:
+            //return new ToolImage(x - (toolImage.getWidth() / 2), y - (toolImage.getHeight() / 2), toolImage);
         }
         return null;
     }
@@ -92,12 +67,33 @@ public class LatexTool extends Tool implements LatexImageListener {
     }
 
     @Override
-    public void paintUnset() {
-    }
-
-    @Override
     public void setLatexImage(BufferedImage image) {
         latexImage = image;
         toolImage = OutlineUtil.generateOutline(image, Color.GRAY, true);
+    }
+
+    @Override
+    public void canvasInterfaceSeted() {
+        canvasInterface.getVisible().setToolCursor(null);
+    }
+
+    @Override
+    public void canvasInterfaceUnset() {
+    }
+
+    @Override
+    public void mouseEvent(CollabPanelMouseEvent e) {
+        switch (e.getEventType()) {
+            case CollabPanelMouseEvent.TYPE_PRESS:
+                mousePressed(e.getEventCoordinates().x, e.getEventCoordinates().y);
+                break;
+            case CollabPanelMouseEvent.TYPE_MOVE:
+                mouseMoved(e.getEventCoordinates().x, e.getEventCoordinates().y);
+                break;
+        }
+    }
+
+    @Override
+    public void keyEvent(CollabPanelKeyEvent e) {
     }
 }

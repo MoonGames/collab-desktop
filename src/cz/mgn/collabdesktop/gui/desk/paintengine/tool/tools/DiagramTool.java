@@ -4,59 +4,41 @@
  */
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools;
 
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.ForToolInterface;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
+import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.SimpleMouseCursor;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import javax.swing.JPanel;
 
 /**
  *
- *   @author indy
+ * @author indy
  */
 public class DiagramTool extends Tool {
 
     public DiagramTool() {
         super();
-        //FIXME: write brush description
-        init(ImageUtil.loadImageFromResources("/resources/tools/diagram-cursor.gif"),
+        //FIXME: write diagram tool description
+        init(new SimpleMouseCursor(ImageUtil.loadImageFromResources("/resources/tools/diagram-cursor.gif")),
                 ImageUtil.loadImageFromResources("/resources/tools/diagram-icon.png"), "Diagram", "...");
     }
 
     @Override
-    public void paintSeted() {
-        paint.setCursor(null);
+    public void canvasInterfaceSeted() {
     }
 
     @Override
-    public void mouseMoved(int x, int y, boolean shift, boolean control) {
+    public void canvasInterfaceUnset() {
     }
 
     @Override
-    public void mousePressed(int x, int y, boolean shift, boolean control) {
-        int color = forToolInterface.pickColor(x, y);
-        if (color != -1) {
-            forToolInterface.setColor(color);
-        }
+    public void mouseEvent(CollabPanelMouseEvent e) {
     }
 
     @Override
-    public void mouseDragged(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseReleased(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseWheeled(int amount, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void keyPressed(int keyCode) {
-    }
-
-    @Override
-    public void keyReleased(int keyCode) {
+    public void keyEvent(CollabPanelKeyEvent e) {
     }
 
     @Override
@@ -71,9 +53,5 @@ public class DiagramTool extends Tool {
     @Override
     public JPanel getToolOptionsPanel() {
         return null;
-    }
-
-    @Override
-    public void paintUnset() {
     }
 }

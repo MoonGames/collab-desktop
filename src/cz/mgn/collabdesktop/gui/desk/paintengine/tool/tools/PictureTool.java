@@ -4,7 +4,10 @@
  */
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools;
 
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.ForToolInterface;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
+import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.SimpleMouseCursor;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import javax.swing.JPanel;
@@ -18,46 +21,13 @@ public class PictureTool extends Tool {
     public PictureTool() {
         super();
         //FIXME: write description
-        init(ImageUtil.loadImageFromResources("/resources/tools/picture-cursor.gif"),
+        init(new SimpleMouseCursor(ImageUtil.loadImageFromResources("/resources/tools/picture-cursor.gif")),
                 ImageUtil.loadImageFromResources("/resources/tools/picture-icon.png"), "Picture", "...");
     }
-
-    @Override
-    public void paintSeted() {
-        paint.setCursor(null);
+    
+    public void mousePressed(int x, int y) {
     }
 
-    @Override
-    public void mouseMoved(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mousePressed(int x, int y, boolean shift, boolean control) {
-        int color = forToolInterface.pickColor(x, y);
-        if (color != -1) {
-            forToolInterface.setColor(color);
-        }
-    }
-
-    @Override
-    public void mouseDragged(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseReleased(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseWheeled(int amount, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void keyPressed(int keyCode) {
-    }
-
-    @Override
-    public void keyReleased(int keyCode) {
-    }
 
     @Override
     public void setColor(int color) {
@@ -74,6 +44,22 @@ public class PictureTool extends Tool {
     }
 
     @Override
-    public void paintUnset() {
+    public void canvasInterfaceSeted() {
+        canvasInterface.getVisible().setToolCursor(null);
+    }
+
+    @Override
+    public void canvasInterfaceUnset() {
+    }
+
+    @Override
+    public void mouseEvent(CollabPanelMouseEvent e) {
+        if(e.getEventType() == CollabPanelMouseEvent.TYPE_PRESS) {
+            mousePressed(e.getEventCoordinates().x, e.getEventCoordinates().y);
+        }
+    }
+
+    @Override
+    public void keyEvent(CollabPanelKeyEvent e) {
     }
 }

@@ -4,7 +4,9 @@
  */
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable;
 
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.ForToolInterface;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
+import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.SimpleMouseCursor;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs.BrushPanel;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import javax.swing.JPanel;
@@ -16,9 +18,9 @@ import javax.swing.JPanel;
 public class GeometryTool extends BrushableTool {
 
     public GeometryTool(BrushPanel brushPanel) {
-        super(forToolInterface, brushPanel);
-        //FIXME: write description
-        init(ImageUtil.loadImageFromResources("/resources/tools/geometry-cursor.gif"),
+        super(brushPanel);
+        //TODO: write description
+        init(new SimpleMouseCursor(ImageUtil.loadImageFromResources("/resources/tools/geometry-cursor.gif")),
                 ImageUtil.loadImageFromResources("/resources/tools/geometry-icon.png"), "Geometry", "...");
     }
 
@@ -28,35 +30,11 @@ public class GeometryTool extends BrushableTool {
     }
 
     @Override
-    public void mouseMoved(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mousePressed(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseDragged(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void mouseReleased(int x, int y, boolean shift, boolean control) {
-    }
-
-    @Override
-    public void keyPressed(int keyCode) {
-    }
-
-    @Override
-    public void keyReleased(int keyCode) {
+    public void keyEvent(CollabPanelKeyEvent e) {
     }
 
     @Override
     public ToolImage getToolImage() {
         return null;
-    }
-
-    @Override
-    public void paintUnset() {
     }
 }

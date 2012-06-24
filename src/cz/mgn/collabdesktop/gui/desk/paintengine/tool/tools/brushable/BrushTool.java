@@ -6,18 +6,19 @@ package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable;
 
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
+import cz.mgn.collabcanvas.interfaces.paintable.PaintData;
 import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.ForToolInterface;
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs.BrushPanel;
-import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.interfaces.Paint;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.SimpleMouseCursor;
+import cz.mgn.collabdesktop.gui.desk.paintengine.tool.paintdata.SimplePaintData;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.brush.Brush;
+import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs.BrushPanel;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.Point;
 import javax.swing.JPanel;
 
 /**
  *
- *   @author indy
+ * @author indy
  */
 public class BrushTool extends BrushableTool {
 
@@ -25,42 +26,52 @@ public class BrushTool extends BrushableTool {
 
     public BrushTool(BrushPanel brushPanel) {
         super(brushPanel);
-
-        //FIXME: write brush description
-        init(ImageUtil.loadImageFromResources("/resources/tools/brush-cursor.gif"),
+        init(new SimpleMouseCursor(ImageUtil.loadImageFromResources("/resources/tools/brush-cursor.png")),
                 ImageUtil.loadImageFromResources("/resources/tools/brush-icon.png"), "Brush", "Press CTRL for erase.");
 
     }
 
     protected void paint(int x, int y, boolean control) {
-        if (paint != null) {
+        if (canvasInterface != null) {
             Brush.PaintBrush paintBrush = brush.paintLine(lastPoint.x, lastPoint.y, x, y, !control);
-            Paint.PaintData data = new Paint.PaintData(new Paint.PaintImage(!control, paintBrush.paint, paintBrush.getPoints()));
-            paint.paint(data);
+            PaintData data = new SimplePaintData(paintBrush.getPoints(), paintBrush.paint, !control);
+
+            canvasInterface.getPaintable().paint(data);
         }
     }
 
     @Override
-    public void mousePressed(int x, int y, boolean shift, boolean control) {
-        lastPoint = new Point(x, y);
-        paint(x, y, control);
+    public void mouseEvent(CollabPanelMouseEvent e) {
+        super.mouseEvent(e);
+        switch (e.getEventType()) {
+            case CollabPanelMouseEvent.TYPE_PRESS:
+                mousePressed(e.getEventCoordinates(), e.isControlDown());
+                break;
+            case CollabPanelMouseEvent.TYPE_DRAG:
+                mouseDragged(e.getEventCoordinates(), e.isControlDown());
+                break;
+            case CollabPanelMouseEvent.TYPE_RELEASE:
+                mouseReleased();
+                break;
+        }
     }
 
-    @Override
-    public void mouseDragged(int x, int y, boolean shift, boolean control) {
+    public void mousePressed(Point coordinates, boolean control) {
+        lastPoint = new Point(coordinates.x, coordinates.y);
+        paint(coordinates.x, coordinates.y, control);
+    }
+
+    public void mouseDragged(Point coordinates, boolean control) {
         if (lastPoint == null) {
-            lastPoint = new Point(x, y);
+            lastPoint = new Point(coordinates);
         }
-        paint(x, y, control);
-        lastPoint = new Point(x, y);
+        paint(coordinates.x, coordinates.y, control);
+        lastPoint = new Point(coordinates);
     }
 
-    @Override
-    public void mouseReleased(int x, int y, boolean shift, boolean control) {
+    public void mouseReleased() {
         lastPoint = null;
     }
-
-
 
     @Override
     public ToolImage getToolImage() {
@@ -73,22 +84,6 @@ public class BrushTool extends BrushableTool {
     }
 
     @Override
-    public void canvasInterfaceSeted() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void canvasInterfaceUnset() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void mouseEvent(CollabPanelMouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public void keyEvent(CollabPanelKeyEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

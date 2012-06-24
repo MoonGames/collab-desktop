@@ -7,7 +7,7 @@ package cz.mgn.collabdesktop.gui.desk.panels.leftpanel.layerspanel;
 import cz.mgn.collabcanvas.interfaces.paintable.Paintable;
 import cz.mgn.collabdesktop.gui.desk.DeskInterface;
 import cz.mgn.collabdesktop.gui.desk.executor.CommandExecutor;
-import cz.mgn.collabdesktop.gui.desk.executor.Layers;
+import cz.mgn.collabdesktop.gui.desk.executor.interfaces.Layers;
 import cz.mgn.collabdesktop.gui.desk.paintengine.PaintEngine;
 import cz.mgn.collabdesktop.utils.gui.iconComponent.IconButton;
 import java.awt.*;

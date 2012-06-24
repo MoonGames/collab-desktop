@@ -4,9 +4,10 @@
  */
 package cz.mgn.collabdesktop.gui.desk.panels.downpanel;
 
+import cz.mgn.collabcanvas.canvas.CollabCanvas;
 import cz.mgn.collabdesktop.gui.desk.DeskInterface;
 import cz.mgn.collabdesktop.gui.desk.executor.CommandExecutor;
-import cz.mgn.collabdesktop.gui.desk.executor.Users;
+import cz.mgn.collabdesktop.gui.desk.executor.interfaces.Users;
 import cz.mgn.collabdesktop.gui.desk.panels.downpanel.frames.saveimage.SaveImage;
 import cz.mgn.collabdesktop.gui.desk.panels.downpanel.frames.saveimage.SaveImageInterface;
 import cz.mgn.collabdesktop.gui.desk.panels.downpanel.frames.SettingsNeeded;
@@ -39,7 +40,7 @@ import javax.swing.JPanel;
 public class DownPanel extends JPanel implements Users, MessageInterface, SystemInterface, SaveImageInterface<BufferedImage>, TwitterMessageInterface {
 
     protected DeskInterface desk = null;
-    protected PaintingSystemInterface paintingSystemInterface = null;
+    protected CollabCanvas canvas = null;
     protected CommandExecutor executor = null;
     protected String roomName = "";
     protected ChatPanel chatPanel = null;
@@ -49,11 +50,11 @@ public class DownPanel extends JPanel implements Users, MessageInterface, System
     protected SaveImage<BufferedImage> saveImage = null;
     protected TwitterMessage twitterMessage = null;
 
-    public DownPanel(CommandExecutor executor, DeskInterface desk, PaintingSystemInterface paintingSavableInterface, String roomName) {
-        this.paintingSystemInterface = paintingSavableInterface;
+    public DownPanel(CommandExecutor executor, DeskInterface desk, CollabCanvas canvas, String roomName) {
         this.executor = executor;
         this.roomName = roomName;
         this.desk = desk;
+        this.canvas = canvas;
         initComponents();
         executor.setUsers(this);
     }
@@ -98,7 +99,7 @@ public class DownPanel extends JPanel implements Users, MessageInterface, System
     @Override
     public void saveAsImage() {
         if (saveImage == null) {
-            BufferedImage toSave = paintingSystemInterface.getSavableImage();
+            BufferedImage toSave = canvas.getPaintable().getImage(null);
             saveImage = new SaveImage<BufferedImage>(this, toSave, roomName + ".png");
             desk.showWindow(saveImage);
         }
@@ -106,17 +107,17 @@ public class DownPanel extends JPanel implements Users, MessageInterface, System
 
     @Override
     public float zoomIn() {
-        return paintingSystemInterface.zoom(0.5f);
+        return canvas.getZoomable().addToZoom(0.5f);
     }
 
     @Override
     public float zoomOut() {
-        return paintingSystemInterface.zoom(-0.5f);
+        return canvas.getZoomable().addToZoom(-0.5f);
     }
 
     @Override
     public float zoomTo100() {
-        return paintingSystemInterface.zoomTo100();
+        return canvas.getZoomable().setZoom(1f);
     }
 
     @Override
@@ -165,7 +166,7 @@ public class DownPanel extends JPanel implements Users, MessageInterface, System
             if (twitterMessage != null) {
                 twitterMessage.dispose();
             }
-            desk.showWindow(twitterMessage = new TwitterMessage(this, paintingSystemInterface.getSavableImage(), roomName));
+            desk.showWindow(twitterMessage = new TwitterMessage(this, canvas.getPaintable().getImage(null), roomName));
         } else {
             desk.showWindow(new SettingsNeeded("Twitter account isn't set. Go to settings to resolve it."));
         }
