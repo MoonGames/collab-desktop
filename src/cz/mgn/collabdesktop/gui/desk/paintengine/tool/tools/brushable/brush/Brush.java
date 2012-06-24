@@ -12,7 +12,7 @@ import java.util.Random;
 
 /**
  *
- *    @author indy
+ * @author indy
  */
 public class Brush {
 
@@ -194,7 +194,7 @@ public class Brush {
 
         return paintBrush;
     }
-    
+
     public static void paintAddBrush(BufferedImage image, BufferedImage brush, int x, int y, int color) {
         int x1 = x;
         int y1 = y;
