@@ -6,27 +6,28 @@ package cz.mgn.collabdesktop.gui.desk.panels.leftpanel;
 
 import cz.mgn.collabdesktop.gui.desk.DeskInterface;
 import cz.mgn.collabdesktop.gui.desk.executor.CommandExecutor;
-import cz.mgn.collabdesktop.gui.desk.paintengine.PaintEngine;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.colorpanel.ColorPanel;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.layerspanel.LayersPanel;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.tooloptionspanel.ToolOptionsPanel;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.ToolsPanel;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 /**
  *
- * @author indy
+ *  @author indy
  */
-public class LeftPanel extends JPanel implements ComponentListener, ToolOptionsPaneInterface {
+public class LeftPanel extends JPanel implements ComponentListener, ToolOptionsPaneInterface, ForToolInterface {
 
-    protected CommandExecutor executor;
-    protected PaintEngine paintEngine;
+    protected CommandExecutor executor = null;
+    protected PaintingInterface paintingInterface = null;
     protected DeskInterface desk = null;
     //
     protected ColorPanel colorPanel = null;
@@ -34,9 +35,9 @@ public class LeftPanel extends JPanel implements ComponentListener, ToolOptionsP
     protected ToolOptionsPanel toolOptionsPanel = null;
     protected LayersPanel layersPanel = null;
 
-    public LeftPanel(PaintEngine paintEngine, CommandExecutor executor, DeskInterface desk) {
-        this.paintEngine = paintEngine;
+    public LeftPanel(CommandExecutor executor, PaintingInterface paintingInterface, DeskInterface desk) {
         this.executor = executor;
+        this.paintingInterface = paintingInterface;
         this.desk = desk;
         initComponents();
     }
@@ -53,13 +54,13 @@ public class LeftPanel extends JPanel implements ComponentListener, ToolOptionsP
         c.gridy = 0;
 
         c.insets = new Insets(10, 10, 10, 0);
-        colorPanel = new ColorPanel(paintEngine, desk);
+        colorPanel = new ColorPanel(paintingInterface, desk);
         c.weighty = 0f;
         add(colorPanel, c);
 
         c.insets = new Insets(0, 10, 10, 0);
 
-        toolsPanel = new ToolsPanel(paintEngine, this);
+        toolsPanel = new ToolsPanel(paintingInterface, this, this);
         c.weighty = 0f;
         c.gridy++;
         add(toolsPanel, c);
@@ -67,7 +68,7 @@ public class LeftPanel extends JPanel implements ComponentListener, ToolOptionsP
         c.weighty = 0.6f;
         c.gridy++;
         add(toolOptionsPanel, c);
-        layersPanel = new LayersPanel(executor, paintEngine, desk);
+        layersPanel = new LayersPanel(executor, paintingInterface, desk);
         c.weighty = 0.4f;
         c.gridy++;
         add(layersPanel, c);
@@ -103,5 +104,30 @@ public class LeftPanel extends JPanel implements ComponentListener, ToolOptionsP
     @Override
     public void setToolOptionsPanel(JPanel panel) {
         toolOptionsPanel.setTollOptionsPanel(panel);
+    }
+
+    @Override
+    public int pickColor(int x, int y) {
+        return paintingInterface.pickColor(x, y);
+    }
+
+    @Override
+    public void setColor(int color) {
+        colorPanel.setColor(new Color(color));
+    }
+
+    @Override
+    public int getPaintingWidth() {
+        return paintingInterface.getPaintingWidth();
+    }
+
+    @Override
+    public int getPaintingHeight() {
+        return paintingInterface.getPaintingHeight();
+    }
+
+    @Override
+    public BufferedImage getPaintingImage() {
+        return paintingInterface.getPaintingImage();
     }
 }

@@ -4,7 +4,8 @@
  */
 package cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs;
 
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.brush.Brush;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.tools.brushable.brush.Brush;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.utils.ImageProcessor;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -130,7 +131,7 @@ public class BrushsList extends JPanel implements ActionListener {
             }
             tps = tp;
             tp = new BufferedImage(tps.getWidth(), tps.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-            Brush.paintAddBrush(tp, tps, 0, 0, Color.BLACK.getRGB());
+            ImageProcessor.paintAddBrush(tp, tps, 0, 0, Color.BLACK.getRGB());
             g.drawImage(tp, (getWidth() - tp.getWidth()) / 2, (getHeight() - tp.getHeight()) / 2, null);
         }
     }

@@ -5,10 +5,10 @@
 package cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs;
 
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.layerspanel.LayersPanel;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.brush.Brush;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.brush.BrushIO;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.brush.BrushListener;
-import cz.mgn.collabdesktop.utils.gui.iconComponent.IconButton;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.tools.brushable.brush.Brush;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.tools.brushable.brush.BrushIO;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.tools.brushable.brush.BrushListener;
+import cz.mgn.collabdesktop.utils.gui.button.IconButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

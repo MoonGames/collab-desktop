@@ -4,22 +4,18 @@
  */
 package cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel;
 
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.DiagramTool;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.ColorPicker;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.ClearTool;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.PictureTool;
-import cz.mgn.collabdesktop.gui.desk.paintengine.PaintEngine;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.select.SelectTool;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.text.TextTool;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.latex.LatexTool;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.paintbucket.PaintBucketTool;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.tools.text.TextTool;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.tools.latex.LatexTool;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.tools.paintbucket.PaintBucketTool;
+import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.ForToolInterface;
+import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.PaintingInterface;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.ToolOptionsPaneInterface;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs.BrushPanel;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.BrushTool;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.GeometryTool;
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.filters.FiltersTool;
-import cz.mgn.collabdesktop.utils.gui.iconComponent.IconButton;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.Tool;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.tools.*;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.tools.brushable.BrushTool;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.tools.brushable.GeometryTool;
+import cz.mgn.collabdesktop.utils.gui.button.IconButton;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -31,23 +27,25 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author indy
+ *   @author indy
  */
 public class ToolsPanel extends JPanel implements ActionListener {
 
-    protected PaintEngine paintEngine;
+    protected PaintingInterface painting;
     protected ToolOptionsPaneInterface toolOptions;
+    protected ForToolInterface forToolInterface;
     //
     protected JPanel toolsInsdePanel = null;
 
-    public ToolsPanel(PaintEngine paintEngine, ToolOptionsPaneInterface toolOptions) {
-        this.paintEngine = paintEngine;
+    public ToolsPanel(PaintingInterface painting, ToolOptionsPaneInterface toolOptions, ForToolInterface forToolInterface) {
+        this.painting = painting;
         this.toolOptions = toolOptions;
+        this.forToolInterface = forToolInterface;
         initComponents();
     }
 
     protected void initComponents() {
-        setPreferredSize(new Dimension(100, 30 + 3 * 32));
+        setPreferredSize(new Dimension(100, 84));
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.CENTER;
@@ -68,19 +66,18 @@ public class ToolsPanel extends JPanel implements ActionListener {
     public void initTools() {
         BrushPanel brushPanel = new BrushPanel();
 
-        Tool brush = new BrushTool(brushPanel);
+        Tool brush = new BrushTool(forToolInterface, brushPanel);
         setTool(brush);
         addTool(brush);
-        addTool(new GeometryTool(brushPanel));
-        addTool(new ColorPicker(paintEngine));
-        addTool(new ClearTool());
-        addTool(new PaintBucketTool());
-        addTool(new SelectTool());
-        addTool(new PictureTool());
-        addTool(new TextTool());
-        addTool(new LatexTool());
-        addTool(new DiagramTool());
-        addTool(new FiltersTool());
+        addTool(new GeometryTool(forToolInterface, brushPanel));
+        addTool(new ColorPicker(forToolInterface));
+        addTool(new ClearTool(forToolInterface));
+        addTool(new PaintBucketTool(forToolInterface));
+        addTool(new SelectTool(forToolInterface));
+        addTool(new PictureTool(forToolInterface));
+        addTool(new TextTool(forToolInterface));
+        addTool(new LatexTool(forToolInterface));
+        addTool(new DiagramTool(forToolInterface));
     }
 
     protected void addTool(Tool tool) {
@@ -90,7 +87,7 @@ public class ToolsPanel extends JPanel implements ActionListener {
     }
 
     protected void setTool(Tool tool) {
-        paintEngine.setTool(tool);
+        painting.setTool(tool);
         toolOptions.setToolOptionsPanel(tool.getToolOptionsPanel());
     }
 

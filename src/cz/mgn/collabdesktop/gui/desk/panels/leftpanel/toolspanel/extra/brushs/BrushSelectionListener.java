@@ -4,7 +4,7 @@
  */
 package cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs;
 
-import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.brush.Brush;
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.tool.tools.brushable.brush.Brush;
 
 /**
  *

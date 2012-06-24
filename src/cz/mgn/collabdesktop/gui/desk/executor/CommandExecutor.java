@@ -4,6 +4,7 @@
  */
 package cz.mgn.collabdesktop.gui.desk.executor;
 
+import cz.mgn.collabdesktop.gui.desk.panels.middlepanel.paintengine.buffer.Buffer.Edit;
 import cz.mgn.collabdesktop.network.Client;
 import cz.mgn.collabdesktop.network.DataInterface;
 import cz.mgn.collabdesktop.network.commands.CommandGenerator;

@@ -5,7 +5,7 @@
 package cz.mgn.collabdesktop.gui.desk.panels.leftpanel.colorpanel;
 
 import cz.mgn.collabdesktop.gui.desk.DeskInterface;
-import cz.mgn.collabdesktop.gui.desk.paintengine.PaintEngine;
+import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.PaintingInterface;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.colorpanel.frames.ColorPicker;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.colorpanel.frames.ColorPickerInterface;
 import cz.mgn.collabdesktop.utils.TextUtils;
@@ -23,13 +23,13 @@ import javax.swing.JTextField;
 public class ColorPanel extends JPanel implements ActionListener {
 
     protected DeskInterface desk = null;
-    protected PaintEngine paintEngine = null;
+    protected PaintingInterface painting = null;
     protected ColorButton colorButton = null;
     protected JTextField colorLabel = null;
     protected boolean colorPickerShowing = false;
 
-    public ColorPanel(PaintEngine paintEngine, DeskInterface desk) {
-        this.paintEngine = paintEngine;
+    public ColorPanel(PaintingInterface painting, DeskInterface desk) {
+        this.painting = painting;
         this.desk = desk;
         initComponents();
     }
@@ -68,7 +68,7 @@ public class ColorPanel extends JPanel implements ActionListener {
     }
 
     public void setColor(Color color) {
-        paintEngine.setColor(color.getRGB());
+        painting.setColor(color.getRGB());
         colorButton.setColor(color);
         if (Settings.defaultColorStringRepresentation == Settings.COLOR_STRING_REPRESENTATION_HEXADECIMAL) {
             colorLabel.setText(TextUtils.generateHexolor(color));

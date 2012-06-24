@@ -5,7 +5,7 @@
 package cz.mgn.collabdesktop.gui.desk.panels.downpanel.subpanels;
 
 import cz.mgn.collabdesktop.gui.desk.panels.downpanel.interfaces.SystemInterface;
-import cz.mgn.collabdesktop.utils.gui.iconComponent.IconButton;
+import cz.mgn.collabdesktop.utils.gui.button.IconButton;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
