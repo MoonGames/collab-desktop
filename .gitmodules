@@ -1,0 +1,3 @@
+[submodule "lib/collab-panel"]
+	path = lib/collab-panel
+	url = git@github.com:MoonGames/collab-panel.git
