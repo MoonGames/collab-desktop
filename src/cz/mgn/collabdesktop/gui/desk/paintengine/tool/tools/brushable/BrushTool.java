@@ -26,7 +26,7 @@ public class BrushTool extends BrushableTool {
 
     public BrushTool(BrushPanel brushPanel) {
         super(brushPanel);
-        init(new SimpleMouseCursor(ImageUtil.loadImageFromResources("/resources/tools/brush-cursor.png")),
+        init(new SimpleMouseCursor(ImageUtil.loadImageFromResources("/resources/tools/brush-cursor.gif")),
                 ImageUtil.loadImageFromResources("/resources/tools/brush-icon.png"), "Brush", "Press CTRL for erase.");
 
     }
