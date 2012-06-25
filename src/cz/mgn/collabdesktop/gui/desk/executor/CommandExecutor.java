@@ -5,7 +5,7 @@
 package cz.mgn.collabdesktop.gui.desk.executor;
 
 import cz.mgn.collabdesktop.gui.desk.executor.interfaces.Layers;
-import cz.mgn.collabdesktop.gui.desk.executor.interfaces.System;
+import cz.mgn.collabdesktop.gui.desk.executor.interfaces.CollabSystem;
 import cz.mgn.collabdesktop.gui.desk.executor.interfaces.Users;
 import cz.mgn.collabcanvas.canvas.CollabCanvas;
 import cz.mgn.collabcanvas.interfaces.networkable.NetworkListener;
@@ -29,7 +29,7 @@ public class CommandExecutor implements DataInterface, NetworkListener {
     protected int idGenerator = 0;
     protected CollabCanvas canvas = null;
     protected Layers layers = null;
-    protected System system = null;
+    protected CollabSystem system = null;
     protected Users users = null;
 
     public CommandExecutor(Client client, int id) {
@@ -56,7 +56,7 @@ public class CommandExecutor implements DataInterface, NetworkListener {
         this.users = users;
     }
 
-    public void setSystem(System system) {
+    public void setSystem(CollabSystem system) {
         this.system = system;
     }
 

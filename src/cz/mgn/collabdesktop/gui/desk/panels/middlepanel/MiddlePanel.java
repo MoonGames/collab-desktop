@@ -5,6 +5,7 @@
 package cz.mgn.collabdesktop.gui.desk.panels.middlepanel;
 
 import cz.mgn.collabcanvas.canvas.CollabCanvas;
+import cz.mgn.collabcanvas.interfaces.networkable.NetworkIDGenerator;
 import cz.mgn.collabcanvas.interfaces.networkable.NetworkListener;
 import cz.mgn.collabcanvas.interfaces.networkable.NetworkUpdate;
 import cz.mgn.collabdesktop.gui.desk.DeskInterface;
@@ -32,18 +33,27 @@ public class MiddlePanel extends JPanel {
         //FIXME: next code will be on another place!
         executor.setCanvas(collabCanvas);
         collabCanvas.getNetworkable().addListener(executor);
-        
+
         add(collabCanvas.getCanvasComponent(), BorderLayout.CENTER);
 
         InfoPanel infoPanel = new InfoPanel();
         collabCanvas.addInfoListener(infoPanel);
         add(infoPanel, BorderLayout.SOUTH);
     }
-    
+
     protected void initCanvas() {
-        collabCanvas = new CollabCanvas(true, null, 0);
+        //FIXME: generate ids on other place
+        collabCanvas = new CollabCanvas(true, new NetworkIDGenerator() {
+
+            protected int last = 0;
+
+            @Override
+            public int generateNextID() {
+                return ++last;
+            }
+        }, 0);
     }
-    
+
     public CollabCanvas getCanvas() {
         return collabCanvas;
     }

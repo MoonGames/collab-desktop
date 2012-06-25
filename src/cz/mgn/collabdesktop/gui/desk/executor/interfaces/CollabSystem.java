@@ -8,7 +8,7 @@ package cz.mgn.collabdesktop.gui.desk.executor.interfaces;
  *
  *   @author indy
  */
-public interface System {
+public interface CollabSystem {
 
     public void disconnectFromRoom();
 }

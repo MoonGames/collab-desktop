@@ -24,7 +24,7 @@ import java.awt.Toolkit;
  *
  * @author indy
  */
-public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdesktop.gui.desk.executor.interfaces.System, DeskInterface {
+public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdesktop.gui.desk.executor.interfaces.CollabSystem, DeskInterface {
 
     protected String roomName = "";
     protected CommandExecutor executor = null;
