@@ -5,6 +5,9 @@
 package cz.mgn.collabdesktop.gui.desk.paintengine;
 
 import cz.mgn.collabcanvas.canvas.CollabCanvas;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelListener;
+import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.CanvasInterface;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
 import java.awt.Color;
@@ -14,7 +17,7 @@ import java.util.ArrayList;
  *
  * @author indy
  */
-public class PaintEngine implements PaintEngineInterface {
+public class PaintEngine implements PaintEngineInterface, CollabPanelListener {
 
     protected ArrayList<PaintEngineListener> paintEngineListeners = new ArrayList<PaintEngineListener>();
     protected Color color = Color.BLACK;
@@ -23,6 +26,7 @@ public class PaintEngine implements PaintEngineInterface {
 
     public PaintEngine(CollabCanvas canvas) {
         this.canvas = canvas;
+        canvas.getListenable().addListener(this);
     }
 
     public void addPaintEngineListener(PaintEngineListener paintEngineListener) {
@@ -64,5 +68,19 @@ public class PaintEngine implements PaintEngineInterface {
 
     public CollabCanvas getCanvas() {
         return canvas;
+    }
+
+    @Override
+    public void keyEvent(CollabPanelKeyEvent cpke) {
+       if(tool != null) {
+           tool.keyEvent(cpke);
+       }
+    }
+
+    @Override
+    public void mouseEvent(CollabPanelMouseEvent cpme) {
+        if(tool != null) {
+            tool.mouseEvent(cpme);
+        }
     }
 }
