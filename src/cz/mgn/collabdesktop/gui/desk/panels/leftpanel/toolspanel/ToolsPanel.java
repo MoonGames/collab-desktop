@@ -71,16 +71,16 @@ public class ToolsPanel extends JPanel implements ActionListener {
         Tool brush = new BrushTool(brushPanel);
         setTool(brush);
         addTool(brush);
-        addTool(new GeometryTool(brushPanel));
+        //addTool(new GeometryTool(brushPanel));
         addTool(new ColorPicker(paintEngine));
         addTool(new ClearTool());
         addTool(new PaintBucketTool());
         addTool(new SelectTool());
-        addTool(new PictureTool());
+        //addTool(new PictureTool());
         addTool(new TextTool());
         addTool(new LatexTool());
-        addTool(new DiagramTool());
-        addTool(new FiltersTool());
+        //addTool(new DiagramTool());
+        //addTool(new FiltersTool());
     }
 
     protected void addTool(Tool tool) {
