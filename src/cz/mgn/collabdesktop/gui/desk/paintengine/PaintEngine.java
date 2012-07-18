@@ -37,13 +37,12 @@ public class PaintEngine implements PaintEngineInterface, CollabPanelListener {
         paintEngineListeners.remove(paintEngineListener);
     }
 
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
     @Override
     public void setColor(int color) {
         this.color = new Color(color);
+        if (tool != null) {
+            tool.setColor(color);
+        }
     }
 
     public void setTool(Tool tool) {
