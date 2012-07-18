@@ -66,12 +66,10 @@ public class TextTool extends Tool implements TextImageListener {
 
     @Override
     public void canvasInterfaceSeted() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void canvasInterfaceUnset() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
