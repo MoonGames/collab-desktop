@@ -43,6 +43,9 @@ public class PaintEngine implements PaintEngineInterface, CollabPanelListener {
         if (tool != null) {
             tool.setColor(color);
         }
+        for (PaintEngineListener pel : paintEngineListeners) {
+            pel.colorChanged(color);
+        }
     }
 
     public void setTool(Tool tool) {
@@ -71,14 +74,14 @@ public class PaintEngine implements PaintEngineInterface, CollabPanelListener {
 
     @Override
     public void keyEvent(CollabPanelKeyEvent cpke) {
-       if(tool != null) {
-           tool.keyEvent(cpke);
-       }
+        if (tool != null) {
+            tool.keyEvent(cpke);
+        }
     }
 
     @Override
     public void mouseEvent(CollabPanelMouseEvent cpme) {
-        if(tool != null) {
+        if (tool != null) {
             tool.mouseEvent(cpme);
         }
     }

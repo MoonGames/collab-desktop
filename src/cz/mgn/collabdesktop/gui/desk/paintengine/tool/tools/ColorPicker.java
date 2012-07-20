@@ -37,7 +37,7 @@ public class ColorPicker extends Tool {
             BufferedImage pickImage = canvasInterface.getPaintable().getSelectedLayerImage(new Rectangle(x, y, 1, 1));
             if (pickImage != null) {
                 int color = pickImage.getRGB(0, 0);
-                if (new Color(color).getAlpha() > 0) {
+                if (((color & 0xff000000) >>> 24) > 0) {
                     paintEngine.setColor(color);
                 }
             }

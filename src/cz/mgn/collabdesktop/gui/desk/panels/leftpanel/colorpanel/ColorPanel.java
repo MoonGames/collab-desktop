@@ -6,6 +6,7 @@ package cz.mgn.collabdesktop.gui.desk.panels.leftpanel.colorpanel;
 
 import cz.mgn.collabdesktop.gui.desk.DeskInterface;
 import cz.mgn.collabdesktop.gui.desk.paintengine.PaintEngine;
+import cz.mgn.collabdesktop.gui.desk.paintengine.PaintEngineListener;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.colorpanel.frames.ColorPicker;
 import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.colorpanel.frames.ColorPickerInterface;
 import cz.mgn.collabdesktop.utils.TextUtils;
@@ -18,9 +19,9 @@ import javax.swing.JTextField;
 
 /**
  *
- *      @author indy
+ * @author indy
  */
-public class ColorPanel extends JPanel implements ActionListener {
+public class ColorPanel extends JPanel implements ActionListener, PaintEngineListener {
 
     protected DeskInterface desk = null;
     protected PaintEngine paintEngine = null;
@@ -31,9 +32,13 @@ public class ColorPanel extends JPanel implements ActionListener {
     public ColorPanel(PaintEngine paintEngine, DeskInterface desk) {
         this.paintEngine = paintEngine;
         this.desk = desk;
+        paintEngine.addPaintEngineListener(this);
         initComponents();
     }
 
+    /**
+     * init swing
+     */
     protected void initComponents() {
         setLayout(new GridBagLayout());
         setPreferredSize(new Dimension(getPreferredSize().width, 25));
@@ -69,6 +74,15 @@ public class ColorPanel extends JPanel implements ActionListener {
 
     public void setColor(Color color) {
         paintEngine.setColor(color.getRGB());
+        displayColor(color);
+    }
+
+    /**
+     * sets what color is displayed on color button and color code text filed
+     *
+     * @param color color what will be displayed
+     */
+    protected void displayColor(Color color) {
         colorButton.setColor(color);
         if (Settings.defaultColorStringRepresentation == Settings.COLOR_STRING_REPRESENTATION_HEXADECIMAL) {
             colorLabel.setText(TextUtils.generateHexolor(color));
@@ -102,6 +116,9 @@ public class ColorPanel extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * parse color from color code text filed and use it
+     */
     protected void parseColor() {
         String text = colorLabel.getText();
         if (text.startsWith("rgb (")) {
@@ -115,5 +132,10 @@ public class ColorPanel extends JPanel implements ActionListener {
                 setColor(color);
             }
         }
+    }
+
+    @Override
+    public void colorChanged(int color) {
+        displayColor(new Color(color));
     }
 }
