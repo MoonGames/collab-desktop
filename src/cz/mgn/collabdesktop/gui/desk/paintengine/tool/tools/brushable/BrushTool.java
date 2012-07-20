@@ -33,7 +33,7 @@ public class BrushTool extends BrushableTool {
 
     protected void paint(int x, int y, boolean control) {
         if (canvasInterface != null) {
-            Brush.PaintBrush paintBrush = brush.paintLine(lastPoint.x, lastPoint.y, x, y, !control);
+            Brush.PaintBrush paintBrush = brush.paintLine(lastPoint.x, lastPoint.y, x, y);
             PaintData data = new SimplePaintData(paintBrush.getPoints(), paintBrush.paint, !control);
 
             canvasInterface.getPaintable().paint(data);

@@ -120,17 +120,15 @@ public class BrushsList extends JPanel implements ActionListener {
             if ((getHeight() - 6) < tp.getHeight()) {
                 scale = Math.min(scale, (float) (getHeight() - 6) / (float) tp.getHeight());
             }
-            BufferedImage tps;
+            
+            
             if (scale != 1) {
-                tps = tp;
+                BufferedImage tps = tp;
                 tp = new BufferedImage((int) (tp.getWidth() * scale), (int) (tp.getHeight() * scale), BufferedImage.TYPE_4BYTE_ABGR);
                 Graphics2D gtp = (Graphics2D) tp.getGraphics();
                 gtp.drawImage(tps, 0, 0, tp.getWidth(), tp.getHeight(), null);
                 gtp.dispose();
             }
-            tps = tp;
-            tp = new BufferedImage(tps.getWidth(), tps.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-            Brush.paintAddBrush(tp, tps, 0, 0, Color.BLACK.getRGB());
             g.drawImage(tp, (getWidth() - tp.getWidth()) / 2, (getHeight() - tp.getHeight()) / 2, null);
         }
     }

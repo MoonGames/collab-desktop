@@ -21,8 +21,7 @@ public class Brush {
     protected String name = "";
     protected BufferedImage brushCursor = null;
     protected BufferedImage brushImage = null;
-    protected BufferedImage paintImageColor = null;
-    protected BufferedImage paintImageNoColor = null;
+    protected BufferedImage paintImage = null;
     protected float step = 1f;
     protected Color color = Color.BLACK;
     protected float scale = 1f;
@@ -31,8 +30,8 @@ public class Brush {
 
     public Brush(BufferedImage brushImage, String name) {
         this.name = name;
-        if (brushImage.getType() != BufferedImage.TYPE_BYTE_GRAY) {
-            this.brushImage = new BufferedImage(brushImage.getWidth(), brushImage.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+        if (brushImage.getType() != BufferedImage.TYPE_4BYTE_ABGR) {
+            this.brushImage = new BufferedImage(brushImage.getWidth(), brushImage.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D g = (Graphics2D) this.brushImage.getGraphics();
             g.drawImage(brushImage, 0, 0, null);
             g.dispose();
@@ -67,7 +66,7 @@ public class Brush {
     }
 
     protected void generateBrushCursor() {
-        brushCursor = OutlineUtil.generateOutline(paintImageNoColor, Color.BLACK, false);
+        brushCursor = OutlineUtil.generateOutline(paintImage, Color.BLACK, false);
     }
 
     protected void generatePaintImage() {
@@ -75,19 +74,13 @@ public class Brush {
         w = Math.max(1, w);
         int h = (int) (brushImage.getHeight() * scale);
         h = Math.max(1, h);
-        //no color generating
-        paintImageNoColor = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
-        Graphics2D g = (Graphics2D) paintImageNoColor.getGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.drawImage(brushImage, 0, 0, w, h, null);
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - opacity));
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, w, h);
-        g.dispose();
 
-        //color generating
-        paintImageColor = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
-        paintAddBrush(paintImageColor, paintImageNoColor, 0, 0, color.getRGB());
+        paintImage = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D g = (Graphics2D) paintImage.getGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+        g.drawImage(brushImage, 0, 0, w, h, null);
+        g.dispose();
     }
 
     public float getScale() {
@@ -146,20 +139,15 @@ public class Brush {
         return brushImage;
     }
 
-    public PaintBrush paintLine(int x1, int y1, int x2, int y2, boolean colored) {
-        x1 -= paintImageColor.getWidth() / 2;
-        x2 -= paintImageColor.getWidth() / 2;
-        y1 -= paintImageColor.getHeight() / 2;
-        y2 -= paintImageColor.getHeight() / 2;
+    public PaintBrush paintLine(int x1, int y1, int x2, int y2) {
+        x1 -= paintImage.getWidth() / 2;
+        x2 -= paintImage.getWidth() / 2;
+        y1 -= paintImage.getHeight() / 2;
+        y2 -= paintImage.getHeight() / 2;
 
 
-        PaintBrush paintBrush = null;
-        int size = Math.max(paintImageColor.getWidth(), paintImageColor.getHeight());
-        if (colored) {
-            paintBrush = new PaintBrush(paintImageColor);
-        } else {
-            paintBrush = new PaintBrush(paintImageNoColor);
-        }
+        PaintBrush paintBrush = new PaintBrush(paintImage);
+        int size = Math.max(paintImage.getWidth(), paintImage.getHeight());
 
         float dx = x2 - x1;
         float dy = y2 - y1;
@@ -194,28 +182,7 @@ public class Brush {
 
         return paintBrush;
     }
-
-    public static void paintAddBrush(BufferedImage image, BufferedImage brush, int x, int y, int color) {
-        int x1 = x;
-        int y1 = y;
-        int x2 = Math.min(image.getWidth(), x1 + brush.getWidth());
-        int y2 = Math.min(image.getHeight(), y1 + brush.getHeight());
-
-        for (int xx = x1; xx < x2; xx++) {
-            for (int yy = y1; yy < y2; yy++) {
-                int gray = brush.getRGB(xx - x, yy - y);
-                gray &= 0x000000ff;
-                if (gray != 255) {
-                    int pixel = color;
-                    gray = (int) ((((pixel & 0xff000000) >>> 24) * (255 - gray)) / 255f);
-                    pixel &= 0x00ffffff;
-                    pixel += (gray << 24);
-                    image.setRGB(xx, yy, pixel);
-                }
-            }
-        }
-    }
-
+    
     public class PaintBrush {
 
         protected ArrayList<Point> points = new ArrayList<Point>();
