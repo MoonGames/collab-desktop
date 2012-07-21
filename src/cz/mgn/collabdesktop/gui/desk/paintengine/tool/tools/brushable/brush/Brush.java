@@ -4,7 +4,6 @@
  */
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.brush;
 
-import cz.mgn.collabcanvas.canvas.utils.graphics.OutlineUtil;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ public class Brush {
     protected BrushListener brushListener = null;
     //
     protected String name = "";
-    protected BufferedImage brushCursor = null;
     protected BufferedImage brushImage = null;
     protected BufferedImage paintImage = null;
     protected float step = 1f;
@@ -62,11 +60,6 @@ public class Brush {
 
     protected void generate() {
         generatePaintImage();
-        generateBrushCursor();
-    }
-
-    protected void generateBrushCursor() {
-        brushCursor = OutlineUtil.generateOutline(paintImage, Color.BLACK, false);
     }
 
     protected void generatePaintImage() {
@@ -129,10 +122,6 @@ public class Brush {
     public void setOpacity(float opacity) {
         this.opacity = opacity;
         generate();
-    }
-
-    public BufferedImage getCuror() {
-        return brushCursor;
     }
 
     public BufferedImage getBrushImage() {

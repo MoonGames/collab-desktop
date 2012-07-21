@@ -5,13 +5,16 @@
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable;
 
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs.BrushPanel;
-import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs.BrushSelectionListener;
+import cz.mgn.collabcanvas.interfaces.visible.ToolCursor;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.brush.Brush;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.brush.BrushListener;
+import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs.BrushPanel;
+import cz.mgn.collabdesktop.gui.desk.panels.leftpanel.toolspanel.extra.brushs.BrushSelectionListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 /**
@@ -65,16 +68,14 @@ public abstract class BrushableTool extends Tool implements BrushSelectionListen
         this.brush = brush;
         if (canvasInterface != null) {
             brush.setColor(color);
-            //TODO:
-            //canvasInterface.getVisible().setToolCursor(toolCursor);
+            canvasInterface.getVisible().setToolCursor(new BrushToolCursor(brush));
         }
     }
 
     @Override
     public void canvasInterfaceSeted() {
         if (brush != null) {
-            //TODO:
-            //canvasInterface.getVisible().setToolCursor(toolCursor);
+            canvasInterface.getVisible().setToolCursor(new BrushToolCursor(brush));
         }
     }
 
