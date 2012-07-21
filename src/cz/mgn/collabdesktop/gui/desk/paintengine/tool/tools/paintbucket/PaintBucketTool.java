@@ -11,7 +11,6 @@ import cz.mgn.collabdesktop.gui.desk.paintengine.tool.SimpleMouseCursor;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.Tool;
 import cz.mgn.collabdesktop.gui.desk.paintengine.tool.paintdata.SingleImagePaintData;
 import cz.mgn.collabdesktop.utils.ImageUtil;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
@@ -43,16 +42,7 @@ public class PaintBucketTool extends Tool implements PaintBucketOptions {
         if (x >= 0 && y >= 0 && x < over.getWidth() && y < over.getHeight()) {
             BufferedImage generate = null;
             int localColor = color;
-            if (control) {
-                localColor = 0;
-                generate = new BufferedImage(over.getWidth(), over.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-                Graphics g = generate.getGraphics();
-                g.setColor(Color.WHITE);
-                g.fillRect(0, 0, over.getWidth(), over.getHeight());
-                g.dispose();
-            } else {
-                generate = new BufferedImage(over.getWidth(), over.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-            }
+            generate = new BufferedImage(over.getWidth(), over.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
             FloodFill fill = new FloodFill(over, tolerance);
             BufferedImage gen = fill.fill(x, y, localColor);
             Graphics g = generate.getGraphics();
@@ -88,7 +78,7 @@ public class PaintBucketTool extends Tool implements PaintBucketOptions {
 
     @Override
     public void mouseEvent(CollabPanelMouseEvent e) {
-        if(e.getEventType() == CollabPanelMouseEvent.TYPE_PRESS) {
+        if (e.getEventType() == CollabPanelMouseEvent.TYPE_PRESS) {
             mousePressed(e.getEventCoordinates().x,
                     e.getEventCoordinates().y, e.isControlDown());
         }
