@@ -5,7 +5,7 @@
 package cz.mgn.collabdesktop.gui.desk.paintengine.tool.tools.brushable.brush;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.image.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -67,13 +67,20 @@ public class Brush {
         w = Math.max(1, w);
         int h = (int) (brushImage.getHeight() * scale);
         h = Math.max(1, h);
-
+        
         paintImage = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = (Graphics2D) paintImage.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
         g.drawImage(brushImage, 0, 0, w, h, null);
         g.dispose();
+        
+        for(int x = 0; x < paintImage.getWidth(); x++) {
+            for(int y = 0; y < paintImage.getHeight(); y++) {
+                Color c = new Color(color.getRed(), color.getGreen(), color.getBlue(), paintImage.getAlphaRaster().getPixel(x, y, new int[1])[0]);
+                paintImage.setRGB(x, y, c.getRGB());
+            }
+        }
     }
 
     public float getScale() {
@@ -171,7 +178,7 @@ public class Brush {
 
         return paintBrush;
     }
-    
+
     public class PaintBrush {
 
         protected ArrayList<Point> points = new ArrayList<Point>();
