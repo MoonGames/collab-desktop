@@ -4,7 +4,7 @@
  */
 package cz.mgn.collabdesktop;
 
-import cz.mgn.collabdesktop.gui.menu.frames.ConnectServer;
+import cz.mgn.collabdesktop.menu.frames.ConnectServer;
 import cz.mgn.collabdesktop.utils.settings.SettingsIO;
 
 /**

@@ -4,7 +4,7 @@
  */
 package cz.mgn.collabdesktop.utils;
 
-import cz.mgn.collabdesktop.gui.menu.frames.ConnectServer;
+import cz.mgn.collabdesktop.menu.frames.ConnectServer;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
