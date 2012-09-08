@@ -4,10 +4,10 @@
  */
 package cz.mgn.collabdesktop.room.view.panels.leftpanel.toolspanel.extra.brushs;
 
-import cz.mgn.collabdesktop.room.view.panels.leftpanel.layerspanel.LayersPanel;
 import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.brushable.brush.Brush;
 import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.brushable.brush.BrushIO;
 import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.brushable.brush.BrushListener;
+import cz.mgn.collabdesktop.room.view.panels.leftpanel.layerspanel.LayersPanel;
 import cz.mgn.collabdesktop.utils.gui.iconComponent.IconButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -241,7 +241,7 @@ public class BrushPanel extends JPanel implements ChangeListener, BrushSelection
     @Override
     public void brushSelected(Brush brush) {
         if (selectedBrush != null) {
-            selectedBrush.setBrushListener(null);
+            selectedBrush.removeBrushListener(this);
         }
         selectedBrush = brush.cloneBrush();
         setScaleValue(selectedBrush.getScale());
@@ -252,7 +252,7 @@ public class BrushPanel extends JPanel implements ChangeListener, BrushSelection
         opacity.setValue((int) (selectedBrush.getOpacity() * 100f));
         opacityValueLabel.setText("" + opacity.getValue());
 
-        selectedBrush.setBrushListener(this);
+        selectedBrush.addBrushListener(this);
         for (BrushSelectionListener bsl : brushSelectionListeners) {
             bsl.brushSelected(selectedBrush);
         }

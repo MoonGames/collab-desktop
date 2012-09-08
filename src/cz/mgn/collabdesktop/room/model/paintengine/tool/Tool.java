@@ -21,7 +21,7 @@ public abstract class Tool {
     protected CanvasInterface canvasInterface;
     protected PaintEngineInterface paintEngineInterface;
     //
-    protected MouseCursor toolCursor;
+    protected MouseCursor toolMouseCursor;
     protected BufferedImage toolIcon;
     protected String toolName = "tool";
     protected String toolDescription = "";
@@ -30,7 +30,7 @@ public abstract class Tool {
     }
 
     public void init(MouseCursor toolCursor, BufferedImage toolIcon, String toolName, String toolDescription) {
-        this.toolCursor = toolCursor;
+        this.toolMouseCursor = toolCursor;
         this.toolIcon = toolIcon;
         this.toolName = toolName;
         this.toolDescription = toolDescription;
@@ -54,7 +54,7 @@ public abstract class Tool {
     public abstract void canvasInterfaceUnset();
 
     public MouseCursor getToolCursor() {
-        return toolCursor;
+        return toolMouseCursor;
     }
 
     public BufferedImage getToolIcon() {

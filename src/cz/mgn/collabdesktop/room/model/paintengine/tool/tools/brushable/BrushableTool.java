@@ -5,6 +5,7 @@
 package cz.mgn.collabdesktop.room.model.paintengine.tool.tools.brushable;
 
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
+import cz.mgn.collabcanvas.interfaces.visible.ToolCursor;
 import cz.mgn.collabdesktop.room.model.paintengine.tool.Tool;
 import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.brushable.brush.Brush;
 import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.brushable.brush.BrushListener;
@@ -24,6 +25,7 @@ public abstract class BrushableTool extends Tool implements BrushSelectionListen
     protected int color = Color.BLACK.getRGB();
     protected JPanel toolPanel = null;
     protected BrushPanel brushPanel;
+    protected ToolCursor toolCursor = null;
 
     public BrushableTool(BrushPanel brushPanel) {
         super();
@@ -63,17 +65,20 @@ public abstract class BrushableTool extends Tool implements BrushSelectionListen
 
     public void setBrush(Brush brush) {
         this.brush = brush;
+        if (toolCursor != null) {
+            brush.removeBrushListener((BrushToolCursor) toolCursor);
+        }
+        toolCursor = new BrushToolCursor(brush);
+        brush.addBrushListener((BrushToolCursor) toolCursor);
         if (canvasInterface != null) {
             brush.setColor(color);
-            canvasInterface.getVisible().setToolCursor(new BrushToolCursor(brush));
+            canvasInterface.getVisible().setToolCursor(toolCursor);
         }
     }
 
     @Override
     public void canvasInterfaceSeted() {
-        if (brush != null) {
-            canvasInterface.getVisible().setToolCursor(new BrushToolCursor(brush));
-        }
+        canvasInterface.getVisible().setToolCursor(toolCursor);
     }
 
     @Override
@@ -93,7 +98,7 @@ public abstract class BrushableTool extends Tool implements BrushSelectionListen
 
     @Override
     public void brushScaled(float scale) {
-        //FIXME: 
+        canvasInterface.getVisible().setToolCursor(toolCursor);
     }
 
     @Override

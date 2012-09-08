@@ -15,10 +15,11 @@ import java.util.Random;
  */
 public class Brush {
 
-    protected BrushListener brushListener = null;
+    protected ArrayList<BrushListener> brushListeners = new ArrayList<BrushListener>();
     //
     protected String name = "";
     protected BufferedImage brushImage = null;
+    protected BufferedImage scaledImage = null;
     protected BufferedImage paintImage = null;
     protected float step = 1f;
     protected Color color = Color.BLACK;
@@ -37,11 +38,15 @@ public class Brush {
             this.brushImage = brushImage;
         }
         step = Math.max(1f, (float) Math.max(brushImage.getWidth(), brushImage.getHeight()) / 4f);
-        init();
+        generate();
     }
 
-    public void setBrushListener(BrushListener brushListener) {
-        this.brushListener = brushListener;
+    public void addBrushListener(BrushListener brushListener) {
+        brushListeners.add(brushListener);
+    }
+
+    public void removeBrushListener(BrushListener brushListener) {
+        brushListeners.remove(brushListener);
     }
 
     public Brush cloneBrush() {
@@ -54,29 +59,27 @@ public class Brush {
         return name;
     }
 
-    protected void init() {
-        generate();
-    }
-
     protected void generate() {
-        generatePaintImage();
-    }
-
-    protected void generatePaintImage() {
         int w = (int) (brushImage.getWidth() * scale);
         w = Math.max(1, w);
         int h = (int) (brushImage.getHeight() * scale);
         h = Math.max(1, h);
         
+        scaledImage = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D g = (Graphics2D) scaledImage.getGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.drawImage(brushImage, 0, 0, w, h, null);
+        g.dispose();
+
         paintImage = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g = (Graphics2D) paintImage.getGraphics();
+        g = (Graphics2D) paintImage.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
         g.drawImage(brushImage, 0, 0, w, h, null);
         g.dispose();
-        
-        for(int x = 0; x < paintImage.getWidth(); x++) {
-            for(int y = 0; y < paintImage.getHeight(); y++) {
+
+        for (int x = 0; x < paintImage.getWidth(); x++) {
+            for (int y = 0; y < paintImage.getHeight(); y++) {
                 Color c = new Color(color.getRed(), color.getGreen(), color.getBlue(), paintImage.getAlphaRaster().getPixel(x, y, new int[1])[0]);
                 paintImage.setRGB(x, y, c.getRGB());
             }
@@ -107,21 +110,21 @@ public class Brush {
     public void setScale(float scale) {
         this.scale = scale;
         generate();
-        if (brushListener != null) {
+        for (BrushListener brushListener : brushListeners) {
             brushListener.brushScaled(scale);
         }
     }
 
     public void setStep(float step) {
         this.step = step;
-        if (brushListener != null) {
+        for (BrushListener brushListener : brushListeners) {
             brushListener.brushStep(step);
         }
     }
 
     public void setJitter(float jitter) {
         this.jitter = jitter;
-        if (brushListener != null) {
+        for (BrushListener brushListener : brushListeners) {
             brushListener.brusheJitter(jitter);
         }
     }
@@ -133,6 +136,10 @@ public class Brush {
 
     public BufferedImage getBrushImage() {
         return brushImage;
+    }
+    
+    public BufferedImage getScaledImage() {
+        return scaledImage;
     }
 
     public PaintBrush paintLine(int x1, int y1, int x2, int y2) {
