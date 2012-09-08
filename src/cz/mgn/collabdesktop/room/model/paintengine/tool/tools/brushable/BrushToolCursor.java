@@ -30,18 +30,19 @@ public class BrushToolCursor implements ToolCursor {
     
     protected void generateBrushCursor() {
         brushCursorOriginal = OutlineUtil.generateOutline(outlineSource, Color.BLACK, false);
-        brushCursorScaled = OutlineUtil.generateOutline(outlineSource, Color.BLACK, false);
+        generateBrushCursorScaled(lastScale);
     }
     
     protected void generateBrushCursorScaled(float scale) {
-        BufferedImage outlineSourceScaled = new BufferedImage((int) (scale * outlineSource.getWidth()), 
-                (int) (scale * outlineSource.getHeight()), BufferedImage.TYPE_4BYTE_ABGR);
+        int w = (int) (scale * outlineSource.getWidth());
+        int h = (int) (scale * outlineSource.getHeight());
+        BufferedImage outlineSourceScaled = new BufferedImage(w, h, outlineSource.getType());
         
         Graphics2D g = (Graphics2D) outlineSourceScaled.getGraphics();
-        g.scale(scale, scale);
-        g.drawImage(outlineSource, 0, 0, null);
+        g.drawImage(outlineSource, 0, 0, w, h, null);
         g.dispose();
-        brushCursorScaled = OutlineUtil.generateOutline(outlineSourceScaled, Color.BLACK, false);
+        lastScale = scale;
+        brushCursorScaled = OutlineUtil.generateOutline(outlineSourceScaled, Color.BLACK, true);
     }
 
     @Override
@@ -65,7 +66,10 @@ public class BrushToolCursor implements ToolCursor {
     }
 
     @Override
-    public BufferedImage getScaledCursorImage(float f) {
+    public BufferedImage getScaledCursorImage(float scale) {
+        if(scale != lastScale) {
+            generateBrushCursorScaled(scale);
+        }
         return brushCursorScaled;
     }
     
