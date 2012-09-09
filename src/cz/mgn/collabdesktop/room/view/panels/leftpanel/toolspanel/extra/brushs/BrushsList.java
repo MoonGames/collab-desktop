@@ -4,7 +4,7 @@
  */
 package cz.mgn.collabdesktop.room.view.panels.leftpanel.toolspanel.extra.brushs;
 
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.brushable.brush.Brush;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.brush.Brush;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;

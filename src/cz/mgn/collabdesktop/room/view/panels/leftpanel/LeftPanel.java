@@ -6,7 +6,7 @@ package cz.mgn.collabdesktop.room.view.panels.leftpanel;
 
 import cz.mgn.collabdesktop.room.view.DeskInterface;
 import cz.mgn.collabdesktop.room.model.executor.CommandExecutor;
-import cz.mgn.collabdesktop.room.model.paintengine.PaintEngine;
+import cz.mgn.collabdesktop.room.model.paintengineOld.PaintEngine;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.colorpanel.ColorPanel;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.layerspanel.LayersPanel;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.tooloptionspanel.ToolOptionsPanel;

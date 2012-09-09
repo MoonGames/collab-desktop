@@ -8,7 +8,7 @@ import cz.mgn.collabcanvas.interfaces.paintable.Paintable;
 import cz.mgn.collabdesktop.room.view.DeskInterface;
 import cz.mgn.collabdesktop.room.model.executor.CommandExecutor;
 import cz.mgn.collabdesktop.room.model.executor.interfaces.Layers;
-import cz.mgn.collabdesktop.room.model.paintengine.PaintEngine;
+import cz.mgn.collabdesktop.room.model.paintengineOld.PaintEngine;
 import cz.mgn.collabdesktop.utils.gui.iconComponent.IconButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;

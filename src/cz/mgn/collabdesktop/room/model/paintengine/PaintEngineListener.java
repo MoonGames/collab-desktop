@@ -9,6 +9,9 @@ package cz.mgn.collabdesktop.room.model.paintengine;
  * @author indy
  */
 public interface PaintEngineListener {
-    
-    public void colorChanged(int newColor);
+
+    /**
+     * another tool is selected
+     */
+    public void selectedToolChanged(ToolInfoInterface selectedTool);
 }

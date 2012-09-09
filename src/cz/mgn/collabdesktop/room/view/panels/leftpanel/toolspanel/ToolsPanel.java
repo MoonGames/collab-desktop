@@ -4,21 +4,21 @@
  */
 package cz.mgn.collabdesktop.room.view.panels.leftpanel.toolspanel;
 
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.DiagramTool;
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.ColorPicker;
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.ClearTool;
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.PictureTool;
-import cz.mgn.collabdesktop.room.model.paintengine.PaintEngine;
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.select.SelectTool;
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.text.TextTool;
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.latex.LatexTool;
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.paintbucket.PaintBucketTool;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.DiagramTool;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.ColorPicker;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.ClearTool;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.PictureTool;
+import cz.mgn.collabdesktop.room.model.paintengineOld.PaintEngine;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.select.SelectTool;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.text.TextTool;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.latex.LatexTool;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.paintbucket.PaintBucketTool;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.ToolOptionsPaneInterface;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.toolspanel.extra.brushs.BrushPanel;
-import cz.mgn.collabdesktop.room.model.paintengine.tool.Tool;
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.brushable.BrushTool;
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.brushable.GeometryTool;
-import cz.mgn.collabdesktop.room.model.paintengine.tool.tools.filters.FiltersTool;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.Tool;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.BrushTool;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.GeometryTool;
+import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.filters.FiltersTool;
 import cz.mgn.collabdesktop.utils.gui.iconComponent.IconButton;
 import java.awt.Dimension;
 import java.awt.FlowLayout;

@@ -5,8 +5,8 @@
 package cz.mgn.collabdesktop.room.view.panels.leftpanel.colorpanel;
 
 import cz.mgn.collabdesktop.room.view.DeskInterface;
-import cz.mgn.collabdesktop.room.model.paintengine.PaintEngine;
-import cz.mgn.collabdesktop.room.model.paintengine.PaintEngineListener;
+import cz.mgn.collabdesktop.room.model.paintengineOld.PaintEngine;
+import cz.mgn.collabdesktop.room.model.paintengineOld.PaintEngineListener;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.colorpanel.frames.ColorPicker;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.colorpanel.frames.ColorPickerInterface;
 import cz.mgn.collabdesktop.utils.TextUtils;
