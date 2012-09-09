@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.mgn.collabdesktop.room.model.paintengineOld.tool;
+package cz.mgn.collabdesktop.room.model.paintengine.tools;
 
 import cz.mgn.collabcanvas.interfaces.visible.MouseCursor;
 import java.awt.Image;

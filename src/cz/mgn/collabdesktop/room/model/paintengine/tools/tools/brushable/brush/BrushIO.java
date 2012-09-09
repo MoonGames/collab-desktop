@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.brush;
+package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.brush;
 
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import cz.mgn.collabdesktop.utils.homestorage.HomeStorage;
@@ -23,7 +23,7 @@ public class BrushIO {
 
     public static Brush loadFromResources(String fileName, String name) {
         BufferedImage brushImage = ImageUtil.loadImageFromResources("/resources/brushs/" + fileName + ".png");
-        Brush brush = new Brush(brushImage, name);
+        Brush brush = new Brush(name, brushImage);
         return brush;
     }
 
@@ -32,7 +32,6 @@ public class BrushIO {
         ArrayList<Brush> brushs = new ArrayList<Brush>();
         File directory = new File(HomeStorage.getHomeFolder().getPath() + "/" + BRUSHS_DIRECTORY);
         String[] files = directory.list(new FilenameFilter() {
-
             @Override
             public boolean accept(File dir, String name) {
                 return (name.endsWith(".png") || name.endsWith(".PNG"));
@@ -47,7 +46,7 @@ public class BrushIO {
 
     protected static Brush loadFromUser(String path, String name) {
         BufferedImage brushImage = ImageUtil.loadImage(path);
-        Brush brush = new Brush(brushImage, name);
+        Brush brush = new Brush(name, brushImage);
         return brush;
     }
 
@@ -73,7 +72,7 @@ public class BrushIO {
             }
         }
         File brushFile = new File(HomeStorage.getHomeFolder().getPath() + "/" + BRUSHS_DIRECTORY + "/" + name);
-        ImageIO.write(brush.getBrushImage(), "PNG", brushFile);
+        ImageIO.write(brush.getSourceImage(), "PNG", brushFile);
     }
 
     protected static void createDirectory() {

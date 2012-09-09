@@ -4,9 +4,10 @@
  */
 package cz.mgn.collabdesktop.room.view.panels.leftpanel;
 
+import cz.mgn.collabcanvas.interfaces.paintable.Paintable;
 import cz.mgn.collabdesktop.room.view.DeskInterface;
 import cz.mgn.collabdesktop.room.model.executor.CommandExecutor;
-import cz.mgn.collabdesktop.room.model.paintengineOld.PaintEngine;
+import cz.mgn.collabdesktop.room.model.paintengine.PaintEngine;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.colorpanel.ColorPanel;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.layerspanel.LayersPanel;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.tooloptionspanel.ToolOptionsPanel;
@@ -27,17 +28,19 @@ public class LeftPanel extends JPanel implements ComponentListener, ToolOptionsP
 
     protected CommandExecutor executor;
     protected PaintEngine paintEngine;
-    protected DeskInterface desk = null;
+    protected DeskInterface desk;
+    protected Paintable paintable;
     //
     protected ColorPanel colorPanel = null;
     protected ToolsPanel toolsPanel = null;
     protected ToolOptionsPanel toolOptionsPanel = null;
     protected LayersPanel layersPanel = null;
 
-    public LeftPanel(PaintEngine paintEngine, CommandExecutor executor, DeskInterface desk) {
+    public LeftPanel(PaintEngine paintEngine, CommandExecutor executor, DeskInterface desk, Paintable paintable) {
         this.paintEngine = paintEngine;
         this.executor = executor;
         this.desk = desk;
+        this.paintable = paintable;
         initComponents();
     }
 
@@ -67,7 +70,7 @@ public class LeftPanel extends JPanel implements ComponentListener, ToolOptionsP
         c.weighty = 0.6f;
         c.gridy++;
         add(toolOptionsPanel, c);
-        layersPanel = new LayersPanel(executor, paintEngine, desk);
+        layersPanel = new LayersPanel(executor, desk, paintable);
         c.weighty = 0.4f;
         c.gridy++;
         add(layersPanel, c);

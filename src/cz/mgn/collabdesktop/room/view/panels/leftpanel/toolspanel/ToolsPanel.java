@@ -4,21 +4,9 @@
  */
 package cz.mgn.collabdesktop.room.view.panels.leftpanel.toolspanel;
 
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.DiagramTool;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.ColorPicker;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.ClearTool;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.PictureTool;
-import cz.mgn.collabdesktop.room.model.paintengineOld.PaintEngine;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.select.SelectTool;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.text.TextTool;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.latex.LatexTool;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.paintbucket.PaintBucketTool;
+import cz.mgn.collabdesktop.room.model.paintengine.PaintEngine;
+import cz.mgn.collabdesktop.room.model.paintengine.ToolInfoInterface;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.ToolOptionsPaneInterface;
-import cz.mgn.collabdesktop.room.view.panels.leftpanel.toolspanel.extra.brushs.BrushPanel;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.Tool;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.BrushTool;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.GeometryTool;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.filters.FiltersTool;
 import cz.mgn.collabdesktop.utils.gui.iconComponent.IconButton;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -26,6 +14,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -66,32 +55,24 @@ public class ToolsPanel extends JPanel implements ActionListener {
     }
 
     public void initTools() {
-        BrushPanel brushPanel = new BrushPanel();
-
-        Tool brush = new BrushTool(brushPanel);
-        setTool(brush);
-        addTool(brush);
-        //addTool(new GeometryTool(brushPanel));
-        addTool(new ColorPicker(paintEngine));
-        addTool(new ClearTool());
-        addTool(new PaintBucketTool());
-        addTool(new SelectTool());
-        //addTool(new PictureTool());
-        addTool(new TextTool());
-        addTool(new LatexTool());
-        //addTool(new DiagramTool());
-        //addTool(new FiltersTool());
+        ArrayList<ToolInfoInterface> tools = paintEngine.getToolsList();
+        for (ToolInfoInterface tool : tools) {
+            addTool(tool);
+        }
+        if (tools.size() > 0) {
+            setTool(tools.get(0));
+        }
     }
 
-    protected void addTool(Tool tool) {
+    protected void addTool(ToolInfoInterface tool) {
         ToolButton button = new ToolButton(tool);
         button.addActionListener(this);
         toolsInsdePanel.add(button);
     }
 
-    protected void setTool(Tool tool) {
-        paintEngine.setTool(tool);
-        toolOptions.setToolOptionsPanel(tool.getToolOptionsPanel());
+    protected void setTool(ToolInfoInterface tool) {
+        paintEngine.selectTool(tool);
+        toolOptions.setToolOptionsPanel(tool.getToolPanel());
     }
 
     @Override
@@ -105,15 +86,15 @@ public class ToolsPanel extends JPanel implements ActionListener {
 
     protected class ToolButton extends IconButton {
 
-        protected Tool tool = null;
+        protected ToolInfoInterface tool = null;
 
-        public ToolButton(Tool tool) {
+        public ToolButton(ToolInfoInterface tool) {
             super("button_32", new ImageIcon(tool.getToolIcon()));
             this.tool = tool;
             setToolTipText(tool.getToolName());
         }
 
-        public Tool getTool() {
+        public ToolInfoInterface getTool() {
             return tool;
         }
     }

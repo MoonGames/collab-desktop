@@ -2,12 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable;
+package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable;
 
 import cz.mgn.collabcanvas.canvas.utils.graphics.OutlineUtil;
 import cz.mgn.collabcanvas.interfaces.visible.ToolCursor;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.brush.Brush;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.brush.BrushListener;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.brush.Brush;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -17,7 +16,7 @@ import java.awt.image.BufferedImage;
  *
  * @author indy
  */
-public class BrushToolCursor implements ToolCursor, BrushListener {
+public class BrushToolCursor implements ToolCursor {
 
     protected Brush brush;
     protected BufferedImage brushCursorOriginal;
@@ -73,18 +72,5 @@ public class BrushToolCursor implements ToolCursor, BrushListener {
             generateBrushCursorScaled(scale);
         }
         return brushCursorScaled;
-    }
-
-    @Override
-    public void brushScaled(float scale) {
-        generateBrushCursor();
-    }
-
-    @Override
-    public void brusheJitter(float jitter) {
-    }
-
-    @Override
-    public void brushStep(float step) {
     }
 }

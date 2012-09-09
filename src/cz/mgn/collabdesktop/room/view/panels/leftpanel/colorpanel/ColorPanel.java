@@ -4,9 +4,8 @@
  */
 package cz.mgn.collabdesktop.room.view.panels.leftpanel.colorpanel;
 
+import cz.mgn.collabdesktop.room.model.paintengine.PaintEngine;
 import cz.mgn.collabdesktop.room.view.DeskInterface;
-import cz.mgn.collabdesktop.room.model.paintengineOld.PaintEngine;
-import cz.mgn.collabdesktop.room.model.paintengineOld.PaintEngineListener;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.colorpanel.frames.ColorPicker;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.colorpanel.frames.ColorPickerInterface;
 import cz.mgn.collabdesktop.utils.TextUtils;
@@ -21,7 +20,7 @@ import javax.swing.JTextField;
  *
  * @author indy
  */
-public class ColorPanel extends JPanel implements ActionListener, PaintEngineListener {
+public class ColorPanel extends JPanel implements ActionListener {
 
     protected DeskInterface desk = null;
     protected PaintEngine paintEngine = null;
@@ -32,7 +31,6 @@ public class ColorPanel extends JPanel implements ActionListener, PaintEngineLis
     public ColorPanel(PaintEngine paintEngine, DeskInterface desk) {
         this.paintEngine = paintEngine;
         this.desk = desk;
-        paintEngine.addPaintEngineListener(this);
         initComponents();
     }
 
@@ -97,7 +95,6 @@ public class ColorPanel extends JPanel implements ActionListener, PaintEngineLis
             if (!colorPickerShowing) {
                 colorPickerShowing = true;
                 ColorPicker cp = new ColorPicker(new ColorPickerInterface() {
-
                     @Override
                     public void colorPicked(Color color) {
                         colorPickerShowing = false;
@@ -132,10 +129,5 @@ public class ColorPanel extends JPanel implements ActionListener, PaintEngineLis
                 setColor(color);
             }
         }
-    }
-
-    @Override
-    public void colorChanged(int color) {
-        displayColor(new Color(color));
     }
 }

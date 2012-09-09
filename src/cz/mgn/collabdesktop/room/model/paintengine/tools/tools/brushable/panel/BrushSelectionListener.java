@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.mgn.collabdesktop.room.view.panels.leftpanel.toolspanel.extra.brushs;
+package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.panel;
 
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.brush.Brush;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.brush.Brush;
 
 /**
  *

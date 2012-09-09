@@ -2,10 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.brush;
+package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.brush;
 
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,143 +16,165 @@ import java.util.Random;
  *
  * @author indy
  */
-public class Brush {
+public class Brush implements Cloneable {
 
-    protected ArrayList<BrushListener> brushListeners = new ArrayList<BrushListener>();
-    //
+    /**
+     * brush name
+     */
     protected String name = "";
-    protected BufferedImage brushImage = null;
-    protected BufferedImage scaledImage = null;
-    protected BufferedImage paintImage = null;
+    /**
+     * brush source image
+     */
+    protected BufferedImage sourceImage;
+    /**
+     * brush scaled image (source after scaling)
+     */
+    protected BufferedImage scaledImage;
+    /**
+     * brush paint image (scale image after colorizing and transparenting)
+     */
+    protected BufferedImage paintImage;
     protected float step = 1f;
-    protected Color color = Color.BLACK;
     protected float scale = 1f;
     protected float jitter = 0f;
     protected float opacity = 1f;
+    /**
+     * brush color in ARGB
+     */
+    protected int color = 0xff000000;
 
-    public Brush(BufferedImage brushImage, String name) {
+    public Brush(String name, BufferedImage sourceImage) {
         this.name = name;
-        if (brushImage.getType() != BufferedImage.TYPE_4BYTE_ABGR) {
-            this.brushImage = new BufferedImage(brushImage.getWidth(), brushImage.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-            Graphics2D g = (Graphics2D) this.brushImage.getGraphics();
-            g.drawImage(brushImage, 0, 0, null);
-            g.dispose();
-        } else {
-            this.brushImage = brushImage;
-        }
-        step = Math.max(1f, (float) Math.max(brushImage.getWidth(), brushImage.getHeight()) / 4f);
-        generate();
+        init(sourceImage);
     }
 
-    public void addBrushListener(BrushListener brushListener) {
-        brushListeners.add(brushListener);
+    protected void init(BufferedImage sourceImage) {
+        sourceImage = correctSourceImage(sourceImage);
+        this.sourceImage = sourceImage;
+        step = Math.max(1f, (float) Math.max(sourceImage.getWidth(), sourceImage.getHeight()) / 4f);
+        generateImages();
     }
 
-    public void removeBrushListener(BrushListener brushListener) {
-        brushListeners.remove(brushListener);
+    /**
+     * repaint source image to ABGR image
+     */
+    protected BufferedImage correctSourceImage(BufferedImage sourceImage) {
+        BufferedImage corrected = new BufferedImage(sourceImage.getWidth(), sourceImage.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D g = (Graphics2D) corrected.getGraphics();
+        g.drawImage(sourceImage, 0, 0, null);
+        g.dispose();
+        return corrected;
     }
 
-    public Brush cloneBrush() {
-        BufferedImage cloneBrushImage = new BufferedImage(brushImage.getWidth(), brushImage.getHeight(), brushImage.getType());
-        brushImage.copyData(cloneBrushImage.getRaster());
-        return new Brush(cloneBrushImage, name);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    protected void generate() {
-        int w = (int) (brushImage.getWidth() * scale);
+    protected void generateImages() {
+        int w = (int) (sourceImage.getWidth() * scale);
         w = Math.max(1, w);
-        int h = (int) (brushImage.getHeight() * scale);
+        int h = (int) (sourceImage.getHeight() * scale);
         h = Math.max(1, h);
-        
+
         scaledImage = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = (Graphics2D) scaledImage.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.drawImage(brushImage, 0, 0, w, h, null);
+        g.drawImage(sourceImage, 0, 0, w, h, null);
         g.dispose();
 
         paintImage = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
         g = (Graphics2D) paintImage.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-        g.drawImage(brushImage, 0, 0, w, h, null);
+        g.drawImage(scaledImage, 0, 0, null);
         g.dispose();
 
         for (int x = 0; x < paintImage.getWidth(); x++) {
             for (int y = 0; y < paintImage.getHeight(); y++) {
-                Color c = new Color(color.getRed(), color.getGreen(), color.getBlue(), paintImage.getAlphaRaster().getPixel(x, y, new int[1])[0]);
-                paintImage.setRGB(x, y, c.getRGB());
+                int c = paintImage.getAlphaRaster().getPixel(x, y, new int[1])[0];
+                c <<= 24;
+                c += (color & 0x00ffffff);
+                paintImage.setRGB(x, y, c);
             }
         }
     }
 
-    public float getScale() {
-        return scale;
+    /**
+     * returns new instance of same brush, with default properties
+     */
+    public Brush getInstance() {
+        Brush brush = new Brush(getName(), sourceImage);
+        return brush;
     }
 
-    public float getJitter() {
-        return jitter;
+    /**
+     * returns brush name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * get brush source image
+     */
+    public BufferedImage getSourceImage() {
+        return sourceImage;
+    }
+
+    /**
+     * returns brush image after scaling
+     */
+    public BufferedImage getScaledImage() {
+        return scaledImage;
     }
 
     public float getStep() {
         return step;
     }
 
-    public float getOpacity() {
-        return opacity;
+    public void setStep(float step) {
+        this.step = step;
     }
 
-    public void setColor(int color) {
-        this.color = new Color(color);
-        generate();
+    public float getScale() {
+        return scale;
     }
 
     public void setScale(float scale) {
         this.scale = scale;
-        generate();
-        for (BrushListener brushListener : brushListeners) {
-            brushListener.brushScaled(scale);
-        }
+        generateImages();
     }
 
-    public void setStep(float step) {
-        this.step = step;
-        for (BrushListener brushListener : brushListeners) {
-            brushListener.brushStep(step);
-        }
+    public float getJitter() {
+        return jitter;
     }
 
     public void setJitter(float jitter) {
         this.jitter = jitter;
-        for (BrushListener brushListener : brushListeners) {
-            brushListener.brusheJitter(jitter);
-        }
+    }
+
+    public float getOpacity() {
+        return opacity;
     }
 
     public void setOpacity(float opacity) {
         this.opacity = opacity;
-        generate();
+        generateImages();
     }
 
-    public BufferedImage getBrushImage() {
-        return brushImage;
-    }
-    
-    public BufferedImage getScaledImage() {
-        return scaledImage;
+    public int getColor() {
+        return color;
     }
 
-    public PaintBrush paintLine(int x1, int y1, int x2, int y2) {
+    public void setColor(int color) {
+        this.color = color;
+        generateImages();
+    }
+
+    public Brush.PaintBrush paintLine(int x1, int y1, int x2, int y2) {
         x1 -= paintImage.getWidth() / 2;
         x2 -= paintImage.getWidth() / 2;
         y1 -= paintImage.getHeight() / 2;
         y2 -= paintImage.getHeight() / 2;
 
 
-        PaintBrush paintBrush = new PaintBrush(paintImage);
+        Brush.PaintBrush paintBrush = new Brush.PaintBrush(paintImage);
         int size = Math.max(paintImage.getWidth(), paintImage.getHeight());
 
         float dx = x2 - x1;

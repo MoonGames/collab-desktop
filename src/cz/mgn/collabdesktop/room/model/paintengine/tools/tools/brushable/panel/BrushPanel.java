@@ -2,17 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.mgn.collabdesktop.room.view.panels.leftpanel.toolspanel.extra.brushs;
+package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.panel;
 
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.brush.Brush;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.brush.BrushIO;
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.brush.BrushListener;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.BrushEventsListener;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.brush.Brush;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.brush.BrushIO;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.layerspanel.LayersPanel;
 import cz.mgn.collabdesktop.utils.gui.iconComponent.IconButton;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -21,11 +18,10 @@ import javax.swing.event.ChangeListener;
  *
  * @author indy
  */
-public class BrushPanel extends JPanel implements ChangeListener, BrushSelectionListener, BrushListener, ActionListener {
+public class BrushPanel extends JPanel implements ChangeListener, BrushSelectionListener {
 
     protected BrushsList brushList = null;
-    protected ArrayList<BrushSelectionListener> brushSelectionListeners = new ArrayList<BrushSelectionListener>();
-    protected ArrayList<BrushListener> brushListeners = new ArrayList<BrushListener>();
+    protected BrushEventsListener brushEventListener;
     protected Brush selectedBrush = null;
     //
     protected JSlider scale;
@@ -40,28 +36,9 @@ public class BrushPanel extends JPanel implements ChangeListener, BrushSelection
     protected JButton createBrush;
     protected JButton editBrush;
 
-    public BrushPanel() {
+    public BrushPanel(BrushEventsListener brushEventListener) {
+        this.brushEventListener = brushEventListener;
         init();
-    }
-
-    public void addBrushSelectionListener(BrushSelectionListener brushSelectionListener) {
-        brushSelectionListeners.add(brushSelectionListener);
-    }
-
-    public void removeBrushSelectionListener(BrushSelectionListener brushSelectionListener) {
-        brushSelectionListeners.remove(brushSelectionListener);
-    }
-
-    public void addBrushListener(BrushListener brushListener) {
-        brushListeners.add(brushListener);
-    }
-
-    public void removeBrushListener(BrushListener brushListener) {
-        brushListeners.remove(brushListener);
-    }
-
-    public Brush getSelectedBrush() {
-        return selectedBrush;
     }
 
     protected void init() {
@@ -194,7 +171,7 @@ public class BrushPanel extends JPanel implements ChangeListener, BrushSelection
         //TODO: load user defined buttons
 
         selectedBrush = brushList.getSelectedBrush();
-        brushList.addBrushSelectionListener(this);
+        brushList.setBrushSelectionListener(this);
 
         JPanel editCreate = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 
@@ -202,12 +179,13 @@ public class BrushPanel extends JPanel implements ChangeListener, BrushSelection
         Icon icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(LayersPanel.class.getResource("/resources/images/create_brush.png")));
         createBrush = new IconButton("button_32", icon);
         createBrush.setToolTipText("create new brush");
-        createBrush.addActionListener(this);
+        //TODO: creating brush
+        //createBrush.addActionListener(this);
         editCreate.add(createBrush);
         icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(LayersPanel.class.getResource("/resources/images/edit_brush.png")));
         editBrush = new IconButton("button_32", icon);
         editBrush.setToolTipText("edit selected brush");
-        editBrush.addActionListener(this);
+        //editBrush.addActionListener(this);
         editCreate.add(editBrush);
         panel.add(editCreate, BorderLayout.SOUTH);
 
@@ -223,6 +201,7 @@ public class BrushPanel extends JPanel implements ChangeListener, BrushSelection
             if (scale.getValue() != countValue(selectedBrush.getScale())) {
                 selectedBrush.setScale(value);
             }
+            brushEventListener.brushScaled();
         } else if (source == jitter) {
             float value = jitter.getValue() / 10f;
             jitterValueLabel.setText("" + value);
@@ -240,10 +219,7 @@ public class BrushPanel extends JPanel implements ChangeListener, BrushSelection
 
     @Override
     public void brushSelected(Brush brush) {
-        if (selectedBrush != null) {
-            selectedBrush.removeBrushListener(this);
-        }
-        selectedBrush = brush.cloneBrush();
+        selectedBrush = brush;
         setScaleValue(selectedBrush.getScale());
         jitter.setValue((int) (selectedBrush.getJitter() * 10f));
         jitterValueLabel.setText("" + selectedBrush.getJitter());
@@ -251,36 +227,6 @@ public class BrushPanel extends JPanel implements ChangeListener, BrushSelection
         stepValueLabel.setText("" + selectedBrush.getStep());
         opacity.setValue((int) (selectedBrush.getOpacity() * 100f));
         opacityValueLabel.setText("" + opacity.getValue());
-
-        selectedBrush.addBrushListener(this);
-        for (BrushSelectionListener bsl : brushSelectionListeners) {
-            bsl.brushSelected(selectedBrush);
-        }
-    }
-
-    @Override
-    public void brushScaled(float scale) {
-        setScaleValue(scale);
-        for (BrushListener bl : brushListeners) {
-            bl.brushScaled(scale);
-        }
-    }
-
-    @Override
-    public void brusheJitter(float jitter) {
-        for (BrushListener bl : brushListeners) {
-            bl.brusheJitter(jitter);
-        }
-    }
-
-    @Override
-    public void brushStep(float step) {
-        for (BrushListener bl : brushListeners) {
-            bl.brushScaled(step);
-        }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
+        brushEventListener.brushSelected(selectedBrush);
     }
 }

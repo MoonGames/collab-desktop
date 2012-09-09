@@ -8,7 +8,6 @@ import cz.mgn.collabcanvas.interfaces.paintable.Paintable;
 import cz.mgn.collabdesktop.room.view.DeskInterface;
 import cz.mgn.collabdesktop.room.model.executor.CommandExecutor;
 import cz.mgn.collabdesktop.room.model.executor.interfaces.Layers;
-import cz.mgn.collabdesktop.room.model.paintengineOld.PaintEngine;
 import cz.mgn.collabdesktop.utils.gui.iconComponent.IconButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,8 +24,8 @@ import javax.swing.event.ListSelectionListener;
  */
 public class LayersPanel extends JPanel implements Layers, ActionListener {
 
+    protected Paintable paintable;
     protected CommandExecutor executor = null;
-    protected PaintEngine paintEngine = null;
     protected DeskInterface desk = null;
     //
     protected LayersList layersList = null;
@@ -40,10 +39,10 @@ public class LayersPanel extends JPanel implements Layers, ActionListener {
     //
     protected boolean layerNameOpened = false;
 
-    public LayersPanel(CommandExecutor executor, PaintEngine paintEngine, DeskInterface desk) {
-        this.paintEngine = paintEngine;
+    public LayersPanel(CommandExecutor executor, DeskInterface desk, Paintable paintable) {
         this.executor = executor;
         this.desk = desk;
+        this.paintable = paintable;
         executor.setLayers(this);
         initComponents();
     }
@@ -55,7 +54,6 @@ public class LayersPanel extends JPanel implements Layers, ActionListener {
 
         layersList = new LayersList();
         layersList.addListSelectionListener(new ListSelectionListener() {
-
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (e.getValueIsAdjusting()) {
@@ -63,7 +61,7 @@ public class LayersPanel extends JPanel implements Layers, ActionListener {
                     if (selectedL >= 0) {
                         selected = selectedL;
                     }
-                    paintEngine.getCanvas().getPaintable().selectLayer(selected);
+                    paintable.selectLayer(selected);
                 }
             }
         });
@@ -116,7 +114,7 @@ public class LayersPanel extends JPanel implements Layers, ActionListener {
             layersList.setLayersOrder(layersOrderIDs);
             for (int i = 0; i < layersOrderIDs.length; i++) {
                 if (layersOrderIDs[i] == selected) {
-                    paintEngine.getCanvas().getPaintable().selectLayer(selected);
+                    paintable.selectLayer(selected);
                     layersList.setSelectedLayer(selected);
                     return;
                 }
@@ -127,7 +125,7 @@ public class LayersPanel extends JPanel implements Layers, ActionListener {
                 selected = -1;
             }
             layersList.setSelectedLayer(selected);
-            paintEngine.getCanvas().getPaintable().selectLayer(selected);
+            paintable.selectLayer(selected);
         }
     }
 
@@ -155,7 +153,6 @@ public class LayersPanel extends JPanel implements Layers, ActionListener {
         if (!layerNameOpened) {
             layerNameOpened = true;
             LayerName ln = new LayerName(new LayerNameInterface() {
-
                 @Override
                 public void done(String name) {
                     executor.sendAddLayer(layersList.getLayersCount(), -1, name);
@@ -186,7 +183,6 @@ public class LayersPanel extends JPanel implements Layers, ActionListener {
                 String name = layersList.getSelectedLayerName();
                 layerNameOpened = true;
                 LayerName ln = new LayerName(new LayerNameInterface() {
-
                     @Override
                     public void done(String name) {
                         executor.sendSetLayerName(layerID, name);

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.mgn.collabdesktop.room.view.panels.leftpanel.toolspanel.extra.brushs;
+package cz.mgn.collabdesktop.utils.gui;
 
 import java.awt.*;
 import javax.swing.JScrollPane;
@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
  */
 public class WrapLayout extends FlowLayout {
 
-    private Dimension preferredLayoutSize;
 
     /**
      * Constructs a new

@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.mgn.collabdesktop.room.view.panels.leftpanel.toolspanel.extra.brushs;
+package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.panel;
 
-import cz.mgn.collabdesktop.room.model.paintengineOld.tool.tools.brushable.brush.Brush;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.brush.Brush;
+import cz.mgn.collabdesktop.utils.gui.WrapLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,7 +13,6 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 public class BrushsList extends JPanel implements ActionListener {
 
     protected BrushButton selected = null;
-    protected ArrayList<BrushSelectionListener> brushSelectionListeners = new ArrayList<BrushSelectionListener>();
+    protected BrushSelectionListener brushSelectionListener = null;
 
     public BrushsList() {
         setLayout(new WrapLayout(WrapLayout.LEFT, 5, 5));
@@ -46,12 +46,8 @@ public class BrushsList extends JPanel implements ActionListener {
         return null;
     }
 
-    public void addBrushSelectionListener(BrushSelectionListener brushSelectionListener) {
-        brushSelectionListeners.add(brushSelectionListener);
-    }
-
-    public void removeBrushSelectionListener(BrushSelectionListener brushSelectionListener) {
-        brushSelectionListeners.remove(brushSelectionListener);
+    public void setBrushSelectionListener(BrushSelectionListener brushSelectionListener) {
+        this.brushSelectionListener = brushSelectionListener;
     }
 
     @Override
@@ -64,8 +60,8 @@ public class BrushsList extends JPanel implements ActionListener {
             BrushButton button = (BrushButton) source;
             selected = button;
             selected.select();
-            for (int i = 0; i < brushSelectionListeners.size(); i++) {
-                brushSelectionListeners.get(i).brushSelected(selected.getBrush());
+            if (brushSelectionListener != null) {
+                brushSelectionListener.brushSelected(selected.getBrush());
             }
         }
     }
@@ -112,7 +108,7 @@ public class BrushsList extends JPanel implements ActionListener {
             }
             g.fillRect(0, 0, getWidth(), getHeight());
 
-            BufferedImage tp = brush.getBrushImage();
+            BufferedImage tp = brush.getSourceImage();
             float scale = 1f;
             if ((getWidth() - 6) < tp.getWidth()) {
                 scale = (float) (getWidth() - 6) / (float) tp.getWidth();
@@ -120,8 +116,8 @@ public class BrushsList extends JPanel implements ActionListener {
             if ((getHeight() - 6) < tp.getHeight()) {
                 scale = Math.min(scale, (float) (getHeight() - 6) / (float) tp.getHeight());
             }
-            
-            
+
+
             if (scale != 1) {
                 BufferedImage tps = tp;
                 tp = new BufferedImage((int) (tp.getWidth() * scale), (int) (tp.getHeight() * scale), BufferedImage.TYPE_4BYTE_ABGR);

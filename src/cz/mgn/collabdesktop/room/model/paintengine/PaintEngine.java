@@ -9,6 +9,7 @@ import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelListener;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.Tool;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.BrushTool;
 import java.util.ArrayList;
 
 /**
@@ -34,6 +35,7 @@ public class PaintEngine implements CollabPanelListener {
 
     protected void init() {
         //TODO: fill list of tools
+        tools.add(new BrushTool());
     }
 
     public void addListener(PaintEngineListener listener) {
