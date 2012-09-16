@@ -10,9 +10,5 @@ package cz.mgn.collabdesktop.room.view.panels.middlepanel.infopanel;
  */
 public interface InfoInterface {
     
-    public void setMouseCoord(float x, float y);
-    
-    public void setZoom(float zoom);
-    
     public void showInfoString(String string);
 }

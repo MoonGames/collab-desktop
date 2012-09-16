@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  *
  * @author indy
  */
-public class InfoPanel extends JPanel implements InfoListener {
+public class InfoPanel extends JPanel implements InfoListener, InfoInterface {
 
     protected JLabel coordLabel;
     protected JLabel zoomLabel;
@@ -45,6 +45,7 @@ public class InfoPanel extends JPanel implements InfoListener {
         add(infoString);
     }
 
+    @Override
     public void showInfoString(String string) {
         infoString.setText(string);
     }

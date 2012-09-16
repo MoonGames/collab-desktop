@@ -51,6 +51,7 @@ public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdeskto
         middlePanel = new MiddlePanel(executor, this);
         PaintEngine paintEngine = new PaintEngine();
         paintEngine.setCanvas(middlePanel.getCanvas());
+        paintEngine.addListener(middlePanel);
         paintPlace.add(middlePanel);
 
         leftPanel = new LeftPanel(paintEngine, executor, this, middlePanel.getCanvas().getPaintable());
