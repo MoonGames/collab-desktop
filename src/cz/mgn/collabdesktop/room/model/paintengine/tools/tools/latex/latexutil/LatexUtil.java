@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.mgn.collabdesktop.utils.latexutil;
+package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.latex.latexutil;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

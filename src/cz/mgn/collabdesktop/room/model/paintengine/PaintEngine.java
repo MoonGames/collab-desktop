@@ -11,6 +11,7 @@ import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.Tool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.BrushTool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.colorpicker.ColorPickerTool;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.latex.LatexTool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.select.SelectTool;
 import java.util.ArrayList;
 
@@ -41,6 +42,7 @@ public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
         tools.add(new BrushTool());
         tools.add(new ColorPickerTool());
         tools.add(new SelectTool());
+        tools.add(new LatexTool());
     }
 
     public void addListener(PaintEngineListener listener) {
