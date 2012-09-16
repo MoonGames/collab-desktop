@@ -61,14 +61,14 @@ public class SystemPanel extends JPanel implements ActionListener {
         icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(SystemPanel.class.getResource("/resources/images/system/zoomout.png")));
         zoomOut = new SysButton(icon, "zoom out");
         addSysButton(zoomOut);
-
-        icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(SystemPanel.class.getResource("/resources/images/system/print.png")));
-        print = new SysButton(icon, "print");
-        addSysButton(print);
-
-        icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(SystemPanel.class.getResource("/resources/images/system/twitter.png")));
-        tweet = new SysButton(icon, "tweet");
-        addSysButton(tweet);
+//
+//        icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(SystemPanel.class.getResource("/resources/images/system/print.png")));
+//        print = new SysButton(icon, "print");
+//        addSysButton(print);
+//
+//        icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(SystemPanel.class.getResource("/resources/images/system/twitter.png")));
+//        tweet = new SysButton(icon, "tweet");
+//        addSysButton(tweet);
     }
 
     @Override
