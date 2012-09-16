@@ -7,6 +7,7 @@ package cz.mgn.collabdesktop.room.model.paintengine.tools;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.room.model.paintengine.Canvas;
+import cz.mgn.collabdesktop.room.model.paintengine.PaintEngineInterface;
 import cz.mgn.collabdesktop.room.model.paintengine.ToolInfoInterface;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
@@ -30,6 +31,11 @@ public abstract class Tool implements ToolInfoInterface {
      * @param canvas painting canvas, can be null
      */
     public abstract void setCanvas(Canvas canvas);
+    
+    /**
+     * set paint engine interface for commanding paint engine
+     */
+    public abstract void setPaintEngineInterface(PaintEngineInterface paintEngineInterface);
 
     /**
      * inform tool about mouse event (on canvas)

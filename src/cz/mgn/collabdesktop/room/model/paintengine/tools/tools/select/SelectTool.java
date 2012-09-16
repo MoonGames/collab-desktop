@@ -7,17 +7,13 @@ package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.select;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabcanvas.interfaces.selectionable.SelectionUpdate;
-import cz.mgn.collabcanvas.interfaces.visible.MouseCursor;
 import cz.mgn.collabdesktop.room.model.paintengine.Canvas;
-import cz.mgn.collabdesktop.room.model.paintengine.tools.SimpleMouseCursor;
+import cz.mgn.collabdesktop.room.model.paintengine.PaintEngineInterface;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.Tool;
-import cz.mgn.collabdesktop.room.model.paintengine.tools.paintdata.SimplePaintData;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.ToolsUtils;
-import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.BrushToolCursor;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -128,11 +124,6 @@ public class SelectTool extends Tool implements SelectPanelInterface {
     @Override
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
-        if (canvas != null) {
-            canvas.getVisible().setMouseCursor(null);
-            canvas.getVisible().setToolImage(getToolImage());
-            canvas.getVisible().setToolCursor(null);
-        }
     }
 
     @Override
@@ -190,5 +181,9 @@ public class SelectTool extends Tool implements SelectPanelInterface {
         g.fillRect(0, 0, selection.getWidth(), selection.getHeight());
         canvas.getSelectionable().select(new SimpleSelectionUpdate(SelectionUpdate.MODE_XOR,
                 1f, selection));
+    }
+
+    @Override
+    public void setPaintEngineInterface(PaintEngineInterface paintEngineInterface) {
     }
 }

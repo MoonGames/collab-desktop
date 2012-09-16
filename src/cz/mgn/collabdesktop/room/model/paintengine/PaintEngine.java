@@ -10,6 +10,7 @@ import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelListener;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.Tool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.BrushTool;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.colorpicker.ColorPickerTool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.select.SelectTool;
 import java.util.ArrayList;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author indy
  */
-public class PaintEngine implements CollabPanelListener {
+public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
 
     protected CollabCanvas canvas;
     protected Canvas cnv;
@@ -38,6 +39,7 @@ public class PaintEngine implements CollabPanelListener {
     protected void init() {
         //TODO: fill list of tools
         tools.add(new BrushTool());
+        tools.add(new ColorPickerTool());
         tools.add(new SelectTool());
     }
 
@@ -83,9 +85,21 @@ public class PaintEngine implements CollabPanelListener {
         if (tool != null && !tools.contains(tool)) {
             throw new IllegalStateException("This tool is not available!");
         }
+
+        if (canvas != null) {
+            canvas.getVisible().setMouseCursor(null);
+            canvas.getVisible().setToolImage(null);
+            canvas.getVisible().setToolCursor(null);
+        }
+
+        if (selectedTool != null) {
+            selectedTool.setCanvas(null);
+            selectedTool.setPaintEngineInterface(null);
+        }
         selectedTool = tool;
         if (tool != null) {
             tool.setCanvas(cnv);
+            tool.setPaintEngineInterface(this);
         }
         synchronized (listeners) {
             for (PaintEngineListener listener : listeners) {
@@ -99,9 +113,15 @@ public class PaintEngine implements CollabPanelListener {
      *
      * @param color ARGB color
      */
+    @Override
     public void setColor(int color) {
         for (Tool tool : tools) {
             tool.setColor(color);
+        }
+        synchronized (listeners) {
+            for (PaintEngineListener listener : listeners) {
+                listener.colorChanged(color);
+            }
         }
     }
 
@@ -114,6 +134,7 @@ public class PaintEngine implements CollabPanelListener {
         if (this.canvas != null) {
             this.canvas.getListenable().removeListener(this);
         }
+        this.canvas = canvas;
         cnv = null;
         if (canvas != null) {
             cnv = new Canvas(canvas.getVisible(), canvas.getPaintable(), canvas.getSelectionable());

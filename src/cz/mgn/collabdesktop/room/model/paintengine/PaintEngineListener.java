@@ -14,4 +14,11 @@ public interface PaintEngineListener {
      * another tool is selected
      */
     public void selectedToolChanged(ToolInfoInterface selectedTool);
+    
+    /**
+     * paint engine using this color now
+     * 
+     * @param newColor ARGB color
+     */
+    public void colorChanged(int newColor);
 }

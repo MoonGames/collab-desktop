@@ -6,6 +6,7 @@ package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable;
 
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
+import cz.mgn.collabdesktop.room.model.paintengine.PaintEngineInterface;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.SimpleMouseCursor;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.ToolsUtils;
 import cz.mgn.collabdesktop.utils.ImageUtil;
@@ -90,5 +91,9 @@ public class BrushTool extends BrushableTool {
     @Override
     public String getToolDescription() {
         return "Press CTRL for erase.";
+    }
+
+    @Override
+    public void setPaintEngineInterface(PaintEngineInterface paintEngineInterface) {
     }
 }
