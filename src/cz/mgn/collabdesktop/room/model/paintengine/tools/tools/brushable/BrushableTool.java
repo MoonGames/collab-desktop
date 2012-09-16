@@ -64,8 +64,14 @@ public abstract class BrushableTool extends Tool implements BrushEventsListener 
     @Override
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
-        if (canvas != null && selectedBrush != null) {
-            canvas.getVisible().setToolCursor(new BrushToolCursor(selectedBrush));
+        if (canvas != null) {
+            canvas.getVisible().setMouseCursor(null);
+            canvas.getVisible().setToolImage(null);
+            if (selectedBrush != null) {
+                canvas.getVisible().setToolCursor(new BrushToolCursor(selectedBrush));
+            } else {
+                canvas.getVisible().setToolCursor(null);
+            }
         }
     }
 

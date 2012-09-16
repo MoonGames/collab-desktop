@@ -10,6 +10,7 @@ import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelListener;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.Tool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.BrushTool;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.select.SelectTool;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class PaintEngine implements CollabPanelListener {
 
     protected CollabCanvas canvas;
+    protected Canvas cnv;
     protected ArrayList<PaintEngineListener> listeners = new ArrayList<PaintEngineListener>();
     /**
      * instances of available tools
@@ -36,6 +38,7 @@ public class PaintEngine implements CollabPanelListener {
     protected void init() {
         //TODO: fill list of tools
         tools.add(new BrushTool());
+        tools.add(new SelectTool());
     }
 
     public void addListener(PaintEngineListener listener) {
@@ -81,6 +84,9 @@ public class PaintEngine implements CollabPanelListener {
             throw new IllegalStateException("This tool is not available!");
         }
         selectedTool = tool;
+        if (tool != null) {
+            tool.setCanvas(cnv);
+        }
         synchronized (listeners) {
             for (PaintEngineListener listener : listeners) {
                 listener.selectedToolChanged(selectedTool);
@@ -108,12 +114,12 @@ public class PaintEngine implements CollabPanelListener {
         if (this.canvas != null) {
             this.canvas.getListenable().removeListener(this);
         }
-        Canvas cnv = null;
+        cnv = null;
         if (canvas != null) {
             cnv = new Canvas(canvas.getVisible(), canvas.getPaintable(), canvas.getSelectionable());
         }
-        for (Tool tool : tools) {
-            tool.setCanvas(cnv);
+        if (selectedTool != null) {
+            selectedTool.setCanvas(cnv);
         }
         canvas.getListenable().addListener(this);
     }
