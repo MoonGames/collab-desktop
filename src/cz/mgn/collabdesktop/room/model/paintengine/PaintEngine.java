@@ -15,6 +15,7 @@ import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.colorpicker.Color
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.latex.LatexTool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.paintbucket.PaintBucketTool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.select.SelectTool;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.text.TextTool;
 import java.util.ArrayList;
 
 /**
@@ -46,6 +47,7 @@ public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
         tools.add(new SelectTool());
         tools.add(new ClearTool());
         tools.add(new PaintBucketTool());
+        tools.add(new TextTool());
         tools.add(new LatexTool());
     }
 

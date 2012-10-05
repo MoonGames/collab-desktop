@@ -9,12 +9,11 @@ import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.room.model.paintengine.Canvas;
 import cz.mgn.collabdesktop.room.model.paintengine.PaintEngineInterface;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.Tool;
-import cz.mgn.collabdesktop.room.model.paintengine.tools.paintdata.SimplePaintData;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.paintdata.SingleImagePaintData;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.ToolsUtils;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
@@ -75,9 +74,7 @@ public class LatexTool extends Tool implements LatexImageListener {
             if (toolApplyImage != null && canvas != null) {
                 int x = e.getEventCoordinates().x - (toolApplyImage.getWidth() / 2);
                 int y = e.getEventCoordinates().y - (toolApplyImage.getHeight() / 2);
-                ArrayList<Point> points = new ArrayList<Point>();
-                points.add(new Point(x, y));
-                SimplePaintData paintData = new SimplePaintData(points, toolApplyImage, !e.isControlDown());
+                SingleImagePaintData paintData = new SingleImagePaintData(new Point(x, y), toolApplyImage, !e.isControlDown());
                 canvas.getPaintable().paint(paintData);
             }
         }

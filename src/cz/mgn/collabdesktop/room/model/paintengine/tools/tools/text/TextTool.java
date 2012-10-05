@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.clear;
+package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.text;
 
+import cz.mgn.collabcanvas.canvas.utils.graphics.OutlineUtil;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.room.model.paintengine.Canvas;
@@ -13,7 +14,7 @@ import cz.mgn.collabdesktop.room.model.paintengine.tools.paintdata.SingleImagePa
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.ToolsUtils;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
@@ -21,19 +22,21 @@ import javax.swing.JPanel;
  *
  * @author indy
  */
-public class ClearTool extends Tool {
+public class TextTool extends Tool implements TextToolPanelListener {
 
-    protected BufferedImage toolIcon;
-    protected int color = 0xff000000;
     protected Canvas canvas = null;
+    protected TextToolPanel panel;
+    protected BufferedImage toolIcon;
+    protected BufferedImage textImage = null;
 
-    public ClearTool() {
-        toolIcon = ImageUtil.loadImageFromResources("/resources/tools/clear-icon.png");
+    public TextTool() {
+        toolIcon = ImageUtil.loadImageFromResources("/resources/tools/text-icon.png");
+        panel = new TextToolPanel(this);
     }
 
     @Override
     public void setColor(int color) {
-        this.color = color;
+        panel.setColor(new Color(color));
     }
 
     @Override
@@ -48,19 +51,10 @@ public class ClearTool extends Tool {
     @Override
     public void mouseEvent(CollabPanelMouseEvent e) {
         if (e.getEventType() == CollabPanelMouseEvent.TYPE_PRESS) {
-            if (canvas != null) {
-                int w = canvas.getPaintable().getWidth();
-                int h = canvas.getPaintable().getHeight();
-                BufferedImage fill = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
-                Graphics g = fill.getGraphics();
-                if (e.isControlDown()) {
-                    g.setColor(Color.BLACK);
-                } else {
-                    g.setColor(new Color(color));
-                }
-                g.fillRect(0, 0, fill.getWidth(), fill.getHeight());
-                g.dispose();
-                canvas.getPaintable().paint(new SingleImagePaintData(fill, !e.isControlDown()));
+            if (canvas != null && textImage != null) {
+                boolean add = !e.isControlDown();
+                Point point = new Point(e.getEventCoordinates().x - (textImage.getWidth() / 2), e.getEventCoordinates().y - (textImage.getHeight() / 2));
+                canvas.getPaintable().paint(new SingleImagePaintData(point, textImage, add));
             }
         }
     }
@@ -81,16 +75,24 @@ public class ClearTool extends Tool {
 
     @Override
     public String getToolName() {
-        return "Clearer";
+        return "Text";
     }
 
     @Override
     public String getToolDescription() {
-        return "Press CTRL for earsing.";
+        return "Click to apply.";
     }
 
     @Override
     public JPanel getToolPanel() {
-        return null;
+        return panel;
+    }
+
+    @Override
+    public void textRendered(BufferedImage textImage) {
+        this.textImage = textImage;
+        if (canvas != null) {
+            canvas.getVisible().setToolImage(new TextToolImage(textImage));
+        }
     }
 }

@@ -10,6 +10,7 @@ import cz.mgn.collabdesktop.room.model.paintengine.Canvas;
 import cz.mgn.collabdesktop.room.model.paintengine.PaintEngineInterface;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.Tool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.paintdata.SimplePaintData;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.paintdata.SingleImagePaintData;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.ToolsUtils;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.Graphics;
@@ -65,9 +66,7 @@ public class PaintBucketTool extends Tool {
                 Graphics g = generate.getGraphics();
                 g.drawImage(gen, 0, 0, null);
                 g.dispose();
-                ArrayList<Point> points = new ArrayList<Point>();
-                points.add(new Point(0, 0));
-                canvas.getPaintable().paint(new SimplePaintData(points, generate, !e.isControlDown()));
+                canvas.getPaintable().paint(new SingleImagePaintData(generate, !e.isControlDown()));
             }
         }
     }
