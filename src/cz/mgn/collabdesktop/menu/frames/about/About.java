@@ -39,6 +39,7 @@ public class About extends MenuFrame implements ActionListener {
 
     @Override
     protected void initComponents() {
+        setMinimumSize(new Dimension(400, 400));
         setPreferredSize(new Dimension(400, 450));
         setSize(getPreferredSize());
         setLayout(new BorderLayout(0, 10));

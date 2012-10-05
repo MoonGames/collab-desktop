@@ -8,16 +8,11 @@ import cz.mgn.collabdesktop.menu.MenuFrame;
 import cz.mgn.collabdesktop.utils.Utils;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JEditorPane;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
@@ -38,6 +33,7 @@ public class Licence extends MenuFrame {
 
     @Override
     protected void initComponents() {
+        setMinimumSize(new Dimension(400, 400));
         setPreferredSize(new Dimension(400, 450));
         setSize(getPreferredSize());
         setLayout(new BorderLayout(0, 10));

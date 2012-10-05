@@ -4,7 +4,6 @@
  */
 package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.text;
 
-import cz.mgn.collabcanvas.canvas.utils.graphics.OutlineUtil;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.room.model.paintengine.Canvas;
@@ -42,6 +41,9 @@ public class TextTool extends Tool implements TextToolPanelListener {
     @Override
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
+        if(canvas != null && textImage != null) {
+            canvas.getVisible().setToolImage(new TextToolImage(textImage));
+        }
     }
 
     @Override
