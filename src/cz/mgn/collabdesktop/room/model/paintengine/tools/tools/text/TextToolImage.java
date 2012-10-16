@@ -33,8 +33,8 @@ public class TextToolImage implements ToolImage {
     }
 
     protected void generateScaledImage() {
-        int w = (int) (lastScale * source.getWidth());
-        int h = (int) (lastScale * source.getHeight());
+        int w = (int) Math.max((lastScale * source.getWidth()), 1);
+        int h = (int) Math.max((lastScale * source.getHeight()), 1);
         toolImageScaled = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = (Graphics2D) toolImageScaled.getGraphics();
         g.drawImage(source, 0, 0, w, h, null);

@@ -8,7 +8,6 @@ import cz.mgn.collabcanvas.canvas.utils.graphics.OutlineUtil;
 import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -41,8 +40,8 @@ public class SelectToolImage implements ToolImage {
     }
 
     protected void generateScaled() {
-        int w = (int) (width * lastScale);
-        int h = (int) (height * lastScale);
+        int w = (int) Math.max(width * lastScale, 1);
+        int h = (int) Math.max(height * lastScale, 1);
         BufferedImage sourceScaled = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = (Graphics2D) sourceScaled.getGraphics();
         g.setColor(Color.GRAY);

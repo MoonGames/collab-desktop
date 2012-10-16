@@ -35,8 +35,8 @@ public class BrushToolCursor implements ToolCursor {
 
     protected void generateBrushCursorScaled(float scale) {
         BufferedImage outlineSource = brush.getScaledImage();
-        int w = (int) (scale * outlineSource.getWidth());
-        int h = (int) (scale * outlineSource.getHeight());
+        int w = (int) Math.max(scale * outlineSource.getWidth(), 1);
+        int h = (int) Math.max(scale * outlineSource.getHeight(), 1);
         BufferedImage outlineSourceScaled = new BufferedImage(w, h, outlineSource.getType());
 
         Graphics2D g = (Graphics2D) outlineSourceScaled.getGraphics();

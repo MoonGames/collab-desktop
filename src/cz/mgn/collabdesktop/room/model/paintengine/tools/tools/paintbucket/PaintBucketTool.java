@@ -9,14 +9,11 @@ import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.room.model.paintengine.Canvas;
 import cz.mgn.collabdesktop.room.model.paintengine.PaintEngineInterface;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.Tool;
-import cz.mgn.collabdesktop.room.model.paintengine.tools.paintdata.SimplePaintData;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.paintdata.SingleImagePaintData;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.ToolsUtils;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**

@@ -18,6 +18,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Set;
 import javax.swing.JPanel;
 
 /**
@@ -57,14 +58,9 @@ public class SelectTool extends Tool implements SelectPanelInterface {
     }
 
     protected void mousePressed(int x, int y, boolean control) {
-        if (control) {
-            reset();
-            canvas.getSelectionable().selectAll();
-        } else {
-            x1 = x;
-            y1 = y;
-            set(x, y);
-        }
+        x1 = x;
+        y1 = y;
+        set(x, y);
     }
 
     protected void mouseDragged(int x, int y) {
@@ -76,29 +72,38 @@ public class SelectTool extends Tool implements SelectPanelInterface {
             Rectangle r = countRect();
             ArrayList<Point> points = new ArrayList<Point>();
             points.add(new Point(r.x, r.y));
-            canvas.getSelectionable().select(new SimpleSelectionUpdate(toolPanel.getSelectionType(), new Point(r.x, r.y), 1f, generateSelectionImage()));
+            if (canvas != null) {
+                canvas.getSelectionable().select(new SimpleSelectionUpdate(toolPanel.getSelectionType(), new Point(r.x, r.y), 1f, generateSelectionImage()));
+            }
         }
         reset();
     }
 
     protected Rectangle countRect() {
-        int xx1 = Math.max(0, Math.min(x1, x2));
-        int xx2 = Math.min(Math.max(x1, x2), canvas.getPaintable().getWidth());
-        if (xx1 == xx2) {
-            xx2++;
+        if (canvas != null) {
+            int xx1 = Math.min(x1, x2);
+            int xx2 = Math.max(x1, x2);
+            if (xx1 == xx2) {
+                xx2++;
+            }
+            int yy1 = Math.min(y1, y2);
+            int yy2 = Math.max(y1, y2);
+            if (yy1 == yy2) {
+                yy2++;
+            }
+            return new Rectangle(xx1, yy1, xx2 - xx1, yy2 - yy1);
         }
-        int yy1 = Math.max(0, Math.min(y1, y2));
-        int yy2 = Math.min(Math.max(y1, y2), canvas.getPaintable().getHeight());
-        if (yy1 == yy2) {
-            yy2++;
-        }
-        return new Rectangle(xx1, yy1, xx2 - xx1, yy2 - yy1);
+        return new Rectangle();
     }
 
     protected void set(int x, int y) {
-        x2 = x;
-        y2 = y;
-        canvas.getVisible().setToolImage(getToolImage());
+        if (canvas != null) {
+            x2 = x;
+            y2 = y;
+            canvas.getVisible().setToolImage(getToolImage());
+        } else {
+            reset();
+        }
     }
 
     protected void reset() {
@@ -106,7 +111,9 @@ public class SelectTool extends Tool implements SelectPanelInterface {
         x2 = -1;
         y1 = -1;
         y2 = -1;
-        canvas.getVisible().setToolImage(getToolImage());
+        if (canvas != null) {
+            canvas.getVisible().setToolImage(getToolImage());
+        }
     }
 
     protected SelectToolImage getToolImage() {
@@ -145,6 +152,13 @@ public class SelectTool extends Tool implements SelectPanelInterface {
 
     @Override
     public void keyEvent(CollabPanelKeyEvent e) {
+        Set<Integer> pressedKeys = e.getPressedKeyCodes();
+        if (pressedKeys.contains(CollabPanelKeyEvent.KEY_CODE_CONTROL)
+                && pressedKeys.contains(CollabPanelKeyEvent.KEY_CODE_A)) {
+            if (canvas != null) {
+                canvas.getSelectionable().selectAll();
+            }
+        }
     }
 
     @Override
@@ -174,13 +188,15 @@ public class SelectTool extends Tool implements SelectPanelInterface {
 
     @Override
     public void invertSelection() {
-        BufferedImage selection = new BufferedImage(canvas.getPaintable().getWidth(),
-                canvas.getPaintable().getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics g = selection.getGraphics();
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, selection.getWidth(), selection.getHeight());
-        canvas.getSelectionable().select(new SimpleSelectionUpdate(SelectionUpdate.MODE_XOR,
-                1f, selection));
+        if (canvas != null) {
+            BufferedImage selection = new BufferedImage(canvas.getPaintable().getWidth(),
+                    canvas.getPaintable().getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+            Graphics g = selection.getGraphics();
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, selection.getWidth(), selection.getHeight());
+            canvas.getSelectionable().select(new SimpleSelectionUpdate(SelectionUpdate.MODE_XOR,
+                    1f, selection));
+        }
     }
 
     @Override

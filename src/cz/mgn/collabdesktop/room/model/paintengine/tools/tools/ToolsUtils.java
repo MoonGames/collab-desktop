@@ -4,9 +4,7 @@
  */
 package cz.mgn.collabdesktop.room.model.paintengine.tools.tools;
 
-import cz.mgn.collabcanvas.interfaces.visible.ToolImage;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
