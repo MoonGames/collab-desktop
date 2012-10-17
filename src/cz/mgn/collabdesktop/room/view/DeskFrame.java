@@ -4,16 +4,16 @@
  */
 package cz.mgn.collabdesktop.room.view;
 
-import cz.mgn.collabdesktop.room.view.eframes.EFrame;
-import cz.mgn.collabdesktop.room.model.executor.CommandExecutor;
-import cz.mgn.collabdesktop.room.view.panels.downpanel.DownPanel;
-import cz.mgn.collabdesktop.room.view.panels.leftpanel.LeftPanel;
-import cz.mgn.collabdesktop.room.view.panels.middlepanel.MiddlePanel;
 import cz.mgn.collabdesktop.menu.MenuFrame;
 import cz.mgn.collabdesktop.menu.frames.ChooseRoom;
 import cz.mgn.collabdesktop.menu.frames.about.About;
 import cz.mgn.collabdesktop.menu.frames.settings.SettingsFrame;
+import cz.mgn.collabdesktop.room.model.executor.CommandExecutor;
 import cz.mgn.collabdesktop.room.model.paintengine.PaintEngine;
+import cz.mgn.collabdesktop.room.view.eframes.EFrame;
+import cz.mgn.collabdesktop.room.view.panels.downpanel.DownPanel;
+import cz.mgn.collabdesktop.room.view.panels.leftpanel.LeftPanel;
+import cz.mgn.collabdesktop.room.view.panels.middlepanel.MiddlePanel;
 import cz.mgn.collabdesktop.utils.CConstans;
 import cz.mgn.collabdesktop.utils.Utils;
 import java.awt.Image;
@@ -82,7 +82,7 @@ public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdeskto
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(900, 450));
+        setMinimumSize(new java.awt.Dimension(900, 550));
 
         leftSidePanel.setBackground(new java.awt.Color(249, 125, 2));
         leftSidePanel.setPreferredSize(new java.awt.Dimension(250, 561));

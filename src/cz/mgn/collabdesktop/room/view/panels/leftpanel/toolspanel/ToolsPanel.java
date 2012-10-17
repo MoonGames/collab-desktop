@@ -36,7 +36,7 @@ public class ToolsPanel extends JPanel implements ActionListener {
     }
 
     protected void initComponents() {
-        setPreferredSize(new Dimension(100, 30 + 3 * 32));
+        setPreferredSize(new Dimension(100, 30 + 2 * 32));
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.CENTER;
@@ -47,7 +47,7 @@ public class ToolsPanel extends JPanel implements ActionListener {
         c.weighty = 1;
 
         toolsInsdePanel = new JPanel();
-        int n = 5;
+        int n = 4;
         int wGap = 8;
         toolsInsdePanel.setPreferredSize(new Dimension((n + 1) * wGap + n * 32, 20));
         toolsInsdePanel.setLayout(new FlowLayout(FlowLayout.CENTER, wGap, 10));
