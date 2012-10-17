@@ -73,6 +73,7 @@ public class BrushPanel extends JPanel implements ChangeListener, BrushSelection
         c.weightx = 0;
         c.insets = new Insets(4, 5, 4, 5);
         scaleValueLabel = new JLabel("1");
+        scaleValueLabel.setMinimumSize(new Dimension(35, scaleValueLabel.getMinimumSize().height));
         panel.add(scaleValueLabel, c);
 
         c.gridx = 0;
@@ -172,22 +173,6 @@ public class BrushPanel extends JPanel implements ChangeListener, BrushSelection
 
         selectedBrush = brushList.getSelectedBrush();
         brushList.setBrushSelectionListener(this);
-
-        JPanel editCreate = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-
-
-        Icon icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(LayersPanel.class.getResource("/resources/images/create_brush.png")));
-        createBrush = new IconButton("button_32", icon);
-        createBrush.setToolTipText("create new brush");
-        //TODO: creating brush
-        //createBrush.addActionListener(this);
-        editCreate.add(createBrush);
-        icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(LayersPanel.class.getResource("/resources/images/edit_brush.png")));
-        editBrush = new IconButton("button_32", icon);
-        editBrush.setToolTipText("edit selected brush");
-        //editBrush.addActionListener(this);
-        editCreate.add(editBrush);
-        panel.add(editCreate, BorderLayout.SOUTH);
 
         return panel;
     }
