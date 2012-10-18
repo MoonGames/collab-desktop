@@ -4,27 +4,31 @@
  */
 package cz.mgn.collabdesktop.menu.frames.settings;
 
-import java.awt.FlowLayout;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import cz.mgn.collabdesktop.utils.gui.FormUtility;
+import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 
 /**
  *
- *  @author indy
+ * @author indy
  */
 public abstract class SettingsPanel extends JPanel {
-    
+
+    protected JPanel form;
+    protected FormUtility formUtility;
+
     public SettingsPanel() {
-        setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        form = new JPanel();
+        setLayout(new BorderLayout());
+        add(form, BorderLayout.NORTH);
+        form.setLayout(new GridBagLayout());
+        formUtility = new FormUtility();
     }
-    
+
+    public abstract void reset();
+
+    public abstract void set();
+
     public abstract String getPanelName();
-    
-    public void addProperty(String name, JComponent component) {
-        add(new JLabel(name));
-        add(component);
-        add(new JSeparator());
-    }
 }
