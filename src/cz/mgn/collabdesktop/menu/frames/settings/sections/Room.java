@@ -75,7 +75,7 @@ public class Room extends SettingsPanel {
         
         try {
             int dWidth = Integer.parseInt(defaultWidth.getText());
-            dWidth = Math.min(dWidth, Settings.defaultRoomWidth);
+            dWidth = Math.min(dWidth, Settings.maximalRoomWidth);
             if (dWidth > 0 && dWidth < 4096) {
                 Settings.defaultRoomWidth = dWidth;
             }
@@ -83,7 +83,7 @@ public class Room extends SettingsPanel {
         }
         try {
             int dHeight = Integer.parseInt(defaultHeight.getText());
-            dHeight = Math.min(dHeight, Settings.defaultRoomHeight);
+            dHeight = Math.min(dHeight, Settings.maximalRoomHeight);
             if (dHeight > 0 && dHeight < 4096) {
                 Settings.defaultRoomHeight = dHeight;
             }

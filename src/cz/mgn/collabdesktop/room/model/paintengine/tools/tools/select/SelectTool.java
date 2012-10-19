@@ -178,7 +178,7 @@ public class SelectTool extends Tool implements SelectPanelInterface {
 
     @Override
     public String getToolDescription() {
-        return "Press CTRL and click to select all.";
+        return "Press CTRL+A to select all.";
     }
 
     @Override

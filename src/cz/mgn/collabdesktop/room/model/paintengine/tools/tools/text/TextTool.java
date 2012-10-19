@@ -82,7 +82,7 @@ public class TextTool extends Tool implements TextToolPanelListener {
 
     @Override
     public String getToolDescription() {
-        return "Click to apply.";
+        return "Click on canvas to draw text.";
     }
 
     @Override

@@ -6,6 +6,7 @@ package cz.mgn.collabdesktop.menu.frames.settings;
 
 import cz.mgn.collabdesktop.utils.gui.FormUtility;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 
@@ -19,6 +20,7 @@ public abstract class SettingsPanel extends JPanel {
     protected FormUtility formUtility;
 
     public SettingsPanel() {
+        setMinimumSize(new Dimension(400, 400));
         form = new JPanel();
         setLayout(new BorderLayout());
         add(form, BorderLayout.NORTH);
