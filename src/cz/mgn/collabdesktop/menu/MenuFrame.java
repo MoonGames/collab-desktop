@@ -17,17 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.menu;
 
+import cz.mgn.collabdesktop.utils.gui.GUIUtils;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 /**
  *
- *            @author Martin Indra <aktive@seznam.cz>
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public abstract class MenuFrame extends JFrame {
 
@@ -44,8 +46,7 @@ public abstract class MenuFrame extends JFrame {
     protected abstract void initComponents();
 
     protected void centerWindow() {
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(Math.max(0, (dim.width - getWidth()) / 2), Math.max(0, (dim.height - getHeight()) / 2));
+        GUIUtils.centerWindow(this);
     }
 
     public void setWindowCenterLocation(int cX, int cY) {

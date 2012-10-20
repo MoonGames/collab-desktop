@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.room.view;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
@@ -32,6 +31,8 @@ import cz.mgn.collabdesktop.room.view.panels.leftpanel.LeftPanel;
 import cz.mgn.collabdesktop.room.view.panels.middlepanel.MiddlePanel;
 import cz.mgn.collabdesktop.utils.CConstans;
 import cz.mgn.collabdesktop.utils.Utils;
+import cz.mgn.collabdesktop.utils.gui.GUIUtils;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -57,8 +58,8 @@ public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdeskto
         Image icon = Toolkit.getDefaultToolkit().getImage(MenuFrame.class.getResource("/resources/images/icon-32.png"));
         setIconImage(icon);
         initComponents();
-        setLocation(Math.max(0, x - (getWidth() / 2)), Math.max(0, y - (getHeight() / 2)));
         setTitle("Collab - " + roomName);
+        GUIUtils.centerWindow(this);
         localInit();
     }
 
@@ -192,7 +193,6 @@ public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdeskto
         // TODO add your handling code here:
         new SettingsFrame();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel downSidePanel;
     private javax.swing.JMenu jMenu1;
