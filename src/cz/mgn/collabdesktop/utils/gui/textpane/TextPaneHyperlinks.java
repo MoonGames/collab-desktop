@@ -30,9 +30,7 @@ import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -69,6 +67,7 @@ public class TextPaneHyperlinks extends JTextPane implements HyperlinkListener, 
 
     /**
      * vlozi retezec
+     *
      * @param pos pozice na kterou se prida retezec
      * @param string retezec
      * @param style style jakym se ma retezec pridat
@@ -107,14 +106,20 @@ public class TextPaneHyperlinks extends JTextPane implements HyperlinkListener, 
             } catch (BadLocationException ex) {
                 Logger.getLogger(TextPaneHyperlinks.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else {
+            //HACK: if text ending by link, rest of area is clickable, so adding white character after links on end of string
+            try {
+                doc.insertString(l + pos + string.substring(l).length(), " ", style);
+            } catch (BadLocationException ex) {
+                Logger.getLogger(TextPaneHyperlinks.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
     }
 
     @Override
     public void hyperlinkUpdate(HyperlinkEvent he) {
         if (he.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                Utils.browse(he.getURL().toString());
+            Utils.browse(he.getURL().toString());
         }
         if (he.getEventType() == HyperlinkEvent.EventType.ENTERED) {
             setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
