@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.menu.frames.about;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
@@ -37,11 +33,11 @@ import javax.swing.*;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class About extends MenuFrame implements ActionListener {
 
-    protected JButton licence;
+    protected JButton license;
     protected JButton authors;
     protected JButton close;
 
@@ -74,9 +70,9 @@ public class About extends MenuFrame implements ActionListener {
         buttons.setLayout(new GridLayout(1, 3, 5, 0));
         add(buttons, BorderLayout.SOUTH);
 
-        licence = new JButton("Licence");
-        licence.addActionListener(this);
-        buttons.add(licence);
+        license = new JButton("License");
+        license.addActionListener(this);
+        buttons.add(license);
         authors = new JButton("Authors");
         authors.addActionListener(this);
         buttons.add(authors);
@@ -89,8 +85,8 @@ public class About extends MenuFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == close) {
             dispose();
-        } else if (e.getSource() == licence) {
-            goTo(new Licence(), true);
+        } else if (e.getSource() == license) {
+            goTo(new License(), true);
         } else if (e.getSource() == authors) {
             goTo(new Authors(), true);
         }
@@ -104,7 +100,7 @@ public class About extends MenuFrame implements ActionListener {
 
         protected void init() {
             setLayout(new BorderLayout());
-            JTextArea info = new JTextArea("Collab is tool for shared drawing over the internet with possibility connection of many users in real-time. Licenced as GNU GPLv3. Copyright 2012 Moon Games.");
+            JTextArea info = new JTextArea("Collab is tool for shared drawing over the internet with possibility connection of many users in real-time. Licensed as GNU GPLv3. Copyright 2012 Moon Games.");
             info.setLineWrap(true);
             info.setWrapStyleWord(true);
             info.setEditable(false);

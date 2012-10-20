@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.room.view.panels.downpanel.frames.twitter;
 
 import cz.mgn.collabdesktop.room.view.eframes.EFrame;
@@ -38,7 +34,7 @@ import javax.swing.JTextArea;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class TwitterMessage extends EFrame implements ActionListener {
 

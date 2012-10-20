@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.menu.frames;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
@@ -29,12 +25,11 @@ import cz.mgn.collabdesktop.network.Client;
 import cz.mgn.collabdesktop.network.ConnectionInterface;
 import cz.mgn.collabdesktop.network.commands.CommandGenerator;
 import java.awt.*;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 
 /**
  *
- *          @author indy
+ *          @author Martin Indra <aktive@seznam.cz>
  */
 public class ConnectingProgress extends MenuFrame implements ConnectionInterface {
 

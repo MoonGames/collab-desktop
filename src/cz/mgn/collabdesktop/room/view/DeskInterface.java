@@ -18,17 +18,13 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.room.view;
 
 import cz.mgn.collabdesktop.room.view.eframes.EFrame;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public interface DeskInterface {
 

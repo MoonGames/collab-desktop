@@ -18,15 +18,10 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.menu.frames;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
 import cz.mgn.collabdesktop.utils.settings.Settings;
-import cz.mgn.collabdesktop.utils.settings.SettingsIO;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +29,7 @@ import javax.swing.*;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class CreateRoom extends MenuFrame implements ActionListener {
 

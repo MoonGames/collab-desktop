@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.utils;
 
 import java.awt.image.BufferedImage;
@@ -35,7 +31,7 @@ import javax.imageio.ImageIO;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class ImageUtil {
 

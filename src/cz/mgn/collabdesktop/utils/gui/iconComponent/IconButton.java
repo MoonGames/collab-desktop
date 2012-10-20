@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.utils.gui.iconComponent;
 
 import cz.mgn.collabdesktop.utils.ImageUtil;
@@ -36,7 +32,7 @@ import javax.swing.JButton;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class IconButton extends JButton implements MouseListener {
 

@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.select;
 
 import cz.mgn.collabcanvas.interfaces.selectionable.SelectionUpdate;
@@ -40,7 +36,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class SelectPanel extends JPanel implements ItemListener, ActionListener {
 

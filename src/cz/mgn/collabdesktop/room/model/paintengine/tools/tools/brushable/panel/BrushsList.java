@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.panel;
 
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.brushable.brush.Brush;
@@ -38,7 +34,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class BrushsList extends JPanel implements ActionListener {
 

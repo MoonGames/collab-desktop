@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.menu.frames.settings.sections;
 
 import cz.mgn.collabdesktop.menu.frames.settings.SettingsInterface;
@@ -33,7 +29,7 @@ import javax.swing.JButton;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class LoadAndSave extends SettingsPanel implements ActionListener {
 

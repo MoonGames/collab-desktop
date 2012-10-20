@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.text;
 
 import cz.mgn.collabdesktop.utils.textgraphicsutil.TextGraphicsUtil;
@@ -47,7 +43,7 @@ import javax.swing.event.DocumentListener;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class TextToolPanel extends JPanel {
 

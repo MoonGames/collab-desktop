@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.utils.gui;
 
 import java.awt.Component;
@@ -30,8 +29,7 @@ import javax.swing.JLabel;
 /**
  * Simple utility class for creating forms that have a column of labels and a
  * column of fields. All of the labels have the same width, determined by the
- * width of the widest label component. <P> Philip Isenhour - 060628 -
- * http://javatechniques.com/
+ * width of the widest label component.
  */
 public class FormUtility {
 

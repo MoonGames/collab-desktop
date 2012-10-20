@@ -18,23 +18,18 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.room.view.panels.downpanel;
 
 import cz.mgn.collabcanvas.canvas.CollabCanvas;
-import cz.mgn.collabdesktop.room.view.DeskInterface;
 import cz.mgn.collabdesktop.room.model.executor.CommandExecutor;
 import cz.mgn.collabdesktop.room.model.executor.interfaces.Users;
+import cz.mgn.collabdesktop.room.view.DeskInterface;
+import cz.mgn.collabdesktop.room.view.panels.downpanel.frames.SettingsNeeded;
 import cz.mgn.collabdesktop.room.view.panels.downpanel.frames.saveimage.SaveImage;
 import cz.mgn.collabdesktop.room.view.panels.downpanel.frames.saveimage.SaveImageInterface;
-import cz.mgn.collabdesktop.room.view.panels.downpanel.frames.SettingsNeeded;
 import cz.mgn.collabdesktop.room.view.panels.downpanel.frames.twitter.TwitterMessage;
 import cz.mgn.collabdesktop.room.view.panels.downpanel.frames.twitter.TwitterMessageInterface;
 import cz.mgn.collabdesktop.room.view.panels.downpanel.interfaces.MessageInterface;
-import cz.mgn.collabdesktop.room.view.panels.downpanel.interfaces.PaintingSystemInterface;
 import cz.mgn.collabdesktop.room.view.panels.downpanel.interfaces.SystemInterface;
 import cz.mgn.collabdesktop.room.view.panels.downpanel.subpanels.ChatPanel;
 import cz.mgn.collabdesktop.room.view.panels.downpanel.subpanels.SystemPanel;
@@ -55,7 +50,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class DownPanel extends JPanel implements Users, MessageInterface, SystemInterface, SaveImageInterface<BufferedImage>, TwitterMessageInterface {
 

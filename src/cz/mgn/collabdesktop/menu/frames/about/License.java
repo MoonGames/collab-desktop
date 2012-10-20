@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.menu.frames.about;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
@@ -38,17 +34,17 @@ import javax.swing.event.HyperlinkListener;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
-public class Licence extends MenuFrame {
+public class License extends MenuFrame {
 
-    public Licence() {
+    public License() {
         super();
     }
 
     @Override
     protected String getSectionName() {
-        return "licence";
+        return "license";
     }
 
     @Override
@@ -59,7 +55,7 @@ public class Licence extends MenuFrame {
         setLayout(new BorderLayout(0, 10));
 
         try {
-            JEditorPane licence = new JEditorPane(Licence.class.getResource("/resources/other/gplv3.html"));
+            JEditorPane licence = new JEditorPane(License.class.getResource("/resources/other/gplv3.html"));
             licence.addHyperlinkListener(new HyperlinkListener() {
 
                 @Override
@@ -73,7 +69,7 @@ public class Licence extends MenuFrame {
             JScrollPane licenceScrollPane = new JScrollPane(licence);
             add(licenceScrollPane, BorderLayout.CENTER);
         } catch (IOException ex) {
-            Logger.getLogger(Licence.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(License.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

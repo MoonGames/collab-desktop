@@ -18,18 +18,14 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.room.view.panels.middlepanel;
 
 import cz.mgn.collabcanvas.canvas.CollabCanvas;
 import cz.mgn.collabcanvas.interfaces.networkable.NetworkIDGenerator;
-import cz.mgn.collabdesktop.room.view.DeskInterface;
 import cz.mgn.collabdesktop.room.model.executor.CommandExecutor;
 import cz.mgn.collabdesktop.room.model.paintengine.PaintEngineListener;
 import cz.mgn.collabdesktop.room.model.paintengine.ToolInfoInterface;
+import cz.mgn.collabdesktop.room.view.DeskInterface;
 import cz.mgn.collabdesktop.room.view.panels.middlepanel.infopanel.InfoInterface;
 import cz.mgn.collabdesktop.room.view.panels.middlepanel.infopanel.InfoPanel;
 import java.awt.BorderLayout;
@@ -39,7 +35,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class MiddlePanel extends JPanel implements PaintEngineListener {
 

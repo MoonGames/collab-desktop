@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.latex.latexutil;
 
 import java.awt.Color;
@@ -35,7 +31,7 @@ import org.scilab.forge.jlatexmath.TeXIcon;
 
 /**
  *
- *  @author indy
+ *  @author Martin Indra <aktive@seznam.cz>
  */
 public class LatexUtil implements Runnable {
 

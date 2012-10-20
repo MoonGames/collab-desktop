@@ -18,15 +18,8 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.room.model.executor;
 
-import cz.mgn.collabdesktop.room.model.executor.interfaces.Layers;
-import cz.mgn.collabdesktop.room.model.executor.interfaces.CollabSystem;
-import cz.mgn.collabdesktop.room.model.executor.interfaces.Users;
 import cz.mgn.collabcanvas.canvas.CollabCanvas;
 import cz.mgn.collabcanvas.interfaces.networkable.NetworkListener;
 import cz.mgn.collabcanvas.interfaces.networkable.NetworkUpdate;
@@ -36,11 +29,14 @@ import cz.mgn.collabdesktop.network.commands.CommandGenerator;
 import cz.mgn.collabdesktop.network.commands.CommandReader;
 import cz.mgn.collabdesktop.network.commands.ImageData;
 import cz.mgn.collabdesktop.network.commands.InCommands;
+import cz.mgn.collabdesktop.room.model.executor.interfaces.CollabSystem;
+import cz.mgn.collabdesktop.room.model.executor.interfaces.Layers;
+import cz.mgn.collabdesktop.room.model.executor.interfaces.Users;
 import java.awt.Point;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class CommandExecutor implements DataInterface, NetworkListener {
 

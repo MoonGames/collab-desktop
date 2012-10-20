@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.room.view;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
@@ -42,7 +38,7 @@ import java.awt.Toolkit;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdesktop.room.model.executor.interfaces.CollabSystem, DeskInterface {
 

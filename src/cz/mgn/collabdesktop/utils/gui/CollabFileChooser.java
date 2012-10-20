@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.utils.gui;
 
 import java.io.File;
@@ -31,7 +27,7 @@ import javax.swing.filechooser.FileFilter;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class CollabFileChooser<O> extends JFrame {
 

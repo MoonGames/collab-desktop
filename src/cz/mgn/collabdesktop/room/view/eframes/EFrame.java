@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.room.view.eframes;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
@@ -36,7 +32,7 @@ import javax.swing.JFrame;
 
 /**
  *
- *   @author indy
+ *   @author Martin Indra <aktive@seznam.cz>
  */
 public abstract class EFrame extends JDialog implements WindowListener {
 

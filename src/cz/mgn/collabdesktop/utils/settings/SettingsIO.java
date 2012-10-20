@@ -18,10 +18,6 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.mgn.collabdesktop.utils.settings;
 
 import cz.mgn.collabdesktop.utils.homestorage.HomeStorage;
@@ -45,7 +41,7 @@ import org.xml.sax.SAXException;
 
 /**
  *
- * @author indy
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class SettingsIO {
 
