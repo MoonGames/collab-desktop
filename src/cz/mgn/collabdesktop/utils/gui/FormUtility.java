@@ -41,6 +41,10 @@ public class FormUtility {
     private GridBagConstraints labelConstraints = null;
 
     public FormUtility() {
+        this(new Insets(1, 1, 1, 1));
+    }
+            
+    public FormUtility(Insets insets) {
         // Set up the constraints for the "last" field in each
         // row first, then copy and modify those constraints.
 
@@ -62,7 +66,7 @@ public class FormUtility {
         lastConstraints.gridwidth = GridBagConstraints.REMAINDER;
 
         // Add a little padding
-        lastConstraints.insets = new Insets(1, 1, 1, 1);
+        lastConstraints.insets = insets;
 
         // Now for the "middle" field components
         middleConstraints =

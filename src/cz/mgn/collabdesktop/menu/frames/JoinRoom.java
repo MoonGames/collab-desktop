@@ -17,10 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.menu.frames;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
+import cz.mgn.collabdesktop.utils.gui.FormUtility;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,10 +28,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
- *      @author Martin Indra <aktive@seznam.cz>
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class JoinRoom extends MenuFrame implements ActionListener {
 
@@ -54,44 +55,28 @@ public class JoinRoom extends MenuFrame implements ActionListener {
 
     @Override
     protected void initComponents() {
-        Container pane = getContentPane();
-        pane.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.CENTER;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(5, 5, 5, 5);
-
-        JLabel labelPassword = new JLabel("Password:");
-        c.weightx = 0f;
-        c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 0;
-        pane.add(labelPassword, c);
-
         password = new JPasswordField();
         password.addActionListener(this);
-        c.weightx = 1f;
-        c.gridwidth = 1;
-        c.gridx = 1;
-        c.gridy = 0;
-        pane.add(password, c);
-
-        JPanel buttons = new JPanel();
-        buttons.setLayout(new GridLayout(1, 2, 5, 0));
         join = new JButton("join");
         join.addActionListener(this);
-        buttons.add(join);
         cancel = new JButton("cancel");
         cancel.addActionListener(this);
-        buttons.add(cancel);
-        c.weightx = 1f;
-        c.gridwidth = 2;
-        c.gridx = 0;
-        c.gridy = 1;
-        pane.add(buttons, c);
+
+        getContentPane().setLayout(new BorderLayout());
+        FormUtility formUtility = new FormUtility(new Insets(2, 2, 2, 2));
+        JPanel form = new JPanel(new GridBagLayout());
+        form.setBorder(new EmptyBorder(8, 5, 8, 5));
+        getContentPane().add(form, BorderLayout.NORTH);
+        
+        formUtility.addLabel("Password: ", form);
+        formUtility.addLastField(password, form);
+        
+        formUtility.addLabel("", form);
+        formUtility.addMiddleField(join, form);
+        formUtility.addLastField(cancel, form);
 
         Insets in = getInsets();
-        Dimension size = new Dimension(400, 100);
+        Dimension size = new Dimension(400, 95);
         size.width += in.left + in.right;
         size.height += in.top + in.bottom;
         setPreferredSize(size);

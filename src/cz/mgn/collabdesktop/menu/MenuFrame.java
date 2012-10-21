@@ -19,13 +19,20 @@
  */
 package cz.mgn.collabdesktop.menu;
 
+import cz.mgn.collabdesktop.menu.frames.about.About;
+import cz.mgn.collabdesktop.menu.frames.settings.SettingsFrame;
+import cz.mgn.collabdesktop.utils.CConstans;
+import cz.mgn.collabdesktop.utils.Utils;
 import cz.mgn.collabdesktop.utils.gui.GUIUtils;
-import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 /**
  *
@@ -44,6 +51,44 @@ public abstract class MenuFrame extends JFrame {
     protected abstract String getSectionName();
 
     protected abstract void initComponents();
+
+    protected void initMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu file = new JMenu("File");
+        menuBar.add(file);
+        JMenu help = new JMenu("Help");
+        menuBar.add(help);
+
+        JMenuItem menuItem = new JMenuItem("Settings", KeyEvent.VK_S);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                goTo(new SettingsFrame(), true);
+            }
+        });
+        file.add(menuItem);
+
+        menuItem = new JMenuItem("Online", KeyEvent.VK_O);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Utils.browse(CConstans.WEB_PAGE_MAIN);
+            }
+        });
+        help.add(menuItem);
+        menuItem = new JMenuItem("About", KeyEvent.VK_A);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                About about = new About();
+                goTo(about, true);
+            }
+        });
+        help.add(menuItem);
+
+        setJMenuBar(menuBar);
+    }
 
     protected void centerWindow() {
         GUIUtils.centerWindow(this);

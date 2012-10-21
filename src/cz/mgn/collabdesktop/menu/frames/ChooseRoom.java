@@ -101,6 +101,8 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
 
     @Override
     protected void initComponents() {
+        initMenuBar();
+        
         Container pane = getContentPane();
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
