@@ -17,26 +17,33 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.menu.frames;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
 import cz.mgn.collabdesktop.utils.gui.FormUtility;
 import cz.mgn.collabdesktop.utils.settings.Settings;
+import cz.mgn.collabserver.CollabServer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 /**
  *
- *  @author Martin Indra <aktive@seznam.cz>
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class ConnectServer extends MenuFrame implements ActionListener {
 
     protected JTextField serverOption;
     protected JTextField nickOption;
+    protected JCheckBox hostServer;
+    protected JButton buttonConnect;
+    protected String serverAddressBackUp = "";
 
     public ConnectServer() {
         super();
@@ -51,28 +58,33 @@ public class ConnectServer extends MenuFrame implements ActionListener {
     @Override
     protected void initComponents() {
         initMenuBar();
-        
+
         nickOption = new JTextField(Settings.defaultNick);
         nickOption.addActionListener(this);
         serverOption = new JTextField(Settings.defaultServer);
         serverOption.addActionListener(this);
-        JButton buttonConnect = new JButton("Connect");
+        hostServer = new JCheckBox("host server");
+        hostServer.addActionListener(this);
+        buttonConnect = new JButton("Connect");
         buttonConnect.addActionListener(this);
-        
-        
+
+
         getContentPane().setLayout(new BorderLayout());
         FormUtility formUtility = new FormUtility(new Insets(2, 2, 2, 2));
         JPanel form = new JPanel(new GridBagLayout());
         form.setBorder(new EmptyBorder(8, 5, 8, 5));
         getContentPane().add(form, BorderLayout.NORTH);
-        
+
 
         formUtility.addLabel("Nick: ", form);
         formUtility.addLastField(nickOption, form);
-        
+
         formUtility.addLabel("Server: ", form);
-        formUtility.addLastField(serverOption, form);
-        
+        JPanel serverHelpPanel = new JPanel(new BorderLayout(5, 0));
+        serverHelpPanel.add(serverOption, BorderLayout.CENTER);
+        serverHelpPanel.add(hostServer, BorderLayout.EAST);
+        formUtility.addLastField(serverHelpPanel, form);
+
         formUtility.addLabel("", form);
         formUtility.addLastField(buttonConnect, form);
 
@@ -86,6 +98,15 @@ public class ConnectServer extends MenuFrame implements ActionListener {
     }
 
     protected void connect() {
+        if (hostServer.isSelected()) {
+            CollabServer.setLogLevel(CollabServer.LOG_LEVEL_ERROR);
+            CollabServer.startServer(Settings.defaultPort);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ConnectServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         String address = serverOption.getText();
         String nick = nickOption.getText();
         if (!address.isEmpty() && !nick.isEmpty()) {
@@ -93,8 +114,28 @@ public class ConnectServer extends MenuFrame implements ActionListener {
         }
     }
 
+    protected void hostServerAction() {
+        boolean host = hostServer.isSelected();
+        serverOption.setEditable(!host);
+        if (host) {
+            serverAddressBackUp = serverOption.getText();
+            try {
+                serverOption.setText(InetAddress.getLocalHost().getHostAddress());
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(ConnectServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            serverOption.setText(serverAddressBackUp);
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        connect();
+        Object source = e.getSource();
+        if (source == nickOption || source == buttonConnect) {
+            connect();
+        } else if (source == hostServer) {
+            hostServerAction();
+        }
     }
 }

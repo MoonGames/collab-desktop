@@ -2,3 +2,6 @@
 	path = lib/collab-panel
 	url = git://github.com/MoonGames/collab-panel.git
 
+[submodule "lib/collab-server"]
+	path = lib/collab-server
+	url = git://github.com/MoonGames/collab-server.git
