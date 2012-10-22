@@ -26,9 +26,9 @@ package cz.mgn.collabdesktop.network;
  */
 public interface ConnectionInterface {
 
-    public void connectionError();
+    public void connectionError(Client client);
     
-    public void connectionSuccessful();
+    public void connectionSuccessful(Client client);
     
-    public void connectionClosed();
+    public void connectionClosed(Client client);
 }

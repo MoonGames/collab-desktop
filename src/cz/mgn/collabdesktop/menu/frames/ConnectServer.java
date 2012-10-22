@@ -50,6 +50,12 @@ public class ConnectServer extends MenuFrame implements ActionListener {
         centerWindow();
     }
 
+    public ConnectServer(String address) {
+        super();
+        centerWindow();
+        serverOption.setText(address);
+    }
+
     @Override
     protected String getSectionName() {
         return "connect server";

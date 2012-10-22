@@ -35,10 +35,12 @@ public class ConnectingProgress extends MenuFrame implements ConnectionInterface
 
     protected Client client;
     protected String nick = "";
+    protected String address;
 
     public ConnectingProgress(String nick, String address) {
         super();
         this.nick = nick;
+        this.address = address;
         connect(address);
     }
 
@@ -79,23 +81,23 @@ public class ConnectingProgress extends MenuFrame implements ConnectionInterface
 
     protected void noConnection() {
         client.setConnectionInterface(null);
-        goTo(new ConnectServer(), false);
+        goTo(new ConnectServer(address), false);
     }
 
     @Override
-    public void connectionError() {
+    public void connectionError(Client client) {
         noConnection();
     }
 
     @Override
-    public void connectionSuccessful() {
+    public void connectionSuccessful(Client client) {
         client.send(CommandGenerator.generateSetNickCommand(nick));
         client.setConnectionInterface(null);
         goTo(new ChooseRoom(client), false);
     }
 
     @Override
-    public void connectionClosed() {
+    public void connectionClosed(Client client) {
         noConnection();
     }
 }

@@ -17,11 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.menu.frames;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
 import cz.mgn.collabdesktop.network.Client;
+import cz.mgn.collabdesktop.network.ConnectionInterface;
 import cz.mgn.collabdesktop.network.DataInterface;
 import cz.mgn.collabdesktop.network.commands.CommandGenerator;
 import cz.mgn.collabdesktop.network.commands.CommandReader;
@@ -43,7 +43,7 @@ import javax.swing.table.DefaultTableModel;
  *
  *  @author Martin Indra <aktive@seznam.cz>
  */
-public class ChooseRoom extends MenuFrame implements DataInterface, ActionListener {
+public class ChooseRoom extends MenuFrame implements DataInterface, ActionListener, ConnectionInterface {
 
     protected Client client;
     protected JButton createRoom;
@@ -55,6 +55,7 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
     public ChooseRoom(Client client) {
         super();
         this.client = client;
+        client.setConnectionInterface(this);
         client.addDataInterface(this);
         refresh();
     }
@@ -91,6 +92,8 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
 
     protected void disconnect() {
         client.close();
+        client.removeDataInterface(this);
+        client.setConnectionInterface(null);
         goTo(new ConnectServer(), false);
     }
 
@@ -102,7 +105,7 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
     @Override
     protected void initComponents() {
         initMenuBar();
-        
+
         Container pane = getContentPane();
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -199,7 +202,9 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
             dispose();
             client.removeDataInterface(this);
             CommandExecutor executor = new CommandExecutor(client, yourID);
-            new DeskFrame(executor, roomName, p.x, p.y).setVisible(true);
+            DeskFrame df = new DeskFrame(executor, roomName, p.x, p.y);
+            df.setVisible(true);
+            client.setConnectionInterface(df);
         }
     }
 
@@ -216,6 +221,20 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
         }
     }
 
+    @Override
+    public void connectionError(Client client) {
+        disconnect();
+    }
+
+    @Override
+    public void connectionSuccessful(Client client) {
+    }
+
+    @Override
+    public void connectionClosed(Client client) {
+        disconnect();
+    }
+
     public class RoomsTable extends JTable {
 
         protected Image lockedIcon = null;
@@ -229,7 +248,6 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
                     new String[]{
                         "", "Name", "Resolution", "Users"
                     }) {
-
                 @Override
                 public boolean isCellEditable(int rowIndex, int columnIndex) {
                     return false;

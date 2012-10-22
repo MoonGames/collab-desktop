@@ -57,7 +57,7 @@ public class Client extends Thread {
             out = socket.getOutputStream();
 
             if (connectionInterface != null) {
-                connectionInterface.connectionSuccessful();
+                connectionInterface.connectionSuccessful(this);
             }
 
             while (readNext(in)) {
@@ -65,12 +65,12 @@ public class Client extends Thread {
         } catch (UnknownHostException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             if (connectionInterface != null) {
-                connectionInterface.connectionError();
+                connectionInterface.connectionError(this);
             }
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             if (connectionInterface != null) {
-                connectionInterface.connectionError();
+                connectionInterface.connectionError(this);
             }
         } finally {
             close();
@@ -144,7 +144,7 @@ public class Client extends Thread {
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 if (connectionInterface != null) {
-                    connectionInterface.connectionError();
+                    connectionInterface.connectionError(this);
                 }
             }
         }
@@ -163,7 +163,7 @@ public class Client extends Thread {
             out.close();
             socket.close();
             if (connectionInterface != null) {
-                connectionInterface.connectionClosed();
+                connectionInterface.connectionClosed(this);
             }
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
