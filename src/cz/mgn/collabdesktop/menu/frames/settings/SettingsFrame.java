@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.menu.frames.settings;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
@@ -26,25 +25,46 @@ import cz.mgn.collabdesktop.menu.frames.settings.sections.LoadAndSave;
 import cz.mgn.collabdesktop.menu.frames.settings.sections.Room;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import sun.awt.WindowClosingListener;
 
 /**
  *
- * @author Martin Indra <aktive@seznam.cz>
+ *   @author Martin Indra <aktive@seznam.cz>
  */
-public class SettingsFrame extends MenuFrame implements SettingsInterface {
+public class SettingsFrame extends MenuFrame implements SettingsInterface, WindowListener {
 
     protected JTabbedPane tabs;
     protected ArrayList<SettingsPanel> sections = new ArrayList<SettingsPanel>();
+    protected JDialog closingDialog;
 
     public SettingsFrame() {
         super();
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         centerWindow();
         setVisible(true);
+        addWindowListener(this);
         initSections();
+    }
+
+    @Override
+    public void afterGo() {
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 
     @Override
@@ -84,5 +104,87 @@ public class SettingsFrame extends MenuFrame implements SettingsInterface {
         for (SettingsPanel panel : sections) {
             panel.set();
         }
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        boolean isChanged = false;
+        for (SettingsPanel panel : sections) {
+            isChanged = isChanged || panel.isChanged();
+        }
+        if (isChanged) {
+            showWantToSaveDialog();
+        } else {
+            dispose();
+        }
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+    }
+
+    protected void showWantToSaveDialog() {
+        if(closingDialog != null) {
+            closingDialog.dispose();
+        }
+        closingDialog = new JDialog(this, "Unsaved changes");
+
+        JTextArea errorText = new JTextArea("There are any unsaved changes.");
+        errorText.setLineWrap(true);
+        errorText.setWrapStyleWord(true);
+        errorText.setEditable(false);
+        errorText.setOpaque(false);
+        JButton exit = new JButton("Exit");
+        JButton save = new JButton("Save & exit");
+        JPanel buttons = new JPanel(new GridLayout(1, 2, 5, 0));
+        buttons.add(save);
+        buttons.add(exit);
+        JPanel all = new JPanel(new BorderLayout(0, 5));
+        all.setBorder(new EmptyBorder(5, 5, 5, 5));
+        all.add(errorText);
+        all.add(buttons, BorderLayout.SOUTH);
+        closingDialog.getContentPane().setLayout(new BorderLayout());
+        closingDialog.getContentPane().add(all);
+        closingDialog.setSize(400, 150);
+        closingDialog.setVisible(true);
+        Point center = getLocationOnScreen();
+        center.x += (getWidth() - closingDialog.getWidth()) / 2;
+        center.y += (getHeight() - closingDialog.getHeight()) / 2;
+        closingDialog.setLocation(center);
+
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setAll();
+                dispose();
+            }
+        });
     }
 }

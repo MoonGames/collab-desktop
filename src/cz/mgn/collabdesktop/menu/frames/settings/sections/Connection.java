@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.menu.frames.settings.sections;
 
 import cz.mgn.collabdesktop.menu.frames.settings.SettingsPanel;
@@ -26,7 +25,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author Martin Indra <aktive@seznam.cz>
+ *  @author Martin Indra <aktive@seznam.cz>
  */
 public class Connection extends SettingsPanel {
 
@@ -72,5 +71,17 @@ public class Connection extends SettingsPanel {
             }
         } catch (NumberFormatException e) {
         }
+    }
+
+    @Override
+    public boolean isChanged() {
+        int port = Settings.defaultPort;
+        try {
+            port = Integer.parseInt(defaultPort.getText());
+        } catch (NumberFormatException e) {
+        }
+        return !Settings.defaultNick.equals(defaultNick.getText())
+                || !Settings.defaultServer.equals(defaultServer.getText())
+                || (Settings.defaultPort != port);
     }
 }

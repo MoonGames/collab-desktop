@@ -100,6 +100,10 @@ public abstract class MenuFrame extends JFrame {
         setLocation(x, y);
     }
 
+    public void afterGo() {
+
+    }
+
     protected void goTo(MenuFrame menuFrame, boolean dialog) {
         int cX = getLocationOnScreen().x + (getWidth() / 2);
         int cY = getLocationOnScreen().y + (getHeight() / 2);
@@ -110,5 +114,6 @@ public abstract class MenuFrame extends JFrame {
         }
         menuFrame.setWindowCenterLocation(cX, cY);
         menuFrame.setVisible(true);
+        menuFrame.afterGo();
     }
 }

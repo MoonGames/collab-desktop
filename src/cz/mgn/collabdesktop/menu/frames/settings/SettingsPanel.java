@@ -49,4 +49,7 @@ public abstract class SettingsPanel extends JPanel {
     public abstract void set();
 
     public abstract String getPanelName();
+    
+    /** returns if user change values and not set it */
+    public abstract boolean isChanged();
 }

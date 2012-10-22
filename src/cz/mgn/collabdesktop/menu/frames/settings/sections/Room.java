@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.menu.frames.settings.sections;
 
 import cz.mgn.collabdesktop.menu.frames.settings.SettingsPanel;
@@ -26,7 +25,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author Martin Indra <aktive@seznam.cz>
+ *  @author Martin Indra <aktive@seznam.cz>
  */
 public class Room extends SettingsPanel {
 
@@ -38,7 +37,7 @@ public class Room extends SettingsPanel {
 
     public Room() {
         super();
-        
+
         formUtility.addLabel("Default room name: ", form);
         formUtility.addLastField(defaultRoomName = new JTextField(), form);
 
@@ -50,7 +49,7 @@ public class Room extends SettingsPanel {
 
         formUtility.addLabel("Maximal width [px]: ", form);
         formUtility.addLastField(maximalWidth = new JTextField(), form);
-        
+
         formUtility.addLabel("Maximal height [px]: ", form);
         formUtility.addLastField(maximalHeight = new JTextField(), form);
 
@@ -88,7 +87,7 @@ public class Room extends SettingsPanel {
             }
         } catch (NumberFormatException e) {
         }
-        
+
         try {
             int dWidth = Integer.parseInt(defaultWidth.getText());
             dWidth = Math.min(dWidth, Settings.maximalRoomWidth);
@@ -105,6 +104,35 @@ public class Room extends SettingsPanel {
             }
         } catch (NumberFormatException e) {
         }
-        
+
+    }
+
+    @Override
+    public boolean isChanged() {
+        int maximalWidthInt = Settings.maximalRoomWidth;
+        int maximalHeightInt = Settings.maximalRoomHeight;
+        int defaultWidthInt = Settings.maximalRoomWidth;
+        int defaultHeightInt = Settings.maximalRoomHeight;
+        try {
+            maximalWidthInt = Integer.parseInt(maximalWidth.getText());
+        } catch (NumberFormatException e) {
+        }
+        try {
+            maximalHeightInt = Integer.parseInt(maximalHeight.getText());
+        } catch (NumberFormatException e) {
+        }
+        try {
+            defaultWidthInt = Integer.parseInt(defaultWidth.getText());
+        } catch (NumberFormatException e) {
+        }
+        try {
+            defaultHeightInt = Integer.parseInt(defaultHeight.getText());
+        } catch (NumberFormatException e) {
+        }
+        return (maximalWidthInt != Settings.maximalRoomWidth)
+                || (maximalHeightInt != Settings.maximalRoomHeight)
+                || (defaultWidthInt != Settings.defaultRoomWidth)
+                || (defaultHeightInt != Settings.defaultRoomHeight)
+                || !Settings.defaultRoomName.equals(defaultRoomName.getText());
     }
 }

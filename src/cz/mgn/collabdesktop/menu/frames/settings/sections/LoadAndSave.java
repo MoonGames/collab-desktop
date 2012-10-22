@@ -72,4 +72,9 @@ public class LoadAndSave extends SettingsPanel implements ActionListener {
     @Override
     public void set() {
     }
+
+    @Override
+    public boolean isChanged() {
+        return false;
+    }
 }
