@@ -41,7 +41,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- *  @author Martin Indra <aktive@seznam.cz>
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class ChooseRoom extends MenuFrame implements DataInterface, ActionListener, ConnectionInterface {
 
@@ -94,7 +94,6 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
         client.close();
         client.removeDataInterface(this);
         client.setConnectionInterface(null);
-        goTo(new ConnectServer(), false);
     }
 
     @Override
@@ -223,7 +222,8 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
 
     @Override
     public void connectionError(Client client) {
-        disconnect();
+        client.setConnectionInterface(null);
+        goTo(new ConnectServer(), false);
     }
 
     @Override
@@ -232,7 +232,8 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
 
     @Override
     public void connectionClosed(Client client) {
-        disconnect();
+        client.setConnectionInterface(null);
+        goTo(new ConnectServer(), false);
     }
 
     public class RoomsTable extends JTable {

@@ -101,7 +101,6 @@ public abstract class MenuFrame extends JFrame {
     }
 
     public void afterGo() {
-
     }
 
     protected void goTo(MenuFrame menuFrame, boolean dialog) {
@@ -112,8 +111,8 @@ public abstract class MenuFrame extends JFrame {
         } else {
             dispose();
         }
-        menuFrame.setWindowCenterLocation(cX, cY);
         menuFrame.setVisible(true);
+        menuFrame.setWindowCenterLocation(cX, cY);
         menuFrame.afterGo();
     }
 }
