@@ -23,6 +23,7 @@ import cz.mgn.collabdesktop.menu.MenuFrame;
 import cz.mgn.collabdesktop.menu.frames.settings.sections.Connection;
 import cz.mgn.collabdesktop.menu.frames.settings.sections.LoadAndSave;
 import cz.mgn.collabdesktop.menu.frames.settings.sections.Room;
+import cz.mgn.collabdesktop.utils.settings.SettingsIO;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -179,6 +180,7 @@ public class SettingsFrame extends MenuFrame implements SettingsInterface, Windo
             @Override
             public void actionPerformed(ActionEvent e) {
                 setAll();
+                SettingsIO.writeSettings();
                 dispose();
             }
         });
