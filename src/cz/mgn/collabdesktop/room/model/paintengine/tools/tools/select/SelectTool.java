@@ -168,13 +168,6 @@ public class SelectTool extends Tool implements SelectPanelInterface {
 
     @Override
     public void keyEvent(CollabPanelKeyEvent e) {
-        Set<Integer> pressedKeys = e.getPressedKeyCodes();
-        if (pressedKeys.contains(CollabPanelKeyEvent.KEY_CODE_CONTROL)
-                && pressedKeys.contains(CollabPanelKeyEvent.KEY_CODE_A)) {
-            if (canvas != null) {
-                canvas.getSelectionable().selectAll();
-            }
-        }
     }
 
     @Override

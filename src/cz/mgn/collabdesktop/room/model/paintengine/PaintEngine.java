@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.room.model.paintengine;
 
 import cz.mgn.collabcanvas.canvas.CollabCanvas;
@@ -33,6 +32,7 @@ import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.paintbucket.Paint
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.select.SelectTool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.text.TextTool;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  *
@@ -51,6 +51,11 @@ public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
      * currently selected tool
      */
     protected Tool selectedTool = null;
+    /**
+     * tool to switch back after key shortcut ends
+     */
+    protected Tool backUpTool = null;
+    protected Tool colorPicker;
 
     public PaintEngine() {
         init();
@@ -59,7 +64,7 @@ public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
     protected void init() {
         //TODO: fill list of tools
         tools.add(new BrushTool());
-        tools.add(new ColorPickerTool());
+        tools.add(colorPicker = new ColorPickerTool());
         tools.add(new SelectTool());
         tools.add(new ClearTool());
         tools.add(new PaintBucketTool());
@@ -132,6 +137,27 @@ public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
         }
     }
 
+    protected void processKeyEventLocally(CollabPanelKeyEvent e) {
+        if (e.getKeyCode() == CollabPanelKeyEvent.KEY_CODE_SHIFT) {
+            if (e.getEventType() == CollabPanelKeyEvent.EVENT_TYPE_PRESSED) {
+                backUpTool = selectedTool;
+                selectTool(colorPicker);
+            } else if (e.getEventType() == CollabPanelKeyEvent.EVENT_TYPE_RELEASED) {
+                if (backUpTool != null) {
+                    selectTool(backUpTool);
+                }
+            }
+        }
+
+        Set<Integer> pressedKeys = e.getPressedKeyCodes();
+        if (pressedKeys.contains(CollabPanelKeyEvent.KEY_CODE_CONTROL)
+                && pressedKeys.contains(CollabPanelKeyEvent.KEY_CODE_A)) {
+            if (canvas != null) {
+                canvas.getSelectionable().selectAll();
+            }
+        }
+    }
+
     /**
      * set color which engine show preferentially use
      *
@@ -180,6 +206,7 @@ public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
 
     @Override
     public void keyEvent(CollabPanelKeyEvent e) {
+        processKeyEventLocally(e);
         if (selectedTool != null) {
             selectedTool.keyEvent(e);
         }

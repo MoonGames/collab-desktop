@@ -17,10 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.room.view.panels.leftpanel.toolspanel;
 
 import cz.mgn.collabdesktop.room.model.paintengine.PaintEngine;
+import cz.mgn.collabdesktop.room.model.paintengine.PaintEngineListener;
 import cz.mgn.collabdesktop.room.model.paintengine.ToolInfoInterface;
 import cz.mgn.collabdesktop.room.view.panels.leftpanel.ToolOptionsPaneInterface;
 import cz.mgn.collabdesktop.utils.gui.iconComponent.IconButton;
@@ -38,7 +38,7 @@ import javax.swing.JPanel;
  *
  * @author Martin Indra <aktive@seznam.cz>
  */
-public class ToolsPanel extends JPanel implements ActionListener {
+public class ToolsPanel extends JPanel implements ActionListener, PaintEngineListener {
 
     protected PaintEngine paintEngine;
     protected ToolOptionsPaneInterface toolOptions;
@@ -48,6 +48,7 @@ public class ToolsPanel extends JPanel implements ActionListener {
     public ToolsPanel(PaintEngine paintEngine, ToolOptionsPaneInterface toolOptions) {
         this.paintEngine = paintEngine;
         this.toolOptions = toolOptions;
+        paintEngine.addListener(this);
         initComponents();
     }
 
@@ -88,7 +89,6 @@ public class ToolsPanel extends JPanel implements ActionListener {
 
     protected void setTool(ToolInfoInterface tool) {
         paintEngine.selectTool(tool);
-        toolOptions.setToolOptionsPanel(tool.getToolPanel());
     }
 
     @Override
@@ -98,6 +98,15 @@ public class ToolsPanel extends JPanel implements ActionListener {
             ToolButton btt = (ToolButton) source;
             setTool(btt.getTool());
         }
+    }
+
+    @Override
+    public void selectedToolChanged(ToolInfoInterface selectedTool) {
+        toolOptions.setToolOptionsPanel(selectedTool.getToolPanel());
+    }
+
+    @Override
+    public void colorChanged(int newColor) {
     }
 
     protected class ToolButton extends IconButton {
