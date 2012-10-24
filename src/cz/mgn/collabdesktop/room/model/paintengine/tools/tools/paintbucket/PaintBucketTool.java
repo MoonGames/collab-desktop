@@ -17,24 +17,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.paintbucket;
 
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.paintbucket.floodfill.FloodFill;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
 import cz.mgn.collabdesktop.room.model.paintengine.Canvas;
 import cz.mgn.collabdesktop.room.model.paintengine.PaintEngineInterface;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.Tool;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.paintdata.SimplePaintData;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.paintdata.SingleImagePaintData;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.ToolsUtils;
+import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.paintbucket.floodfill.FloodFillResult;
 import cz.mgn.collabdesktop.utils.ImageUtil;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
  *
- * @author Martin Indra <aktive@seznam.cz>
+ *  @author Martin Indra <aktive@seznam.cz>
  */
 public class PaintBucketTool extends Tool {
 
@@ -71,15 +75,12 @@ public class PaintBucketTool extends Tool {
                     && e.getEventCoordinates().y >= 0
                     && e.getEventCoordinates().x < over.getWidth()
                     && e.getEventCoordinates().y < over.getHeight()) {
-                BufferedImage generate = null;
                 int localColor = color;
-                generate = new BufferedImage(over.getWidth(), over.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
                 FloodFill fill = new FloodFill(over, tolerance);
-                BufferedImage gen = fill.fill(e.getEventCoordinates().x, e.getEventCoordinates().y, localColor);
-                Graphics g = generate.getGraphics();
-                g.drawImage(gen, 0, 0, null);
-                g.dispose();
-                canvas.getPaintable().paint(new SingleImagePaintData(generate, !e.isControlDown()));
+                FloodFillResult gen = fill.fill(e.getEventCoordinates().x, e.getEventCoordinates().y, localColor);
+                ArrayList<Point> points = new ArrayList<Point>();
+                points.add(gen.getPosition());
+                canvas.getPaintable().paint(new SimplePaintData(points, gen.getImage(), !e.isControlDown()));
             }
         }
     }

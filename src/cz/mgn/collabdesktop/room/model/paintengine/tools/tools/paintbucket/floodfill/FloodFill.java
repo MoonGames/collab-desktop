@@ -17,19 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.paintbucket;
+package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.paintbucket.floodfill;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
  *
- * @author Martin Indra <aktive@seznam.cz>
+ *  @author Martin Indra <aktive@seznam.cz>
  */
 public class FloodFill {
 
@@ -42,6 +42,7 @@ public class FloodFill {
     protected int height = 0;
     protected BufferedImage destImage = null;
     protected BufferedImage sourceImage = null;
+    protected Rectangle area;
 
     public FloodFill(BufferedImage sourceImage, float tolerance) {
         this.width = sourceImage.getWidth();
@@ -52,16 +53,16 @@ public class FloodFill {
         Graphics g = this.sourceImage.getGraphics();
         g.drawImage(sourceImage, 0, 0, null);
         g.dispose();
-        destImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
-
     }
 
-    public BufferedImage fill(int x, int y, int color) {
+    public FloodFillResult fill(int x, int y, int color) {
+        destImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+        area = new Rectangle(x, y, 0, 0);
         Color col = new Color(color);
         fill = new int[]{col.getRed(), col.getGreen(), col.getBlue(), ALPHA};
         background = sourceImage.getRaster().getPixel(x, y, new int[4]);
         fillC(x, y);
-        return destImage;
+        return new FloodFillResult(destImage.getSubimage(area.x, area.y, Math.max(1, area.width), Math.max(1, area.height)), area.getLocation());
     }
 
     protected void fillC(int x, int y) {
@@ -78,6 +79,7 @@ public class FloodFill {
                 int[] destColor = destImage.getRaster().getPixel(p.x, p.y, new int[4]);
                 if (!compareAll(fill, destColor) && testFill(sourceColor)) {
                     destImage.getRaster().setPixel(p.x, p.y, fill);
+                    area.add(p);
 
                     q.add(new Point(p.x - 1, p.y));
                     q.add(new Point(p.x + 1, p.y));
