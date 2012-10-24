@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.utils.settings;
 
 import cz.mgn.collabdesktop.utils.homestorage.HomeStorage;
@@ -64,6 +63,9 @@ public class SettingsIO {
     protected static final String TAG_TWITTER = "twitter";
     protected static final String TAG_TWITTER_ACCESS_TOKEN = "access-token";
     protected static final String TAG_TWITTER_ACCESS_TOKEN_SECRET = "access-token-secret";
+    protected static final String TAG_LOBBY = "lobby";
+    protected static final String TAG_LOBBY_ENABLED = "enabled";
+    protected static final String TAG_LOBBY_URL = "url";
 
     public static void loadSettings() {
         try {
@@ -74,7 +76,7 @@ public class SettingsIO {
                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
                 Document doc = dBuilder.parse(file);
                 doc.getDocumentElement().normalize();
-                loadSettings(doc.getDocumentElement());;
+                loadSettings(doc.getDocumentElement());
             }
         } catch (SAXException ex) {
             Logger.getLogger(SettingsIO.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,6 +92,7 @@ public class SettingsIO {
         loadRoomSettigns(document);
         loadColorSettigns(document);
         loadTwitterSettings(document);
+        loadLobbySettings(document);
     }
 
     protected static void loadTwitterSettings(Element document) {
@@ -188,6 +191,22 @@ public class SettingsIO {
         }
     }
 
+    protected static void loadLobbySettings(Element document) {
+        NodeList list = document.getElementsByTagName(TAG_LOBBY);
+        if (list.getLength() > 0) {
+            Element lobby = (Element) list.item(0);
+
+            String param = lobby.getAttribute(TAG_LOBBY_ENABLED);
+            if (!param.isEmpty()) {
+                Settings.isLobbyEnabled = Boolean.parseBoolean(param);
+            }
+            param = lobby.getAttribute(TAG_LOBBY_URL);
+            if (!param.isEmpty()) {
+                Settings.lobbySourceURL = param;
+            }
+        }
+    }
+
     public static void writeSettings() {
         createSettingsFiles();
         try {
@@ -242,6 +261,11 @@ public class SettingsIO {
         twitter.setAttribute(TAG_TWITTER_ACCESS_TOKEN, "" + Settings.twitterAccessToken);
         twitter.setAttribute(TAG_TWITTER_ACCESS_TOKEN_SECRET, "" + Settings.twitterAccessTokenSecret);
         rootElement.appendChild(twitter);
+
+        Element lobby = doc.createElement(TAG_LOBBY);
+        lobby.setAttribute(TAG_LOBBY_ENABLED, "" + Settings.isLobbyEnabled);
+        lobby.setAttribute(TAG_LOBBY_URL, "" + Settings.lobbySourceURL);
+        rootElement.appendChild(lobby);
     }
 
     protected static void createSettingsFiles() {

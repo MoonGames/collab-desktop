@@ -21,6 +21,9 @@ package cz.mgn.collabdesktop.menu.frames;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
 import cz.mgn.collabdesktop.utils.gui.FormUtility;
+import cz.mgn.collabdesktop.utils.lobbyutil.LobbyListener;
+import cz.mgn.collabdesktop.utils.lobbyutil.LobbyUtil;
+import cz.mgn.collabdesktop.utils.lobbyutil.ServerLobby;
 import cz.mgn.collabdesktop.utils.settings.Settings;
 import cz.mgn.collabserver.CollabServer;
 import java.awt.*;
@@ -28,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -35,25 +39,35 @@ import javax.swing.border.EmptyBorder;
 
 /**
  *
- * @author Martin Indra <aktive@seznam.cz>
+ *   @author Martin Indra <aktive@seznam.cz>
  */
-public class ConnectServer extends MenuFrame implements ActionListener {
+public class ConnectServer extends MenuFrame implements ActionListener, LobbyListener {
 
     protected JTextField serverOption;
     protected JTextField nickOption;
     protected JCheckBox hostServer;
+    protected JComboBox lobbyCombo;
+    protected JButton lobbyInfo;
     protected JButton buttonConnect;
     protected String serverAddressBackUp = "";
 
     public ConnectServer() {
         super();
         centerWindow();
+        init();
     }
 
     public ConnectServer(String address) {
         super();
         centerWindow();
         serverOption.setText(address);
+        init();
+    }
+
+    private void init() {
+        if (Settings.isLobbyEnabled) {
+            LobbyUtil.loadLobby(this);
+        }
     }
 
     @Override
@@ -65,6 +79,8 @@ public class ConnectServer extends MenuFrame implements ActionListener {
     protected void initComponents() {
         initMenuBar();
 
+        int aditionalHeight = 0;
+
         nickOption = new JTextField(Settings.defaultNick);
         nickOption.addActionListener(this);
         serverOption = new JTextField(Settings.defaultServer);
@@ -73,7 +89,11 @@ public class ConnectServer extends MenuFrame implements ActionListener {
         hostServer.addActionListener(this);
         buttonConnect = new JButton("Connect");
         buttonConnect.addActionListener(this);
-
+        lobbyCombo = new JComboBox(LobbyUtil.getServers().toArray());
+        lobbyCombo.setEditable(false);
+        lobbyCombo.addActionListener(this);
+        lobbyInfo = new JButton("Info");
+        lobbyInfo.addActionListener(this);
 
         getContentPane().setLayout(new BorderLayout());
         FormUtility formUtility = new FormUtility(new Insets(2, 2, 2, 2));
@@ -81,9 +101,17 @@ public class ConnectServer extends MenuFrame implements ActionListener {
         form.setBorder(new EmptyBorder(8, 5, 8, 5));
         getContentPane().add(form, BorderLayout.NORTH);
 
-
         formUtility.addLabel("Nick: ", form);
         formUtility.addLastField(nickOption, form);
+
+        if (Settings.isLobbyEnabled) {
+            formUtility.addLabel("Lobby: ", form);
+            JPanel lobbyHelpPanel = new JPanel(new BorderLayout(5, 0));
+            lobbyHelpPanel.add(lobbyCombo, BorderLayout.CENTER);
+            lobbyHelpPanel.add(lobbyInfo, BorderLayout.EAST);
+            formUtility.addLastField(lobbyHelpPanel, form);
+            aditionalHeight += 30;
+        }
 
         formUtility.addLabel("Server: ", form);
         JPanel serverHelpPanel = new JPanel(new BorderLayout(5, 0));
@@ -95,7 +123,7 @@ public class ConnectServer extends MenuFrame implements ActionListener {
         formUtility.addLastField(buttonConnect, form);
 
         Insets in = getInsets();
-        Dimension size = new Dimension(400, 135);
+        Dimension size = new Dimension(400, 135 + aditionalHeight);
         size.width += in.left + in.right;
         size.height += in.top + in.bottom;
         setPreferredSize(size);
@@ -135,6 +163,19 @@ public class ConnectServer extends MenuFrame implements ActionListener {
         }
     }
 
+    protected void lobbyInfo() {
+        Object selectedItem = lobbyCombo.getSelectedItem();
+        if (selectedItem != null && selectedItem instanceof ServerLobby) {
+            ServerInfoDialog dialog = new ServerInfoDialog(this, (ServerLobby) selectedItem);
+            int x = getLocationOnScreen().x + (getWidth() / 2);
+            int y = getLocationOnScreen().y + (getHeight() / 2);
+            x = Math.max(0, x - (dialog.getWidth() / 2));
+            y = Math.max(0, y - (dialog.getHeight() / 2));
+            dialog.setLocation(x, y);
+            dialog.setVisible(true);
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -142,6 +183,21 @@ public class ConnectServer extends MenuFrame implements ActionListener {
             connect();
         } else if (source == hostServer) {
             hostServerAction();
+        } else if (source == lobbyCombo) {
+            Object selectedItem = lobbyCombo.getSelectedItem();
+            if (selectedItem != null && selectedItem instanceof ServerLobby) {
+                serverOption.setText(((ServerLobby) selectedItem).getAddress());
+            }
+        } else if (source == lobbyInfo) {
+            lobbyInfo();
+        }
+    }
+
+    @Override
+    public void lobbyReceived(ArrayList<ServerLobby> servers) {
+        lobbyCombo.removeAllItems();
+        for (ServerLobby server : servers) {
+            lobbyCombo.addItem(server);
         }
     }
 }

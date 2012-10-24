@@ -40,4 +40,6 @@ public class Settings {
     public static int defaultColorStringRepresentation = COLOR_STRING_REPRESENTATION_HEXADECIMAL;
     public static String twitterAccessToken = "";
     public static String twitterAccessTokenSecret = "";
+    public static boolean isLobbyEnabled = true;
+    public static String lobbySourceURL = "http://collab.mgn.cz/lobby/lobby.xml";
 }

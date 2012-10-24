@@ -21,17 +21,22 @@ package cz.mgn.collabdesktop.menu.frames.settings.sections;
 
 import cz.mgn.collabdesktop.menu.frames.settings.SettingsPanel;
 import cz.mgn.collabdesktop.utils.settings.Settings;
+import java.awt.BorderLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
  *
- *  @author Martin Indra <aktive@seznam.cz>
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class Connection extends SettingsPanel {
 
     protected JTextField defaultNick;
     protected JTextField defaultServer;
     protected JTextField defaultPort;
+    protected JCheckBox isLobbyEnabled;
+    protected JTextField lobbyURL;
 
     public Connection() {
         super();
@@ -44,6 +49,12 @@ public class Connection extends SettingsPanel {
 
         formUtility.addLabel("Connection port: ", form);
         formUtility.addLastField(defaultPort = new JTextField(), form);
+
+        formUtility.addLabel("Lobby source URL: ", form);
+        JPanel lobbyHelpPanel = new JPanel(new BorderLayout(5, 0));
+        lobbyHelpPanel.add(lobbyURL = new JTextField(), BorderLayout.CENTER);
+        lobbyHelpPanel.add(isLobbyEnabled = new JCheckBox("enabled"), BorderLayout.EAST);
+        formUtility.addLastField(lobbyHelpPanel, form);
 
         reset();
     }
@@ -58,6 +69,8 @@ public class Connection extends SettingsPanel {
         defaultNick.setText(Settings.defaultNick);
         defaultServer.setText(Settings.defaultServer);
         defaultPort.setText("" + Settings.defaultPort);
+        lobbyURL.setText(Settings.lobbySourceURL);
+        isLobbyEnabled.setSelected(Settings.isLobbyEnabled);
     }
 
     @Override
@@ -71,6 +84,8 @@ public class Connection extends SettingsPanel {
             }
         } catch (NumberFormatException e) {
         }
+        Settings.isLobbyEnabled = isLobbyEnabled.isSelected();
+        Settings.lobbySourceURL = lobbyURL.getText();
     }
 
     @Override
@@ -82,6 +97,8 @@ public class Connection extends SettingsPanel {
         }
         return !Settings.defaultNick.equals(defaultNick.getText())
                 || !Settings.defaultServer.equals(defaultServer.getText())
-                || (Settings.defaultPort != port);
+                || (Settings.defaultPort != port)
+                || (Settings.isLobbyEnabled != isLobbyEnabled.isSelected())
+                || !Settings.lobbySourceURL.equals(lobbyURL.getText());
     }
 }
