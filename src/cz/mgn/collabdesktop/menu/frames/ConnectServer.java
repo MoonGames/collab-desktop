@@ -151,6 +151,8 @@ public class ConnectServer extends MenuFrame implements ActionListener, LobbyLis
     protected void hostServerAction() {
         boolean host = hostServer.isSelected();
         serverOption.setEditable(!host);
+        lobbyCombo.setEnabled(!host);
+        lobbyInfo.setEnabled(!host);
         if (host) {
             serverAddressBackUp = serverOption.getText();
             try {
