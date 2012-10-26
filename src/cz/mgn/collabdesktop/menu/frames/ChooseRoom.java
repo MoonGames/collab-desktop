@@ -55,7 +55,7 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
     public ChooseRoom(Client client) {
         super();
         this.client = client;
-        client.setConnectionInterface(this);
+        client.addConnectionInterface(this);
         client.addDataInterface(this);
         refresh();
     }
@@ -92,8 +92,6 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
 
     protected void disconnect() {
         client.close();
-        client.removeDataInterface(this);
-        client.setConnectionInterface(null);
     }
 
     @Override
@@ -203,7 +201,8 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
             CommandExecutor executor = new CommandExecutor(client, yourID);
             DeskFrame df = new DeskFrame(executor, roomName, p.x, p.y);
             df.setVisible(true);
-            client.setConnectionInterface(df);
+            client.removeConnectionInterface(this);
+            client.addConnectionInterface(df);
         }
     }
 
@@ -222,8 +221,8 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
 
     @Override
     public void connectionError(Client client) {
-        client.setConnectionInterface(null);
         goTo(new ConnectServer(), false);
+        client.removeConnectionInterface(this);
     }
 
     @Override
@@ -232,8 +231,8 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
 
     @Override
     public void connectionClosed(Client client) {
-        client.setConnectionInterface(null);
         goTo(new ConnectServer(), false);
+        client.removeConnectionInterface(this);
     }
 
     public class RoomsTable extends JTable {

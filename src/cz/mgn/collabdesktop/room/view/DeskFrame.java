@@ -267,7 +267,6 @@ public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdeskto
 
     @Override
     public void connectionError(Client client) {
-        connectionErrorProcess(client);
     }
 
     @Override
@@ -277,10 +276,10 @@ public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdeskto
     @Override
     public void connectionClosed(Client client) {
         connectionErrorProcess(client);
+        client.removeConnectionInterface(this);
     }
 
     protected void connectionErrorProcess(Client client) {
-        client.setConnectionInterface(null);
         JDialog dialog = new JDialog(this, "Conection error");
         dialog.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 

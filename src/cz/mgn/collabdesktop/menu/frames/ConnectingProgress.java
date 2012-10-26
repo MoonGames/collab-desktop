@@ -25,6 +25,7 @@ import cz.mgn.collabdesktop.network.Client;
 import cz.mgn.collabdesktop.network.ConnectionInterface;
 import cz.mgn.collabdesktop.network.commands.CommandGenerator;
 import java.awt.*;
+import java.util.Set;
 import javax.swing.JLabel;
 
 /**
@@ -36,9 +37,11 @@ public class ConnectingProgress extends MenuFrame implements ConnectionInterface
     protected Client client;
     protected String nick = "";
     protected String address;
+    protected Set<ConnectionInterface> connectionInterfaces;
 
-    public ConnectingProgress(String nick, String address) {
+    public ConnectingProgress(String nick, String address, Set<ConnectionInterface> connectionInterfaces) {
         super();
+        this.connectionInterfaces = connectionInterfaces;
         this.nick = nick;
         this.address = address;
         connect(address);
@@ -46,7 +49,10 @@ public class ConnectingProgress extends MenuFrame implements ConnectionInterface
 
     protected void connect(String address) {
         client = new Client(address);
-        client.setConnectionInterface(this);
+        client.addConnectionInterface(this);
+        for(ConnectionInterface connectionInterface : connectionInterfaces) {
+            client.addConnectionInterface(connectionInterface);
+        }
         client.start();
     }
 
@@ -80,24 +86,25 @@ public class ConnectingProgress extends MenuFrame implements ConnectionInterface
     }
 
     protected void noConnection() {
-        client.setConnectionInterface(null);
         goTo(new ConnectServer(address), false);
     }
 
     @Override
     public void connectionError(Client client) {
         noConnection();
+        client.removeConnectionInterface(this);
     }
 
     @Override
     public void connectionSuccessful(Client client) {
         client.send(CommandGenerator.generateSetNickCommand(nick));
-        client.setConnectionInterface(null);
+        client.removeConnectionInterface(this);
         goTo(new ChooseRoom(client), false);
     }
 
     @Override
     public void connectionClosed(Client client) {
         noConnection();
+        client.removeConnectionInterface(this);
     }
 }

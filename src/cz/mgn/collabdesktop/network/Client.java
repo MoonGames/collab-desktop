@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.network;
 
 import cz.mgn.collabdesktop.utils.Utils;
@@ -28,6 +27,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,7 +43,7 @@ public class Client extends Thread {
     protected InputStream in = null;
     protected OutputStream out = null;
     protected ArrayList<DataInterface> dataInterfaces = new ArrayList<DataInterface>();
-    protected ConnectionInterface connectionInterface = null;
+    protected Set<ConnectionInterface> connectionInterfaces = new HashSet<ConnectionInterface>();
     protected static byte msStart = 111;
 
     public Client(String serverAddress) {
@@ -56,21 +57,30 @@ public class Client extends Thread {
             in = socket.getInputStream();
             out = socket.getOutputStream();
 
-            if (connectionInterface != null) {
-                connectionInterface.connectionSuccessful(this);
+            synchronized (connectionInterfaces) {
+                Set<ConnectionInterface> cic = new HashSet<ConnectionInterface>(connectionInterfaces);
+                for (ConnectionInterface connectionInterface : cic) {
+                    connectionInterface.connectionSuccessful(this);
+                }
             }
 
             while (readNext(in)) {
             }
         } catch (UnknownHostException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-            if (connectionInterface != null) {
-                connectionInterface.connectionError(this);
+            synchronized (connectionInterfaces) {
+                Set<ConnectionInterface> cic = new HashSet<ConnectionInterface>(connectionInterfaces);
+                for (ConnectionInterface connectionInterface : cic) {
+                    connectionInterface.connectionError(this);
+                }
             }
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-            if (connectionInterface != null) {
-                connectionInterface.connectionError(this);
+            synchronized (connectionInterfaces) {
+                Set<ConnectionInterface> cic = new HashSet<ConnectionInterface>(connectionInterfaces);
+                for (ConnectionInterface connectionInterface : cic) {
+                    connectionInterface.connectionError(this);
+                }
             }
         } finally {
             close();
@@ -127,8 +137,16 @@ public class Client extends Thread {
         dataInterfaces.remove(dataInterface);
     }
 
-    public void setConnectionInterface(ConnectionInterface connectionInterface) {
-        this.connectionInterface = connectionInterface;
+    public void addConnectionInterface(ConnectionInterface connectionInterface) {
+        synchronized (connectionInterfaces) {
+            connectionInterfaces.add(connectionInterface);
+        }
+    }
+
+    public void removeConnectionInterface(ConnectionInterface connectionInterface) {
+        synchronized (connectionInterfaces) {
+            connectionInterfaces.remove(connectionInterface);
+        }
     }
 
     public void send(byte[] bytes) {
@@ -143,8 +161,11 @@ public class Client extends Thread {
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-                if (connectionInterface != null) {
-                    connectionInterface.connectionError(this);
+                synchronized (connectionInterfaces) {
+                    Set<ConnectionInterface> cic = new HashSet<ConnectionInterface>(connectionInterfaces);
+                    for (ConnectionInterface connectionInterface : cic) {
+                        connectionInterface.connectionError(this);
+                    }
                 }
             }
         }
@@ -162,9 +183,14 @@ public class Client extends Thread {
             in.close();
             out.close();
             socket.close();
-            if (connectionInterface != null) {
-                connectionInterface.connectionClosed(this);
+            synchronized (connectionInterfaces) {
+                Set<ConnectionInterface> cic = new HashSet<ConnectionInterface>(connectionInterfaces);
+                for (ConnectionInterface connectionInterface : cic) {
+                    connectionInterface.connectionClosed(this);
+                }
             }
+            connectionInterfaces.clear();
+            dataInterfaces.clear();
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -20,6 +20,8 @@
 package cz.mgn.collabdesktop.menu.frames;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
+import cz.mgn.collabdesktop.network.Client;
+import cz.mgn.collabdesktop.network.ConnectionInterface;
 import cz.mgn.collabdesktop.utils.gui.FormUtility;
 import cz.mgn.collabdesktop.utils.lobbyutil.LobbyListener;
 import cz.mgn.collabdesktop.utils.lobbyutil.LobbyUtil;
@@ -32,6 +34,8 @@ import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -39,7 +43,7 @@ import javax.swing.border.EmptyBorder;
 
 /**
  *
- *   @author Martin Indra <aktive@seznam.cz>
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class ConnectServer extends MenuFrame implements ActionListener, LobbyListener {
 
@@ -132,9 +136,27 @@ public class ConnectServer extends MenuFrame implements ActionListener, LobbyLis
     }
 
     protected void connect() {
+        Set<ConnectionInterface> connectionInterfaces = new HashSet<ConnectionInterface>();
         if (hostServer.isSelected()) {
             CollabServer.setLogLevel(CollabServer.LOG_LEVEL_ERROR);
             CollabServer.startServer(Settings.defaultPort);
+            connectionInterfaces.add(new ConnectionInterface() {
+                @Override
+                public void connectionError(Client client) {
+                    CollabServer.stopServer(Settings.defaultPort);
+                    client.removeConnectionInterface(this);
+                }
+
+                @Override
+                public void connectionSuccessful(Client client) {
+                }
+
+                @Override
+                public void connectionClosed(Client client) {
+                    CollabServer.stopServer(Settings.defaultPort);
+                    client.removeConnectionInterface(this);
+                }
+            });
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
@@ -144,7 +166,7 @@ public class ConnectServer extends MenuFrame implements ActionListener, LobbyLis
         String address = serverOption.getText();
         String nick = nickOption.getText();
         if (!address.isEmpty() && !nick.isEmpty()) {
-            goTo(new ConnectingProgress(nick, address), false);
+            goTo(new ConnectingProgress(nick, address, connectionInterfaces), false);
         }
     }
 
