@@ -18,38 +18,42 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.mgn.collabdesktop.menu.frames.settings;
-
-import cz.mgn.collabdesktop.view.gui.utils.FormUtility;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import javax.swing.JPanel;
+package cz.mgn.collabdesktop.view.interfaces.views.sections.chooseroom;
 
 /**
+ * Displayable informations about room.
  *
  * @author Martin Indra <aktive@seznam.cz>
  */
-public abstract class SettingsPanel extends JPanel {
+public interface RoomsDataRoom {
 
-    protected JPanel form;
-    protected FormUtility formUtility;
+    /**
+     * Returns room ID.
+     */
+    public int getID();
 
-    public SettingsPanel() {
-        setMinimumSize(new Dimension(400, 400));
-        form = new JPanel();
-        setLayout(new BorderLayout());
-        add(form, BorderLayout.NORTH);
-        form.setLayout(new GridBagLayout());
-        formUtility = new FormUtility();
-    }
+    /**
+     * Return room horizotnal resolution.
+     */
+    public int getWidth();
 
-    public abstract void reset();
+    /**
+     * Return room vertical resolution.
+     */
+    public int getHeight();
 
-    public abstract void set();
+    /**
+     * Returns count of users in room.
+     */
+    public int getUsersCount();
 
-    public abstract String getPanelName();
+    /**
+     * Returns name of room.
+     */
+    public String getName();
 
-    /** returns if user change values and not set it */
-    public abstract boolean isChanged();
+    /**
+     * Returns if password is required.
+     */
+    public boolean isLocked();
 }

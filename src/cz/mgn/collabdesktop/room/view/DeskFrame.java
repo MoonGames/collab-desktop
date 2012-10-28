@@ -21,11 +21,10 @@ package cz.mgn.collabdesktop.room.view;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
 import cz.mgn.collabdesktop.menu.frames.ChooseRoom;
-import cz.mgn.collabdesktop.menu.frames.ConnectServer;
 import cz.mgn.collabdesktop.menu.frames.about.About;
 import cz.mgn.collabdesktop.menu.frames.settings.SettingsFrame;
-import cz.mgn.collabdesktop.network.Client;
-import cz.mgn.collabdesktop.network.ConnectionInterface;
+import cz.mgn.collabdesktop.model.network.Client;
+import cz.mgn.collabdesktop.model.network.ConnectionInterface;
 import cz.mgn.collabdesktop.room.model.executor.CommandExecutor;
 import cz.mgn.collabdesktop.room.model.paintengine.PaintEngine;
 import cz.mgn.collabdesktop.room.view.eframes.EFrame;
@@ -361,7 +360,7 @@ public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdeskto
         dismiss();
         dispose();
 
-        ConnectServer cs = new ConnectServer();
-        cs.setVisible(true);
+        //ConnectServer cs = new ConnectServer();
+      //  cs.setVisible(true);
     }
 }

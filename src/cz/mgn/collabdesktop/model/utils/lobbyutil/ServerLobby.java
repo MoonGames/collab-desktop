@@ -18,38 +18,41 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.mgn.collabdesktop.menu.frames.settings;
-
-import cz.mgn.collabdesktop.view.gui.utils.FormUtility;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import javax.swing.JPanel;
+package cz.mgn.collabdesktop.model.utils.lobbyutil;
 
 /**
  *
  * @author Martin Indra <aktive@seznam.cz>
  */
-public abstract class SettingsPanel extends JPanel {
+public class ServerLobby {
 
-    protected JPanel form;
-    protected FormUtility formUtility;
+    protected String address;
+    protected String name;
+    protected String description = "";
 
-    public SettingsPanel() {
-        setMinimumSize(new Dimension(400, 400));
-        form = new JPanel();
-        setLayout(new BorderLayout());
-        add(form, BorderLayout.NORTH);
-        form.setLayout(new GridBagLayout());
-        formUtility = new FormUtility();
+    public ServerLobby(String address, String name) {
+        this.address = address;
+        this.name = name;
     }
 
-    public abstract void reset();
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public abstract void set();
+    public String getName() {
+        return name;
+    }
 
-    public abstract String getPanelName();
+    public String getAddress() {
+        return address;
+    }
 
-    /** returns if user change values and not set it */
-    public abstract boolean isChanged();
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + address + ")";
+    }
 }

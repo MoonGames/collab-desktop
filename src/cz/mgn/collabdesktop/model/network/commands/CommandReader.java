@@ -18,7 +18,7 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.mgn.collabdesktop.network.commands;
+package cz.mgn.collabdesktop.model.network.commands;
 
 import cz.mgn.collabdesktop.utils.Utils;
 import java.awt.image.BufferedImage;

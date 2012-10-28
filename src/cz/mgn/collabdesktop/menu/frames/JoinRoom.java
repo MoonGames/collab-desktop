@@ -20,7 +20,7 @@
 package cz.mgn.collabdesktop.menu.frames;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
-import cz.mgn.collabdesktop.utils.gui.FormUtility;
+import cz.mgn.collabdesktop.view.gui.utils.FormUtility;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -67,10 +67,10 @@ public class JoinRoom extends MenuFrame implements ActionListener {
         JPanel form = new JPanel(new GridBagLayout());
         form.setBorder(new EmptyBorder(8, 5, 8, 5));
         getContentPane().add(form, BorderLayout.NORTH);
-        
+
         formUtility.addLabel("Password: ", form);
         formUtility.addLastField(password, form);
-        
+
         formUtility.addLabel("", form);
         formUtility.addMiddleField(join, form);
         formUtility.addLastField(cancel, form);

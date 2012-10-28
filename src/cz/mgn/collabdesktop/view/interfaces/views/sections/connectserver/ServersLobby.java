@@ -18,13 +18,25 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.mgn.collabdesktop.network;
+package cz.mgn.collabdesktop.view.interfaces.views.sections.connectserver;
+
+import java.util.Set;
 
 /**
+ * Lobby informations.
  *
  * @author Martin Indra <aktive@seznam.cz>
  */
-public interface DataInterface {
-    
-    public void dataReaded(byte[] data, byte command);
+public interface ServersLobby {
+
+    /**
+     * Returns set of servers finded by lobby.
+     */
+    public Set<ServersLobbyServer> getServersSet();
+
+    /**
+     * Returns if in lobby is any server. If count of servers is zero, returns
+     * true.
+     */
+    public boolean isLobbyEmpty();
 }

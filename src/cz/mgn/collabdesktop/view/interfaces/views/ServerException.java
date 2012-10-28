@@ -18,17 +18,18 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.mgn.collabdesktop.network;
+package cz.mgn.collabdesktop.view.interfaces.views;
 
 /**
+ * Data of exception on server to show.
  *
- *   @author Martin Indra <aktive@seznam.cz>
+ * @author Martin Indra <aktive@seznam.cz>
  */
-public interface ConnectionInterface {
+public interface ServerException {
 
-    public void connectionError(Client client);
-    
-    public void connectionSuccessful(Client client);
-    
-    public void connectionClosed(Client client);
+    public int getExceptionCode();
+
+    public String getExceptionName();
+
+    public String getExceptionText();
 }

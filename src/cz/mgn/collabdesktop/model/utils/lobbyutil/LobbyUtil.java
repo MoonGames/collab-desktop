@@ -18,7 +18,7 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.mgn.collabdesktop.utils.lobbyutil;
+package cz.mgn.collabdesktop.model.utils.lobbyutil;
 
 import cz.mgn.collabdesktop.utils.HTTPUtil;
 import cz.mgn.collabdesktop.utils.settings.Settings;

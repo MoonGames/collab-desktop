@@ -17,10 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.mgn.collabdesktop.network;
+package cz.mgn.collabdesktop.model.network;
 
 import cz.mgn.collabdesktop.utils.Utils;
-import cz.mgn.collabdesktop.utils.settings.Settings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,6 +38,7 @@ import java.util.logging.Logger;
 public class Client extends Thread {
 
     protected String serverAddress = "";
+    protected int port = 0;
     protected Socket socket = null;
     protected InputStream in = null;
     protected OutputStream out = null;
@@ -46,14 +46,15 @@ public class Client extends Thread {
     protected Set<ConnectionInterface> connectionInterfaces = new HashSet<ConnectionInterface>();
     protected static byte msStart = 111;
 
-    public Client(String serverAddress) {
+    public Client(String serverAddress, int port) {
         this.serverAddress = serverAddress;
+        this.port = port;
     }
 
     @Override
     public void run() {
         try {
-            socket = new Socket(serverAddress, Settings.defaultPort);
+            socket = new Socket(serverAddress, port);
             in = socket.getInputStream();
             out = socket.getOutputStream();
 

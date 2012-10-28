@@ -17,15 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
+package cz.mgn.collabdesktop.view.gui.sections.connectserver;
 
-package cz.mgn.collabdesktop.menu.frames;
-
-import cz.mgn.collabdesktop.utils.gui.FormUtility;
-import cz.mgn.collabdesktop.utils.lobbyutil.ServerLobby;
+import cz.mgn.collabdesktop.view.gui.utils.FormUtility;
+import cz.mgn.collabdesktop.view.interfaces.views.sections.connectserver.ServersLobbyServer;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -36,14 +34,14 @@ import javax.swing.border.EmptyBorder;
 
 /**
  *
- *  @author Martin Indra <aktive@seznam.cz>
+ * @author Martin Indra <aktive@seznam.cz>
  */
 public class ServerInfoDialog extends JDialog {
 
-    protected ServerLobby server;
+    protected ServersLobbyServer server;
 
-    public ServerInfoDialog(JFrame owner, ServerLobby server) {
-        super(owner);
+    public ServerInfoDialog(ServersLobbyServer server) {
+        super();
         this.server = server;
         initComponents();
     }

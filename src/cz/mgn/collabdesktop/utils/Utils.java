@@ -17,10 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.utils;
 
-import cz.mgn.collabdesktop.menu.frames.ConnectServer;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -105,10 +103,10 @@ public class Utils {
                     try {
                         desktop.browse(new URI(address));
                     } catch (IOException ex) {
-                        Logger.getLogger(ConnectServer.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } catch (URISyntaxException ex) {
-                    Logger.getLogger(ConnectServer.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }

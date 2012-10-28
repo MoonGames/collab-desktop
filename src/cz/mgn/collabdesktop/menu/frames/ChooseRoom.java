@@ -20,12 +20,12 @@
 package cz.mgn.collabdesktop.menu.frames;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
-import cz.mgn.collabdesktop.network.Client;
-import cz.mgn.collabdesktop.network.ConnectionInterface;
-import cz.mgn.collabdesktop.network.DataInterface;
-import cz.mgn.collabdesktop.network.commands.CommandGenerator;
-import cz.mgn.collabdesktop.network.commands.CommandReader;
-import cz.mgn.collabdesktop.network.commands.InCommands;
+import cz.mgn.collabdesktop.model.network.Client;
+import cz.mgn.collabdesktop.model.network.ConnectionInterface;
+import cz.mgn.collabdesktop.model.network.DataInterface;
+import cz.mgn.collabdesktop.model.network.commands.CommandGenerator;
+import cz.mgn.collabdesktop.model.network.commands.CommandReader;
+import cz.mgn.collabdesktop.model.network.commands.InCommands;
 import cz.mgn.collabdesktop.room.model.executor.CommandExecutor;
 import cz.mgn.collabdesktop.room.view.DeskFrame;
 import cz.mgn.collabdesktop.utils.ImageUtil;
@@ -221,7 +221,7 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
 
     @Override
     public void connectionError(Client client) {
-        goTo(new ConnectServer(), false);
+       // goTo(new ConnectServer(), false);
         client.removeConnectionInterface(this);
     }
 
@@ -231,7 +231,7 @@ public class ChooseRoom extends MenuFrame implements DataInterface, ActionListen
 
     @Override
     public void connectionClosed(Client client) {
-        goTo(new ConnectServer(), false);
+       // goTo(new ConnectServer(), false);
         client.removeConnectionInterface(this);
     }
 

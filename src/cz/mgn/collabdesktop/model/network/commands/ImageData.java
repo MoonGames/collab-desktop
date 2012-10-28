@@ -18,38 +18,47 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.mgn.collabdesktop.menu.frames.settings;
+package cz.mgn.collabdesktop.model.network.commands;
 
-import cz.mgn.collabdesktop.view.gui.utils.FormUtility;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import javax.swing.JPanel;
+import java.awt.image.BufferedImage;
 
 /**
  *
  * @author Martin Indra <aktive@seznam.cz>
  */
-public abstract class SettingsPanel extends JPanel {
+public class ImageData {
 
-    protected JPanel form;
-    protected FormUtility formUtility;
+    protected int identificator = -1;
+    protected int layerID = 0;
+    protected int x = 0;
+    protected int y = 0;
+    protected BufferedImage image = null;
 
-    public SettingsPanel() {
-        setMinimumSize(new Dimension(400, 400));
-        form = new JPanel();
-        setLayout(new BorderLayout());
-        add(form, BorderLayout.NORTH);
-        form.setLayout(new GridBagLayout());
-        formUtility = new FormUtility();
+    public ImageData(int identificator, int layerID, int x, int y, BufferedImage image) {
+        this.identificator = identificator;
+        this.image = image;
+        this.x = x;
+        this.y = y;
+        this.layerID = layerID;
     }
 
-    public abstract void reset();
+    public BufferedImage getImage() {
+        return image;
+    }
 
-    public abstract void set();
+    public int getX() {
+        return x;
+    }
 
-    public abstract String getPanelName();
+    public int getY() {
+        return y;
+    }
 
-    /** returns if user change values and not set it */
-    public abstract boolean isChanged();
+    public int getLayerID() {
+        return layerID;
+    }
+
+    public int getIdentificator() {
+        return identificator;
+    }
 }

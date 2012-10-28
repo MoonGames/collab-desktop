@@ -18,15 +18,36 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.mgn.collabdesktop.utils.lobbyutil;
+package cz.mgn.collabdesktop.view.interfaces;
 
-import java.util.ArrayList;
+import cz.mgn.collabdesktop.view.interfaces.views.sections.chooseroom.SectionChooseRoom;
+import cz.mgn.collabdesktop.view.interfaces.views.sections.connectserver.SectionConnectServer;
+import cz.mgn.collabdesktop.view.interfaces.views.sections.room.SectionRoom;
 
 /**
  *
  * @author Martin Indra <aktive@seznam.cz>
  */
-public interface LobbyListener {
+public interface View {
 
-    public void lobbyReceived(ArrayList<ServerLobby> servers);
+    /**
+     * Switch section of view to connect server section
+     *
+     * @return interface of section
+     */
+    public SectionConnectServer switchToSectionConnectServer();
+
+    /**
+     * Switch section of view to choose room section
+     *
+     * @return interface of section
+     */
+    public SectionChooseRoom switchToSectionChooseRoom();
+
+    /**
+     * Switch section of view to room section
+     *
+     * @return interface of section
+     */
+    public SectionRoom switchToSectionRoom();
 }

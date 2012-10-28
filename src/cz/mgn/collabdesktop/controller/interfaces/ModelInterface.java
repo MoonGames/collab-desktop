@@ -18,38 +18,16 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.mgn.collabdesktop.menu.frames.settings;
+package cz.mgn.collabdesktop.controller.interfaces;
 
-import cz.mgn.collabdesktop.view.gui.utils.FormUtility;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import javax.swing.JPanel;
+import cz.mgn.collabdesktop.controller.interfaces.connectserver.ConnectServerInterface;
 
 /**
  *
  * @author Martin Indra <aktive@seznam.cz>
  */
-public abstract class SettingsPanel extends JPanel {
+public interface ModelInterface {
 
-    protected JPanel form;
-    protected FormUtility formUtility;
-
-    public SettingsPanel() {
-        setMinimumSize(new Dimension(400, 400));
-        form = new JPanel();
-        setLayout(new BorderLayout());
-        add(form, BorderLayout.NORTH);
-        form.setLayout(new GridBagLayout());
-        formUtility = new FormUtility();
-    }
-
-    public abstract void reset();
-
-    public abstract void set();
-
-    public abstract String getPanelName();
-
-    /** returns if user change values and not set it */
-    public abstract boolean isChanged();
+    public ConnectServerInterface getConnectServerInterface();
+    
 }

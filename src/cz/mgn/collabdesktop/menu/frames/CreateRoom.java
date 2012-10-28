@@ -20,7 +20,7 @@
 package cz.mgn.collabdesktop.menu.frames;
 
 import cz.mgn.collabdesktop.menu.MenuFrame;
-import cz.mgn.collabdesktop.utils.gui.FormUtility;
+import cz.mgn.collabdesktop.view.gui.utils.FormUtility;
 import cz.mgn.collabdesktop.utils.settings.Settings;
 import java.awt.*;
 import java.awt.event.ActionEvent;

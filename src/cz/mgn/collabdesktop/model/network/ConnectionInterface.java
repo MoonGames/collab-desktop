@@ -18,41 +18,17 @@
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cz.mgn.collabdesktop.utils.lobbyutil;
+package cz.mgn.collabdesktop.model.network;
 
 /**
  *
- * @author Martin Indra <aktive@seznam.cz>
+ *   @author Martin Indra <aktive@seznam.cz>
  */
-public class ServerLobby {
+public interface ConnectionInterface {
 
-    protected String address;
-    protected String name;
-    protected String description = "";
+    public void connectionError(Client client);
 
-    public ServerLobby(String address, String name) {
-        this.address = address;
-        this.name = name;
-    }
+    public void connectionSuccessful(Client client);
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public String toString() {
-        return name + " (" + address + ")";
-    }
+    public void connectionClosed(Client client);
 }

@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-package cz.mgn.collabdesktop.utils.gui;
+package cz.mgn.collabdesktop.view.gui.utils;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -43,7 +43,7 @@ public class FormUtility {
     public FormUtility() {
         this(new Insets(1, 1, 1, 1));
     }
-            
+
     public FormUtility(Insets insets) {
         // Set up the constraints for the "last" field in each
         // row first, then copy and modify those constraints.
