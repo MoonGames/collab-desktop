@@ -44,6 +44,7 @@ public class CollabDesktop {
     protected static void processArgs(String[] args) {
         final String PARAM_PORT = "--port";
         final String PARAM_SERVER = "--server";
+        final String PARAM_DEBUG = "--debug";
         String lastArg = "";
 
         for (int i = 0; i < args.length; i++) {
@@ -58,6 +59,10 @@ public class CollabDesktop {
             } else if (PARAM_SERVER.equals(lastArg)) {
                 Settings.defaultServer = arg;
                 Settings.forceServer = true;
+            }
+
+            if (PARAM_DEBUG.equals(arg)) {
+                Settings.debugMode = true;
             }
             lastArg = arg;
         }

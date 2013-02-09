@@ -38,6 +38,8 @@ public class Settings {
      */
     public static boolean forceServer = false;
     //
+    public static boolean debugMode = false;
+    //
     public static String defaultServer = "collab01.mgn.cz";
     public static int defaultPort = 30125;
     public static String defaultNick = "";

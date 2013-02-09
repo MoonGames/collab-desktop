@@ -138,7 +138,7 @@ public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
     }
 
     protected void processKeyEventLocally(CollabPanelKeyEvent e) {
-        if (e.getKeyCode() == CollabPanelKeyEvent.KEY_CODE_SHIFT) {
+        if (e.getKeyCode() == CollabPanelKeyEvent.KeyCode.CODE_SHIFT) {
             if (e.getEventType() == CollabPanelKeyEvent.EVENT_TYPE_PRESSED) {
                 backUpTool = selectedTool;
                 selectTool(colorPicker);
@@ -150,8 +150,8 @@ public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
         }
 
         Set<Integer> pressedKeys = e.getPressedKeyCodes();
-        if (pressedKeys.contains(CollabPanelKeyEvent.KEY_CODE_CONTROL)
-                && pressedKeys.contains(CollabPanelKeyEvent.KEY_CODE_A)) {
+        if (pressedKeys.contains(CollabPanelKeyEvent.KeyCode.CODE_CONTROL)
+                && pressedKeys.contains(CollabPanelKeyEvent.KeyCode.CODE_A)) {
             if (canvas != null) {
                 canvas.getSelectionable().selectAll();
             }

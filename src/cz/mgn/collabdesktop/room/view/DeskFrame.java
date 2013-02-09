@@ -80,7 +80,8 @@ public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdeskto
     public DeskFrame(CommandExecutor executor, String roomName, int x, int y) {
         this.executor = executor;
         this.roomName = roomName;
-        Image icon = Toolkit.getDefaultToolkit().getImage(MenuFrame.class.getResource("/resources/images/icon-32.png"));
+        Image icon = Toolkit.getDefaultToolkit().getImage(MenuFrame.class.
+                getResource("/resources/images/icon-32.png"));
         setIconImage(icon);
         initComponents();
         setTitle("Collab - " + roomName);
@@ -96,10 +97,12 @@ public class DeskFrame extends javax.swing.JFrame implements cz.mgn.collabdeskto
         paintEngine.addListener(middlePanel);
         paintPlace.add(middlePanel);
 
-        leftPanel = new LeftPanel(paintEngine, executor, this, middlePanel.getCanvas().getPaintable());
+        leftPanel = new LeftPanel(paintEngine, executor, this, middlePanel.
+                getCanvas().getPaintable());
         leftSidePanel.add(leftPanel);
 
-        downPanel = new DownPanel(executor, this, middlePanel.getCanvas(), roomName);
+        downPanel = new DownPanel(executor, this, middlePanel.getCanvas(),
+                roomName);
         downSidePanel.add(downPanel);
     }
 

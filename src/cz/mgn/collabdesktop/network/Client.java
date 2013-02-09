@@ -119,6 +119,10 @@ public class Client extends Thread {
     }
 
     protected void dataReaded(byte[] bytes) {
+        if (Settings.debugMode) {
+            System.out.println("Received: " + Utils.byteArrayToString(bytes,
+                    false));
+        }
         if (bytes.length > 0) {
             byte command = bytes[0];
             byte[] realData = new byte[bytes.length - 1];
@@ -150,6 +154,10 @@ public class Client extends Thread {
     }
 
     public void send(byte[] bytes) {
+        if (Settings.debugMode) {
+            System.out.println("Sending: " + Utils.byteArrayToString(bytes,
+                    false));
+        }
         synchronized (out) {
             try {
                 if (!socket.isOutputShutdown()) {
