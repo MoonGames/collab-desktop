@@ -29,6 +29,15 @@ public class Settings {
     public static final int COLOR_STRING_REPRESENTATION_RGB = 0;
     public static final int COLOR_STRING_REPRESENTATION_HEXADECIMAL = 1;
     //
+    /**
+     * ignore port option in settings
+     */
+    public static boolean forcePort = false;
+    /**
+     * ignore server option in settings
+     */
+    public static boolean forceServer = false;
+    //
     public static String defaultServer = "collab01.mgn.cz";
     public static int defaultPort = 30125;
     public static String defaultNick = "";

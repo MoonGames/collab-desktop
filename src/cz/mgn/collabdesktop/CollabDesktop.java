@@ -20,6 +20,7 @@
 package cz.mgn.collabdesktop;
 
 import cz.mgn.collabdesktop.menu.frames.ConnectServer;
+import cz.mgn.collabdesktop.utils.settings.Settings;
 import cz.mgn.collabdesktop.utils.settings.SettingsIO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,12 +37,35 @@ public class CollabDesktop {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        processArgs(args);
         new CollabDesktop();
     }
-    protected int index = 0;
+
+    protected static void processArgs(String[] args) {
+        final String PARAM_PORT = "--port";
+        final String PARAM_SERVER = "--server";
+        String lastArg = "";
+
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            if (PARAM_PORT.equals(lastArg)) {
+                try {
+                    Settings.defaultPort = Integer.parseInt(arg);
+                    Settings.forcePort = true;
+                } catch (NumberFormatException ex) {
+                    System.err.println("Invalid port parameter! (" + arg + ")");
+                }
+            } else if (PARAM_SERVER.equals(lastArg)) {
+                Settings.defaultServer = arg;
+                Settings.forceServer = true;
+            }
+            lastArg = arg;
+        }
+    }
 
     public CollabDesktop() {
         try {
+            // Use the same look and feel on every platform
             UIManager.setLookAndFeel(
                     UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {

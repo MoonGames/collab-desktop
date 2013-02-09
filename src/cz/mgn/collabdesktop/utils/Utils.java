@@ -37,6 +37,26 @@ import java.util.logging.Logger;
  */
 public class Utils {
 
+    public static final String byteArrayToString(byte[] b, boolean binary) {
+        String zeros = "00000000";
+        StringBuilder string = new StringBuilder();
+        string.append("[");
+        for (int i = 0; i < b.length; i++) {
+            int value = b[i] >= 0 ? b[i] : 256 + b[i];
+            string.append("").append(value);
+            if (binary) {
+                String bv = Integer.toBinaryString(value);
+                bv = zeros.substring(bv.length()) + bv;
+                string.append(" (").append(bv).append(")");
+            }
+            if ((i + 1) < b.length) {
+                string.append(", ");
+            }
+        }
+        string.append("]");
+        return string.toString();
+    }
+
     public static final byte[] intToByteArray(int value) {
         return new byte[]{
                     (byte) (value >>> 24),

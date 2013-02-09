@@ -176,16 +176,21 @@ public class SettingsIO {
             if (!param.isEmpty()) {
                 Settings.defaultNick = param;
             }
-            param = connection.getAttribute(TAG_CONNECTION_ATTR_SERVER);
-            if (!param.isEmpty()) {
-                Settings.defaultServer = param;
+            if (!Settings.forceServer) {
+                param = connection.getAttribute(TAG_CONNECTION_ATTR_SERVER);
+                if (!param.isEmpty()) {
+                    Settings.defaultServer = param;
+                }
             }
-            param = connection.getAttribute(TAG_CONNECTION_ATTR_PORT);
-            if (!param.isEmpty()) {
-                try {
-                    Settings.defaultPort = Integer.parseInt(param);
-                } catch (NumberFormatException ex) {
-                    Logger.getLogger(SettingsIO.class.getName()).log(Level.SEVERE, null, ex);
+            if (!Settings.forcePort) {
+                param = connection.getAttribute(TAG_CONNECTION_ATTR_PORT);
+                if (!param.isEmpty()) {
+                    try {
+                        Settings.defaultPort = Integer.parseInt(param);
+                    } catch (NumberFormatException ex) {
+                        Logger.getLogger(SettingsIO.class.getName()).log(
+                                Level.SEVERE, null, ex);
+                    }
                 }
             }
         }
