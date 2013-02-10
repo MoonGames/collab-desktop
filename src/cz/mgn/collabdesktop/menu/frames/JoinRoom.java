@@ -67,21 +67,18 @@ public class JoinRoom extends MenuFrame implements ActionListener {
         JPanel form = new JPanel(new GridBagLayout());
         form.setBorder(new EmptyBorder(8, 5, 8, 5));
         getContentPane().add(form, BorderLayout.NORTH);
-        
+
         formUtility.addLabel("Password: ", form);
         formUtility.addLastField(password, form);
-        
+
         formUtility.addLabel("", form);
         formUtility.addMiddleField(join, form);
         formUtility.addLastField(cancel, form);
 
-        Insets in = getInsets();
-        Dimension size = new Dimension(400, 95);
-        size.width += in.left + in.right;
-        size.height += in.top + in.bottom;
-        setPreferredSize(size);
-        setSize(getPreferredSize());
         setResizable(false);
+        pack();
+        setPreferredSize(new Dimension(400, getPreferredSize().height));
+        setSize(getPreferredSize());
     }
 
     protected void join() {

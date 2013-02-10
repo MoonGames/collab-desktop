@@ -83,8 +83,6 @@ public class ConnectServer extends MenuFrame implements ActionListener, LobbyLis
     protected void initComponents() {
         initMenuBar();
 
-        int aditionalHeight = 0;
-
         nickOption = new JTextField(Settings.defaultNick);
         nickOption.addActionListener(this);
         serverOption = new JTextField(Settings.defaultServer);
@@ -114,7 +112,6 @@ public class ConnectServer extends MenuFrame implements ActionListener, LobbyLis
             lobbyHelpPanel.add(lobbyCombo, BorderLayout.CENTER);
             lobbyHelpPanel.add(lobbyInfo, BorderLayout.EAST);
             formUtility.addLastField(lobbyHelpPanel, form);
-            aditionalHeight += 30;
         }
 
         formUtility.addLabel("Server: ", form);
@@ -126,13 +123,10 @@ public class ConnectServer extends MenuFrame implements ActionListener, LobbyLis
         formUtility.addLabel("", form);
         formUtility.addLastField(buttonConnect, form);
 
-        Insets in = getInsets();
-        Dimension size = new Dimension(400, 135 + aditionalHeight);
-        size.width += in.left + in.right;
-        size.height += in.top + in.bottom;
-        setPreferredSize(size);
-        setSize(getPreferredSize());
         setResizable(false);
+        pack();
+        setPreferredSize(new Dimension(400, getPreferredSize().height));
+        setSize(getPreferredSize());
     }
 
     protected void connect() {

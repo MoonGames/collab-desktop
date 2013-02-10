@@ -91,13 +91,10 @@ public class CreateRoom extends MenuFrame implements ActionListener {
         formUtility.addMiddleField(create, form);
         formUtility.addLastField(cancel, form);
 
-        Insets in = getInsets();
-        Dimension size = new Dimension(400, 160);
-        size.width += in.left + in.right;
-        size.height += in.top + in.bottom;
-        setPreferredSize(size);
-        setSize(getPreferredSize());
         setResizable(false);
+        pack();
+        setPreferredSize(new Dimension(400, getPreferredSize().height));
+        setSize(getPreferredSize());
     }
 
     @Override
