@@ -62,7 +62,8 @@ public class FloodFill {
         fill = new int[]{col.getRed(), col.getGreen(), col.getBlue(), ALPHA};
         background = sourceImage.getRaster().getPixel(x, y, new int[4]);
         fillC(x, y);
-        return new FloodFillResult(destImage.getSubimage(area.x, area.y, Math.max(1, area.width), Math.max(1, area.height)), area.getLocation());
+        return new FloodFillResult(destImage.getSubimage(area.x, area.y,
+                area.width + 1, area.height + 1), area.getLocation());
     }
 
     protected void fillC(int x, int y) {
