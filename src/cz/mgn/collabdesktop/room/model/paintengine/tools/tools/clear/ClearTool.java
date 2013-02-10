@@ -22,6 +22,7 @@ package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.clear;
 
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelKeyEvent;
 import cz.mgn.collabcanvas.interfaces.listenable.CollabPanelMouseEvent;
+import cz.mgn.collabcanvas.interfaces.paintable.PaintData;
 import cz.mgn.collabdesktop.room.model.paintengine.Canvas;
 import cz.mgn.collabdesktop.room.model.paintengine.PaintEngineInterface;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.Tool;
@@ -67,18 +68,38 @@ public class ClearTool extends Tool {
             if (canvas != null) {
                 int w = canvas.getPaintable().getWidth();
                 int h = canvas.getPaintable().getHeight();
-                BufferedImage fill = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
-                Graphics g = fill.getGraphics();
-                if (e.isControlDown()) {
-                    g.setColor(Color.BLACK);
-                } else {
-                    g.setColor(new Color(color));
+                Color c = null;
+                if (!e.isControlDown()) {
+                    c = new Color(color);
                 }
-                g.fillRect(0, 0, fill.getWidth(), fill.getHeight());
-                g.dispose();
-                canvas.getPaintable().paint(new SingleImagePaintData(fill, !e.isControlDown()));
+                canvas.getPaintable().paint(generateFillData(c, 0, 0, w, h));
             }
         }
+    }
+
+    /**
+     * Generate single color paint data or earse data. If color isn't specified
+     * data is in earse mode otherwise in paint mode.
+     *
+     * @param color color of data, null mean 100% earse
+     * @param x X coordinate of data
+     * @param y Y coordinate of data
+     * @param width width of data
+     * @param height height of data
+     */
+    public static PaintData generateFillData(Color color, int x, int y,
+            int width, int height) {
+        BufferedImage fill = new BufferedImage(width, height,
+                BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics g = fill.getGraphics();
+        if (color == null) {
+            g.setColor(Color.BLACK);
+        } else {
+            g.setColor(color);
+        }
+        g.fillRect(0, 0, fill.getWidth(), fill.getHeight());
+        g.dispose();
+        return new SingleImagePaintData(fill, color != null);
     }
 
     @Override

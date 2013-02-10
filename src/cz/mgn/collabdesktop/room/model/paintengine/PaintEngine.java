@@ -31,8 +31,8 @@ import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.latex.LatexTool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.paintbucket.PaintBucketTool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.select.SelectTool;
 import cz.mgn.collabdesktop.room.model.paintengine.tools.tools.text.TextTool;
+import cz.mgn.collabdesktop.room.model.paintengine.userevents.KeyCombination;
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  *
@@ -40,6 +40,24 @@ import java.util.Set;
  */
 public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
 
+    protected static KeyCombination KEY_COMBINATION_SELECT_ALL;
+    protected static KeyCombination KEY_COMBINATION_DELETE_SELECTION;
+
+    static {
+        ArrayList<CollabPanelKeyEvent.KeyCode> combination =
+                new ArrayList<CollabPanelKeyEvent.KeyCode>();
+
+        combination.add(CollabPanelKeyEvent.KeyCode.CODE_CONTROL);
+        combination.add(CollabPanelKeyEvent.KeyCode.CODE_A);
+        KEY_COMBINATION_SELECT_ALL = new KeyCombination(
+                (ArrayList<CollabPanelKeyEvent.KeyCode>) combination.clone());
+
+        combination.clear();
+        combination.add(CollabPanelKeyEvent.KeyCode.CODE_DELETE);
+        KEY_COMBINATION_DELETE_SELECTION = new KeyCombination(
+                (ArrayList<CollabPanelKeyEvent.KeyCode>) combination.clone());
+
+    }
     protected CollabCanvas canvas;
     protected Canvas cnv;
     protected ArrayList<PaintEngineListener> listeners = new ArrayList<PaintEngineListener>();
@@ -138,22 +156,39 @@ public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
     }
 
     protected void processKeyEventLocally(CollabPanelKeyEvent e) {
+        testForColorPicker(e);
+
+        if (e.getEventType() == CollabPanelKeyEvent.EVENT_TYPE_PRESSED) {
+            if (KEY_COMBINATION_SELECT_ALL.test(e)) {
+                if (canvas != null) {
+                    canvas.getSelectionable().selectAll();
+                }
+            } else if (KEY_COMBINATION_DELETE_SELECTION.test(e)) {
+                if (canvas != null && !canvas.getSelectionable().isSelectedAll()) {
+                    canvas.getPaintable().paint(ClearTool.generateFillData(null,
+                            0, 0, canvas.getPaintable().getWidth(), canvas.
+                            getPaintable().getHeight()));
+                }
+            }
+        }
+    }
+
+    /**
+     * Test if key event should occur switch between color picker and origin
+     * tool
+     *
+     * @param e event
+     */
+    protected void testForColorPicker(CollabPanelKeyEvent e) {
         if (e.getKeyCode() == CollabPanelKeyEvent.KeyCode.CODE_SHIFT) {
             if (e.getEventType() == CollabPanelKeyEvent.EVENT_TYPE_PRESSED) {
                 backUpTool = selectedTool;
                 selectTool(colorPicker);
-            } else if (e.getEventType() == CollabPanelKeyEvent.EVENT_TYPE_RELEASED) {
+            } else if (e.getEventType()
+                    == CollabPanelKeyEvent.EVENT_TYPE_RELEASED) {
                 if (backUpTool != null) {
                     selectTool(backUpTool);
                 }
-            }
-        }
-
-        Set<Integer> pressedKeys = e.getPressedKeyCodes();
-        if (pressedKeys.contains(CollabPanelKeyEvent.KeyCode.CODE_CONTROL)
-                && pressedKeys.contains(CollabPanelKeyEvent.KeyCode.CODE_A)) {
-            if (canvas != null) {
-                canvas.getSelectionable().selectAll();
             }
         }
     }
