@@ -164,7 +164,8 @@ public class PaintEngine implements CollabPanelListener, PaintEngineInterface {
                     canvas.getSelectionable().selectAll();
                 }
             } else if (KEY_COMBINATION_DELETE_SELECTION.test(e)) {
-                if (canvas != null && !canvas.getSelectionable().isSelectedAll()) {
+                if (canvas != null && (!canvas.getSelectionable().
+                        isSelectedAll() || selectedTool instanceof SelectTool)) {
                     canvas.getPaintable().paint(ClearTool.generateFillData(null,
                             0, 0, canvas.getPaintable().getWidth(), canvas.
                             getPaintable().getHeight()));
