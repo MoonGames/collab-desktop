@@ -31,6 +31,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.text.html.HTMLEditorKit;
 
 /**
  *
@@ -55,7 +56,11 @@ public class License extends MenuFrame {
         setLayout(new BorderLayout(0, 10));
 
         try {
-            JEditorPane licence = new JEditorPane(License.class.getResource("/resources/other/gplv3.html"));
+            JEditorPane licence = new JEditorPane();
+            licence.setEditorKit(new HTMLEditorKit());
+            licence.setContentType("text/html;charset=UTF-8");
+            licence.setPage(License.class.getResource(
+                    "/resources/other/gplv3.html"));
             licence.addHyperlinkListener(new HyperlinkListener() {
 
                 @Override
