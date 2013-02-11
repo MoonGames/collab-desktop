@@ -7,7 +7,7 @@
     <property name="mainclass" value="cz.mgn.collabdesktop.CollabDesktop" />
 
     <path id="project.class.path">
-        <fileset dir="lib">
+        <fileset dir="./lib">
             <include name="**/*.jar" />
         </fileset>
     </path>
@@ -35,23 +35,25 @@
         <mkdir dir="${deploydir}"/>
         <mkdir dir="${deploydir}/lib"/>
 	<copy todir="${deploydir}/lib">
-            <fileset dir="lib">
+            <fileset dir="./lib">
                 <include name="**/*.jar" />
             </fileset>
         </copy>
     </target>
 
-    <path id="jar.class.path">
-        <fileset dir="${deploydir}/lib">
-            <include name="**/*.jar" />
-        </fileset>
-    </path>
 
-    <pathconvert property="jar.class.path.dp" pathsep=" ">
-        <path refid="jar.class.path" />
-    </pathconvert>
  
     <target name="createJar" depends="jarInit">
+        <path id="jar.class.path">
+            <fileset dir="${deploydir}/lib">
+                <include name="**/*.jar" />
+            </fileset>
+        </path>
+
+        <pathconvert property="jar.class.path.dp" pathsep=" ">
+            <path refid="jar.class.path" />
+        </pathconvert>
+
         <jar destfile="${deploydir}/${jarname}">
             <fileset dir="${bindir}"/>
             <manifest>
