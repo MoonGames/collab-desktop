@@ -85,7 +85,7 @@ public class CommandReader {
             byte[] layerIDData = new byte[4];
             System.arraycopy(data, 0, layerIDData, 0, 4);
             byte[] commandIdentificatorData = new byte[4];
-            System.arraycopy(data, 4, layerIDData, 0, 4);
+            System.arraycopy(data, 4, commandIdentificatorData, 0, 4);
             byte[] sucessfull = new byte[]{data[8]};
 
             result[0] = Utils.byteArrayToInt(layerIDData);

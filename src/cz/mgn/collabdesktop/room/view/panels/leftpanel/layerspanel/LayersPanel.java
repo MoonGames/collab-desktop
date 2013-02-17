@@ -54,6 +54,7 @@ public class LayersPanel extends JPanel implements Layers, ActionListener {
     protected JButton down;
     //
     protected boolean layerNameOpened = false;
+    protected int toSelect = -1;
 
     public LayersPanel(CommandExecutor executor, DeskInterface desk, Paintable paintable) {
         this.executor = executor;
@@ -122,6 +123,20 @@ public class LayersPanel extends JPanel implements Layers, ActionListener {
 
     @Override
     public void addLayer(int layerID, int identificator, boolean sucesfull) {
+        synchronized (this) {
+            if (sucesfull && toSelect >= 0 && toSelect == identificator) {
+                int[] order = layersList.getLayersOrder();
+                int[] newOrder = new int[order.length + 1];
+                System.arraycopy(order, 0, newOrder, 0, order.length);
+                newOrder[newOrder.length - 1] = layerID;
+                layersList.setLayersOrder(newOrder);
+                selected = layerID;
+                layersList.setSelectedLayer(layerID);
+                toSelect = -1;
+            } else if (!sucesfull) {
+                toSelect = -1;
+            }
+        }
     }
 
     @Override
@@ -171,7 +186,8 @@ public class LayersPanel extends JPanel implements Layers, ActionListener {
             LayerName ln = new LayerName(new LayerNameInterface() {
                 @Override
                 public void done(String name) {
-                    executor.sendAddLayer(layersList.getLayersCount(), -1, name);
+                    executor.sendAddLayer(layersList.getLayersCount(),
+                            toSelect = executor.generateNextID(), name);
                     layerNameOpened = false;
                 }
 
@@ -314,6 +330,14 @@ public class LayersPanel extends JPanel implements Layers, ActionListener {
             }
             layers = layersD;
             refresh(false);
+        }
+
+        public int[] getLayersOrder() {
+            int[] order = new int[layers.size()];
+            for (int i = 0; i < layers.size(); i++) {
+                order[i] = layers.get(i).getLayerID();
+            }
+            return order;
         }
 
         public void setLayerName(int layerID, String name) {
