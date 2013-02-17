@@ -22,6 +22,11 @@
         <copy todir="${bindir}/resources">
             <fileset dir="${srcdir}/resources"/>
         </copy>
+        <copy todir="${bindir}">
+            <fileset dir="${srcdir}">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
     </target>
 
     <target name="compile" depends="init">
