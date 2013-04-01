@@ -27,6 +27,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +39,7 @@ import javax.swing.text.DefaultCaret;
  *
  * @author Martin Indra <aktive@seznam.cz>
  */
-public class ChatPanel extends JPanel implements ActionListener {
+public class ChatPanel extends JPanel implements ActionListener, KeyListener {
 
     protected SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     protected MessageInterface messageInterface = null;
@@ -58,7 +60,7 @@ public class ChatPanel extends JPanel implements ActionListener {
         GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.CENTER;
         c.fill = GridBagConstraints.BOTH;
-        
+
         messages = new ChatTextArea(30);
 
         messagesScroll = new JScrollPane(messages);
@@ -72,6 +74,7 @@ public class ChatPanel extends JPanel implements ActionListener {
         add(messagesScroll, c);
 
         text = new JTextField();
+        text.addKeyListener(this);
         text.addActionListener(this);
         c.insets = new Insets(0, 0, 5, 5);
         c.weightx = 1f;
@@ -104,6 +107,23 @@ public class ChatPanel extends JPanel implements ActionListener {
         }
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getSource() == text) {
+            if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_L) {
+                messages.clear();
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
     public class ChatTextArea extends TextPaneHyperlinks {
 
         protected int maxMessages = 10;
@@ -130,6 +150,11 @@ public class ChatPanel extends JPanel implements ActionListener {
             }
             all = all.substring(0, all.length() - 1);
             setText(all);
+        }
+
+        public void clear() {
+            messages.clear();
+            setText("");
         }
     }
 }
