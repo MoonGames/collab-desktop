@@ -101,7 +101,7 @@ public class Utils {
     }
 
     public static int getLinesCount(String str) {
-        String tempStr = new String(str);
+        String tempStr = str;
         int index;
         int lineCount = 0;
 

@@ -25,7 +25,6 @@ import cz.mgn.collabdesktop.utils.lobbyutil.ServerLobby;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
