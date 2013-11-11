@@ -17,38 +17,32 @@
  * You should have received a copy of the GNU General Public License
  * along with Collab desktop.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package cz.mgn.collabdesktop.room.model.paintengine.tools.tools.select;
 
 import cz.mgn.collabcanvas.interfaces.selectionable.SelectionUpdate;
-import cz.mgn.collabdesktop.room.view.panels.leftpanel.layerspanel.LayersPanel;
-import cz.mgn.collabdesktop.utils.gui.iconComponent.IconCheckBox;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
  *
  * @author Martin Indra <aktive@seznam.cz>
  */
-public class SelectPanel extends JPanel implements ItemListener, ActionListener {
+public class SelectPanel extends JPanel implements ActionListener {
 
     public static final int SHAPE_RECTANGLE = 0;
     public static final int SHAPE_OVAL = 1;
+    public static final int SHAPE_COLOR = 2;
     protected SelectPanelInterface selectPanelInterface;
-    protected JCheckBox newselection;
-    protected JCheckBox add;
-    protected JCheckBox substract;
-    protected JCheckBox intersection;
-    protected JCheckBox oval;
-    protected JCheckBox rectangle;
+    protected JComboBox mode;
+    protected JComboBox shape;
+
     protected JButton invert;
 
     public SelectPanel(SelectPanelInterface selectPanelInterface) {
@@ -57,101 +51,131 @@ public class SelectPanel extends JPanel implements ItemListener, ActionListener 
     }
 
     protected void initComponents() {
-        setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
 
-        ImageIcon icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(LayersPanel.class.getResource("/resources/images/selection_new.png")));
-        newselection = new IconCheckBox("button_16", icon);
-        newselection.setToolTipText("new selection");
-        newselection.addItemListener(this);
-        add(newselection);
+        c.insets = new Insets(5, 5, 5, 5);
+        c.anchor = GridBagConstraints.NORTHWEST;
 
-        icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(LayersPanel.class.getResource("/resources/images/selection_add.png")));
-        add = new IconCheckBox("button_16", icon);
-        add.setToolTipText("add to current selection");
-        add.addItemListener(this);
-        add(add);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.fill = GridBagConstraints.NONE;
+        add(new JLabel("Mode: "), c);
 
-        icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(LayersPanel.class.getResource("/resources/images/selection_substract.png")));
-        substract = new IconCheckBox("button_16", icon);
-        substract.setToolTipText("substract from current selection");
-        substract.addItemListener(this);
-        add(substract);
+        c.gridx = 1;
+        c.gridy = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        mode = new JComboBox(new ComboItem[]{
+            new ComboItem(ComboItem.MODE_REPLACE),
+            new ComboItem(ComboItem.MODE_UNION),
+            new ComboItem(ComboItem.MODE_INTERSECTION),
+            new ComboItem(ComboItem.MODE_REMOVE)
+        });
+        add(mode, c);
 
-        icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(LayersPanel.class.getResource("/resources/images/selection_intersection.png")));
-        intersection = new IconCheckBox("button_16", icon);
-        intersection.setToolTipText("intersection with current selection");
-        intersection.addItemListener(this);
-        add(intersection);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.fill = GridBagConstraints.NONE;
+        add(new JLabel("Shape: "), c);
 
-        newselection.setSelected(true);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        shape = new JComboBox(new ComboItem[]{
+            new ComboItem(ComboItem.SHAPE_RECTANGLE),
+            new ComboItem(ComboItem.SHAPE_OVAL)
+            //TODO: new ComboItem(ComboItem.SHAPE_COLOR)
+        });
+        add(shape, c);
 
-        icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(LayersPanel.class.getResource("/resources/images/selection_oval.png")));
-        oval = new IconCheckBox("button_16", icon);
-        oval.setToolTipText("oval selection");
-        oval.addItemListener(this);
-        add(oval);
-
-        icon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(LayersPanel.class.getResource("/resources/images/selection_rectangle.png")));
-        rectangle = new IconCheckBox("button_16", icon);
-        rectangle.setToolTipText("rectangle selection");
-        rectangle.addItemListener(this);
-        add(rectangle);
-
-        invert = new JButton("invert");
+        c.gridx = 0;
+        c.gridy = 2;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 2;
+        invert = new JButton("invert selection");
         invert.addActionListener(this);
-        add(invert);
+        add(invert, c);
     }
 
     public int getSelectionType() {
-        if (add.isSelected()) {
+        ComboItem mode = (ComboItem) this.mode.getSelectedItem();
+
+        if (mode.getMode() == ComboItem.MODE_UNION) {
             return SelectionUpdate.MODE_UNIOIN;
-        } else if (substract.isSelected()) {
+        } else if (mode.getMode() == ComboItem.MODE_REMOVE) {
             return SelectionUpdate.MODE_REMOVE;
-        } else if (intersection.isSelected()) {
+        } else if (mode.getMode() == ComboItem.MODE_INTERSECTION) {
             return SelectionUpdate.MODE_INTERSECTION;
         }
         return SelectionUpdate.MODE_REPLACE;
     }
 
     public int getSelectionShape() {
-        if (oval.isSelected()) {
+        ComboItem shape = (ComboItem) this.shape.getSelectedItem();
+
+        if (shape.getMode() == ComboItem.SHAPE_OVAL) {
             return SHAPE_OVAL;
+        } else if (shape.getMode() == ComboItem.SHAPE_COLOR) {
+            return SHAPE_COLOR;
         }
         return SHAPE_RECTANGLE;
-    }
-
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-        if (e.getStateChange() == ItemEvent.SELECTED) {
-            Object source = e.getSource();
-            if (source == newselection || source == add || source == substract || source == intersection) {
-                if (source != newselection) {
-                    newselection.setSelected(false);
-                }
-                if (source != add) {
-                    add.setSelected(false);
-                }
-                if (source != substract) {
-                    substract.setSelected(false);
-                }
-                if (source != intersection) {
-                    intersection.setSelected(false);
-                }
-            } else if (source == oval || source == rectangle) {
-                if (source != oval) {
-                    oval.setSelected(false);
-                }
-                if (source != rectangle) {
-                    rectangle.setSelected(false);
-                }
-            }
-        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == invert) {
             selectPanelInterface.invertSelection();
+        }
+    }
+
+    public class ComboItem {
+
+        public static final int MODE_REPLACE = 0;
+        public static final int MODE_REMOVE = 1;
+        public static final int MODE_INTERSECTION = 2;
+        public static final int MODE_UNION = 3;
+        public static final int SHAPE_RECTANGLE = 4;
+        public static final int SHAPE_OVAL = 5;
+        public static final int SHAPE_COLOR = 6;
+
+        protected String title;
+        protected int mode;
+
+        public ComboItem(int mode) {
+            this.mode = mode;
+
+            switch (mode) {
+                case MODE_INTERSECTION:
+                    title = "Intersection";
+                    break;
+                case MODE_REMOVE:
+                    title = "Subtraction";
+                    break;
+                case MODE_REPLACE:
+                    title = "Replace";
+                    break;
+                case MODE_UNION:
+                    title = "Union";
+                    break;
+                case SHAPE_RECTANGLE:
+                    title = "Rectangle";
+                    break;
+                case SHAPE_OVAL:
+                    title = "Oval";
+                    break;
+                case SHAPE_COLOR:
+                    title = "Color";
+                    break;
+            }
+        }
+
+        public int getMode() {
+            return mode;
+        }
+
+        @Override
+        public String toString() {
+            return title;
         }
     }
 }
